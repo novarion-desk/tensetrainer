@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tense Trainer</title>
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--ink:#1d2433;--muted:#667085;--line:#e4e1d8;--accent:#2f5bea;--ok:#1a8a4a;--okbg:#e7f6ee;--bad:#c93c3c;--badbg:#fdeceb;--warn:#a1650f;--warnbg:#fdf3e1;--r:14px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:18px 16px 60px}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.logo{font-weight:800;font-size:24px;letter-spacing:-.02em}
+.logo span{color:var(--accent)}
+button{font:inherit;cursor:pointer}
+.btn-link{background:none;border:0;color:var(--accent);font-weight:600;padding:6px 8px;border-radius:8px}
+.btn-link:hover{background:rgba(47,91,234,.08)}
+.btn-link.sm{font-size:14px;padding:4px 6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-bottom:14px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-weight:600;color:var(--ink)}
+.chip.on{border-color:var(--c,var(--accent));background:color-mix(in srgb,var(--c,var(--accent)) 13%,#fff)}
+.links{margin-top:8px}
+.modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.mode{border:2px solid var(--line);background:#fff;border-radius:12px;padding:12px;text-align:left;color:var(--ink)}
+.mode b{display:block;font-size:17px}
+.mode small{color:var(--muted);font-size:14px}
+.mode.on{border-color:var(--accent);background:#eef2fe}
+.opt-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 0;flex-wrap:wrap}
+.seg{display:flex;border:2px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{border:0;background:#fff;padding:7px 14px;font-weight:600}
+.seg button.on{background:var(--accent);color:#fff}
+.switch{position:relative;width:48px;height:28px;border-radius:99px;border:0;background:#cfd4dc;flex:none}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.2s}
+.switch.on{background:var(--accent)}
+.switch.on::after{left:23px}
+.primary{display:block;width:100%;border:0;background:var(--accent);color:#fff;font-weight:700;font-size:18px;padding:14px;border-radius:12px}
+.primary:hover{filter:brightness(1.07)}
+.primary:disabled{opacity:.5;cursor:default}
+.err{color:var(--bad);font-weight:600;text-align:center;min-height:1.5em}
+.qtop{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;font-weight:700}
+.bar{height:8px;background:#e6e3da;border-radius:99px;overflow:hidden;margin-bottom:14px}
+.bar div{height:100%;background:var(--accent);transition:width .3s}
+.tag{display:inline-block;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px}
+.instr{font-weight:700;margin:0 0 14px;font-size:18px}
+.sentence{font-size:22px;line-height:1.9;margin:6px 0 14px}
+.sentence input{font:inherit;font-size:20px;border:0;border-bottom:3px solid var(--accent);background:#f1f4fe;padding:2px 6px;border-radius:6px 6px 0 0;min-width:6ch;max-width:100%;color:var(--ink)}
+.sentence input:focus{outline:none;background:#e6ecfd}
+.hint{color:var(--muted);font-size:18px;white-space:nowrap}
+.tt{display:inline-block;font-size:14px;font-weight:700;padding:2px 10px;border-radius:99px;background:color-mix(in srgb,var(--c) 14%,#fff);color:color-mix(in srgb,var(--c) 80%,#000);border:1px solid color-mix(in srgb,var(--c) 35%,#fff)}
+.src{font-size:21px;background:#f7f6f2;border-left:4px solid var(--line);padding:10px 14px;border-radius:8px;margin-bottom:10px}
+.sig{margin:0 0 12px;color:var(--muted)}
+.sig b{color:var(--ink)}
+textarea.full{width:100%;font:inherit;font-size:20px;border:2px solid var(--line);border-radius:10px;padding:10px 12px;resize:none;min-height:3.2em}
+textarea.full:focus{outline:none;border-color:var(--accent)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opts button{border:2px solid var(--line);background:#fff;border-radius:12px;padding:14px 10px;font-weight:700;color:var(--ink)}
+.opts button:hover:not(:disabled){border-color:var(--accent)}
+.opts button.right{border-color:var(--ok);background:var(--okbg)}
+.opts button.wrong{border-color:var(--bad);background:var(--badbg)}
+.opts button:disabled{cursor:default}
+mark{background:#fff0a8;padding:0 3px;border-radius:4px}
+.fb{border-radius:12px;padding:14px 16px;margin-top:14px;font-size:16px}
+.fb.ok{background:var(--okbg)}.fb.bad{background:var(--badbg)}.fb.warn{background:var(--warnbg)}
+.fbt{font-weight:800;font-size:18px;margin-bottom:4px}
+.fb.ok .fbt{color:var(--ok)}.fb.bad .fbt{color:var(--bad)}.fb.warn .fbt{color:var(--warn)}
+.sol{font-size:18px;margin:6px 0}
+.rule{margin-top:8px}
+.tip{margin-top:8px;font-weight:600}
+.actions{margin-top:16px}
+.big{font-size:56px;font-weight:800;text-align:center;line-height:1.1}
+.big small{display:block;font-size:17px;color:var(--muted);font-weight:600}
+.stat{display:grid;grid-template-columns:170px 1fr 48px;gap:10px;align-items:center;margin:8px 0;font-size:15px}
+.stat .track{height:10px;background:#eee;border-radius:99px;overflow:hidden}
+.stat .track div{height:100%}
+.mist{border-top:1px solid var(--line);padding:10px 0;font-size:16px}
+.mist .you{color:var(--bad)}
+.btns{display:grid;gap:10px}
+.secondary{width:100%;border:2px solid var(--accent);background:#fff;color:var(--accent);font-weight:700;font-size:17px;padding:12px;border-radius:12px}
+.modal{position:fixed;inset:0;background:rgba(20,24,35,.45);display:flex;align-items:flex-start;justify-content:center;padding:20px 12px;overflow:auto;z-index:10}
+.modal.hidden{display:none}
+.modal .card{max-width:720px;width:100%}
+.rt{border-top:1px solid var(--line);padding:12px 0;font-size:15px}
+.rt p{margin:4px 0}
+footer{text-align:center;color:var(--muted);font-size:13px;margin-top:24px}
+@media (max-width:520px){.sentence{font-size:19px}.opts{grid-template-columns:1fr}.stat{grid-template-columns:120px 1fr 40px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">Tense<span>Trainer</span></div>
+    <button class="btn-link" id="rulesBtn">📘 Regeln</button>
+  </header>
+  <main id="app"></main>
+  <footer>Tense Trainer · Englisch Oberstufe</footer>
+</div>
+<div class="modal hidden" id="modal"><div class="card" id="modalBody"></div></div>
+
+<script>
+/*ENGINE*/
+const ORDER=['SP','PP','SPA','PAP','PRP','WF','GT'];
+const T={
+ SP:{name:'Simple Present',c:'#2f5bea',use:'Gewohnheiten, Regelmässiges, Fakten',pos:'Grundform – bei he / she / it + <b>-s</b>',neg:"<b>don't / doesn't</b> + Grundform",q:'<b>Do / Does</b> + Subjekt + Grundform',sig:'every day, usually, often, always, never, on Mondays'},
+ PP:{name:'Present Continuous',c:'#0e9f9a',use:'passiert gerade jetzt',pos:'<b>am / is / are</b> + Verb-<b>ing</b>',neg:"<b>am not / isn't / aren't</b> + Verb-ing",q:'<b>Am / Is / Are</b> + Subjekt + Verb-ing',sig:'now, right now, at the moment, Look!, Listen!'},
+ SPA:{name:'Simple Past',c:'#d97706',use:'abgeschlossen in der Vergangenheit, Zeitpunkt bekannt',pos:'Verb + <b>-ed</b> oder unregelmässige Form (go → went)',neg:"<b>didn't</b> + Grundform",q:'<b>Did</b> + Subjekt + Grundform',sig:'yesterday, last week, two days ago, in 2020'},
+ PAP:{name:'Past Continuous',c:'#c2410c',use:'war in der Vergangenheit gerade im Gang',pos:'<b>was / were</b> + Verb-<b>ing</b>',neg:"<b>wasn't / weren't</b> + Verb-ing",q:'<b>Was / Were</b> + Subjekt + Verb-ing',sig:"when …, while …, at 8 o'clock last night"},
+ PRP:{name:'Present Perfect',c:'#7c3aed',use:'Vergangenes mit Bezug zur Gegenwart, Zeitpunkt unwichtig',pos:'<b>have / has</b> + 3. Form (gone, seen, played)',neg:"<b>haven't / hasn't</b> + 3. Form",q:'<b>Have / Has</b> + Subjekt + 3. Form',sig:'already, just, yet, ever, never, since, for'},
+ WF:{name:'will-Future',c:'#db2777',use:'Vorhersagen, Vermutungen, spontane Entscheidungen, Versprechen',pos:'<b>will</b> + Grundform',neg:"<b>won't</b> + Grundform",q:'<b>Will</b> + Subjekt + Grundform',sig:'tomorrow, soon, one day, I think …, probably'},
+ GT:{name:'going to-Future',c:'#15803d',use:'Pläne, Absichten, sichere Anzeichen',pos:'<b>am / is / are + going to</b> + Grundform',neg:"<b>am not / isn't / aren't + going to</b> + Grundform",q:'<b>Am / Is / Are</b> + Subjekt + <b>going to</b> + Grundform',sig:'tomorrow, next weekend, this evening, Look at …!'}
+};
+
+const SUBJ=[
+ {w:'I',k:'1s',poss:'my',pr:['I']},{w:'you',k:'pl',poss:'your',pr:['I','we']},{w:'he',k:'3s',poss:'his',pr:['he']},{w:'she',k:'3s',poss:'her',pr:['she']},
+ {w:'we',k:'pl',poss:'our',pr:['we','you']},{w:'they',k:'pl',poss:'their',pr:['they']},{w:'my brother',k:'3s',poss:'his',pr:['he']},{w:'my sister',k:'3s',poss:'her',pr:['she']},
+ {w:'Tom',k:'3s',poss:'his',pr:['he']},{w:'Lisa',k:'3s',poss:'her',pr:['she']},{w:'my friends',k:'pl',poss:'their',pr:['they']},{w:'Mia and Leon',k:'pl',poss:'their',pr:['they']}
+];
+
+const VERBS=[
+ {b:'play',o:['football','video games','the guitar','tennis']},
+ {b:'watch',o:['a film','TV','a football match']},
+ {b:'eat',p:'ate',pp:'eaten',o:['a pizza','an apple','lunch']},
+ {b:'drink',p:'drank',pp:'drunk',o:['a cup of tea','a glass of water']},
+ {b:'read',p:'read',pp:'read',o:['a book','a magazine','the news']},
+ {b:'write',p:'wrote',pp:'written',o:['an email','a letter','a story']},
+ {b:'do',p:'did',pp:'done',o:['{poss} homework','the dishes','the shopping']},
+ {b:'make',p:'made',pp:'made',o:['a cake','breakfast','a video']},
+ {b:'cook',o:['dinner','spaghetti']},
+ {b:'go',p:'went',pp:'gone',o:['to school','to the cinema','swimming',{o:'to London',rare:1,ever:1}]},
+ {b:'buy',p:'bought',pp:'bought',o:['new shoes','a present','bread']},
+ {b:'clean',o:['the kitchen','the car','{poss} room']},
+ {b:'tidy',o:['{poss} room','the garage']},
+ {b:'visit',o:[{o:'London',rare:1,ever:1},'{poss} grandma','the museum']},
+ {b:'take',p:'took',pp:'taken',o:['the bus','a photo','the train']},
+ {b:'ride',p:'rode',pp:'ridden',o:['a bike',{o:'a horse',ever:1}]},
+ {b:'swim',p:'swam',pp:'swum',ing:'swimming',o:['in the lake']},
+ {b:'run',p:'ran',pp:'run',ing:'running',o:['in the park']},
+ {b:'sing',p:'sang',pp:'sung',o:['a song']},
+ {b:'draw',p:'drew',pp:'drawn',o:['a picture']},
+ {b:'learn',o:['new words','French']},
+ {b:'meet',p:'met',pp:'met',o:['{poss} friends']},
+ {b:'call',o:['{poss} grandma','a friend']},
+ {b:'send',p:'sent',pp:'sent',o:['a message','a postcard']},
+ {b:'wash',o:['the car','the dishes']},
+ {b:'listen',o:['to music','to a podcast']},
+ {b:'walk',o:['the dog']},
+ {b:'fly',p:'flew',pp:'flown',o:[{o:'to Spain',rare:1,ever:1}]},
+ {b:'win',p:'won',pp:'won',ing:'winning',o:['the game',{o:'a prize',rare:1,ever:1}]},
+ {b:'carry',o:['the bags']},
+ {b:'study',o:['for the test']},
+ {b:'try',o:[{o:'sushi',ever:1}]},
+ {b:'stop',dbl:1,o:['the car']},
+ {b:'plan',dbl:1,o:['a party']},
+ {b:'chat',dbl:1,o:['with friends']},
+ {b:'travel',dbl:1,o:[{o:'to Italy',rare:1,ever:1}]},
+ {b:'bring',p:'brought',pp:'brought',o:['a cake']},
+ {b:'build',p:'built',pp:'built',o:['a treehouse']},
+ {b:'feed',p:'fed',pp:'fed',o:['the cat']},
+ {b:'fix',o:['{poss} bike']},
+ {b:'finish',o:['{poss} homework','the project']},
+ {b:'miss',o:['the bus']},
+ {b:'catch',p:'caught',pp:'caught',o:['the bus','the ball']},
+ {b:'throw',p:'threw',pp:'thrown',o:['the ball']},
+ {b:'leave',p:'left',pp:'left',o:['the house']},
+ {b:'wear',p:'wore',pp:'worn',o:['a jacket','a cap']},
+ {b:'tell',p:'told',pp:'told',o:['a joke']},
+ {b:'cut',p:'cut',pp:'cut',ing:'cutting',o:['the bread']},
+ {b:'grow',p:'grew',pp:'grown',o:['tomatoes']},
+ {b:'help',o:['{poss} dad','the teacher']},
+ {b:'open',o:['the window']},
+ {b:'close',o:['the door']},
+ {b:'paint',o:['a picture','the fence']},
+ {b:'dance',o:['at the party']}
+];
+
+const MARK={
+ SP:{d:['every day','every weekend','on Saturdays','twice a week'],r:['every summer','once a year']},
+ PP:{d:['right now','at the moment','now']},
+ SPA:{d:['yesterday','last week','two days ago','last weekend'],r:['last summer','last year']},
+ PAP:{d:['when the phone rang',"at 8 o'clock last night",'at this time yesterday','when Mum came home']},
+ WF:{d:['tomorrow','next week','soon'],r:['next year','one day']},
+ GT:{d:['tomorrow','next weekend','this evening'],r:['next summer','next year']}
+};
+
+// Handgeschriebene Sätze: {gap} = Lösung, h = Hinweis in Klammern
+const POOL=[
+ {t:'SP',s:'My dad {drives} to work every morning.',h:'drive'},
+ {t:'SP',f:'neg',s:'We {don\'t have} school on Saturdays.',h:'not / have'},
+ {t:'SP',f:'q',s:'{Does your sister like} horror films?',h:'your sister / like'},
+ {t:'SP',s:'The bus {leaves} at 7:15 every day.',h:'leave'},
+ {t:'SP',s:'I usually {get} up at half past six.',h:'get'},
+ {t:'SP',f:'neg',s:'Lisa {doesn\'t eat} meat.',h:'not / eat'},
+ {t:'SP',f:'q',s:'{Do you play} an instrument?',h:'you / play'},
+ {t:'SP',s:'Water {boils} at 100 degrees.',h:'boil'},
+ {t:'SP',s:'My brother never {tidies} his room.',h:'tidy'},
+ {t:'SP',s:'Tom {watches} YouTube videos every evening.',h:'watch'},
+ {t:'PP',s:'Look! It {is snowing}.',h:'snow'},
+ {t:'PP',s:'Be quiet, please. The baby {is sleeping}.',h:'sleep'},
+ {t:'PP',f:'neg',s:'I {am not watching} TV right now. I\'m doing my homework.',h:'not / watch'},
+ {t:'PP',f:'q',s:'{Are you listening} to me?',h:'you / listen'},
+ {t:'PP',s:'Mia and Leon {are playing} table tennis at the moment.',h:'play'},
+ {t:'PP',f:'q',s:'Why {is he crying}?',h:'he / cry'},
+ {t:'PP',s:'Hurry up! The train {is leaving}!',h:'leave'},
+ {t:'PP',f:'neg',s:'We {aren\'t working} on the project today.',h:'not / work'},
+ {t:'PP',s:'Listen! Someone {is knocking} at the door.',h:'knock'},
+ {t:'PP',s:'My parents {are having} dinner right now.',h:'have'},
+ {t:'SPA',s:'Last summer we {went} to Italy.',h:'go'},
+ {t:'SPA',f:'neg',s:'I {didn\'t see} the match last night.',h:'not / see'},
+ {t:'SPA',f:'q',s:'{Did you finish} your homework yesterday?',h:'you / finish'},
+ {t:'SPA',s:'Shakespeare {wrote} Romeo and Juliet.',h:'write'},
+ {t:'SPA',s:'She {bought} new trainers two days ago.',h:'buy'},
+ {t:'SPA',s:'We {missed} the bus this morning, so we were late.',h:'miss'},
+ {t:'SPA',s:'Columbus {sailed} to America in 1492.',h:'sail'},
+ {t:'SPA',f:'neg',s:'My grandma {didn\'t have} a mobile phone when she was young.',h:'not / have'},
+ {t:'SPA',f:'q',s:'Where {did you go} on holiday last year?',h:'you / go'},
+ {t:'SPA',s:'Tim {fell} off his bike yesterday.',h:'fall'},
+ {t:'PAP',s:'I {was having} a shower when the phone rang.',h:'have'},
+ {t:'PAP',s:'At 8 o\'clock last night we {were watching} a film.',h:'watch'},
+ {t:'PAP',s:'It {was raining} when we left the house.',h:'rain'},
+ {t:'PAP',f:'q',s:'{Were you sleeping} when I called you?',h:'you / sleep'},
+ {t:'PAP',f:'neg',s:'She {wasn\'t listening} when the teacher explained the task.',h:'not / listen'},
+ {t:'PAP',s:'While Tom {was cooking}, his sister was setting the table.',h:'cook'},
+ {t:'PAP',f:'q',s:'What {were you doing} at this time yesterday?',h:'you / do'},
+ {t:'PAP',s:'The kids {were playing} outside when the storm started.',h:'play'},
+ {t:'PAP',f:'neg',s:'We {weren\'t paying} attention, so we missed the exit.',h:'not / pay'},
+ {t:'PAP',s:'My dad {was driving} too fast when the police stopped him.',h:'drive'},
+ {t:'PRP',s:'I {have already seen} this film.',h:'already / see'},
+ {t:'PRP',f:'q',s:'{Have you ever been} to London?',h:'you / ever / be'},
+ {t:'PRP',f:'neg',s:'She {hasn\'t finished} her project yet.',h:'not / finish'},
+ {t:'PRP',s:'We {have lived} in this town since 2015.',h:'live'},
+ {t:'PRP',s:'Oh no! I {have lost} my key.',h:'lose'},
+ {t:'PRP',s:'My brother {has just passed} his driving test.',h:'just / pass'},
+ {t:'PRP',f:'q',s:'{Has Nina called} you yet?',h:'Nina / call'},
+ {t:'PRP',s:'I {have never eaten} sushi.',h:'never / eat'},
+ {t:'PRP',s:'They {have known} each other for ten years.',h:'know'},
+ {t:'PRP',f:'neg',s:'He {hasn\'t done} his homework yet.',h:'not / do'},
+ {t:'WF',s:'I think it {will rain} tomorrow.',h:'rain'},
+ {t:'WF',s:'Don\'t worry, I {will help} you.',h:'help'},
+ {t:'WF',s:'Robots {will do} a lot of our jobs in the future.',h:'do'},
+ {t:'WF',f:'neg',s:'I\'m sure you {won\'t fail} the test.',h:'not / fail'},
+ {t:'WF',f:'q',s:'{Will you be} at home this evening?',h:'you / be'},
+ {t:'WF',s:'It\'s cold in here. I {will close} the window.',h:'close'},
+ {t:'WF',s:'Maybe she {will become} a famous singer one day.',h:'become'},
+ {t:'WF',f:'neg',s:'The tickets {won\'t be} expensive.',h:'not / be'},
+ {t:'WF',s:'I promise I {will call} you tonight.',h:'call'},
+ {t:'WF',s:'Do you think Switzerland {will win} the next match?',h:'win'},
+ {t:'GT',s:'We {are going to visit} our grandparents next weekend.',h:'visit'},
+ {t:'GT',s:'Look at those dark clouds! It {is going to rain}.',h:'rain'},
+ {t:'GT',s:'I {am going to study} hard for the test.',h:'study'},
+ {t:'GT',f:'q',s:'{Are you going to watch} the match tonight?',h:'you / watch'},
+ {t:'GT',f:'neg',s:'She {isn\'t going to buy} that expensive jacket.',h:'not / buy'},
+ {t:'GT',s:'My parents {are going to paint} the kitchen next month.',h:'paint'},
+ {t:'GT',f:'q',s:'What {are you going to do} after school?',h:'you / do'},
+ {t:'GT',s:'Be careful! You {are going to fall}!',h:'fall'},
+ {t:'GT',s:'Tom {is going to start} an apprenticeship next summer.',h:'start'},
+ {t:'GT',f:'neg',s:'We {aren\'t going to take} the bus. We\'ll walk.',h:'not / take'}
+];
+
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+
+function vforms(v){
+ const b=v.b,last=b.slice(-1),cy=/[^aeiou]y$/.test(b);
+ const s3=v.s3||(/(s|x|z|ch|sh|o)$/.test(b)?b+'es':cy?b.slice(0,-1)+'ies':b+'s');
+ const ing=v.ing||(/ie$/.test(b)?b.slice(0,-2)+'ying':/[^e]e$/.test(b)?b.slice(0,-1)+'ing':v.dbl?b+last+'ing':b+'ing');
+ const p=v.p||(/e$/.test(b)?b+'d':cy?b.slice(0,-1)+'ied':v.dbl?b+last+'ed':b+'ed');
+ return {b,s3,ing,p,pp:v.pp||p};
+}
+function pickObj(v){const o=rnd(v.o);return typeof o==='string'?{o}:o}
+function markerFor(t,form,obj){
+ if(t==='PRP'){
+  if(form==='pos')return {w:rnd(['already','just']),mid:true};
+  if(form==='q'&&obj.ever&&Math.random()<.6)return {w:'ever',mid:true};
+  return {w:'yet',mid:false};
+ }
+ const m=MARK[t];return {w:rnd(obj.rare&&m.r?m.r:m.d),mid:false};
+}
+function build(t,form,s,vf,objStr,mk){
+ const s3=s.k==='3s',i1=s.k==='1s';
+ const be=i1?'am':s3?'is':'are',beN=i1?'am not':s3?"isn't":"aren't";
+ const was=(i1||s3)?'was':'were',wasN=(i1||s3)?"wasn't":"weren't";
+ const has=s3?'has':'have',hasN=s3?"hasn't":"haven't";
+ const dO=s3?'does':'do',dN=s3?"doesn't":"don't";
+ const mid=mk.mid?mk.w+' ':'';
+ let pos,neg,qa,qr;
+ switch(t){
+  case 'SP':pos=s3?vf.s3:vf.b;neg=dN+' '+vf.b;qa=dO;qr=vf.b;break;
+  case 'PP':pos=be+' '+vf.ing;neg=beN+' '+vf.ing;qa=be;qr=vf.ing;break;
+  case 'SPA':pos=vf.p;neg="didn't "+vf.b;qa='did';qr=vf.b;break;
+  case 'PAP':pos=was+' '+vf.ing;neg=wasN+' '+vf.ing;qa=was;qr=vf.ing;break;
+  case 'PRP':pos=has+' '+mid+vf.pp;neg=hasN+' '+mid+vf.pp;qa=has;qr=mid+vf.pp;break;
+  case 'WF':pos='will '+vf.b;neg="won't "+vf.b;qa='will';qr=vf.b;break;
+  case 'GT':pos=be+' going to '+vf.b;neg=beN+' going to '+vf.b;qa=be;qr='going to '+vf.b;break;
+ }
+ const tail=' '+objStr+(mk.mid?'':' '+mk.w);
+ if(form==='q')return {before:'',gap:cap(qa)+' '+s.w+' '+qr,after:tail+'?'};
+ return {before:cap(s.w)+' ',gap:form==='neg'?neg:pos,after:tail+'.'};
+}
+function pickSubj(noI){let s;do{s=rnd(SUBJ)}while(noI&&s.k==='1s');return s}
+function genItem(t,form,o={}){
+ const s=o.s||pickSubj(form==='q');
+ const v=o.v||rnd(VERBS),vf=vforms(v),obj=o.obj||pickObj(v);
+ const objStr=obj.o.replace('{poss}',s.poss);
+ const mk=o.mk||markerFor(t,form,obj);
+ const p=build(t,form,s,vf,objStr,mk);
+ const hint=form==='q'?s.w+' / '+(mk.mid?mk.w+' / ':'')+vf.b:form==='neg'?'not / '+vf.b:(mk.mid?mk.w+' / ':'')+vf.b;
+ return {src:'gen',t,form,s,v,vf,obj,mk,...p,hint,sentence:p.before+p.gap+p.after};
+}
+function poolItem(p){
+ const m=p.s.match(/^(.*)\{(.+?)\}(.*)$/);
+ return {src:'pool',t:p.t,form:p.f||'pos',before:m[1],gap:m[2],after:m[3],hint:p.h,sentence:m[1]+m[2]+m[3],mk:null};
+}
+function genTrans(t,forms){
+ const other=forms.filter(f=>f!=='pos');
+ const kind=(forms.includes('pos')&&other.length&&Math.random()<.5)?'form':'tense';
+ const v=rnd(VERBS),obj=pickObj(v);
+ let src,tgt,instr;
+ if(kind==='form'){
+  const tf=rnd(other),s=pickSubj(tf==='q');
+  src=genItem(t,'pos',{s,v,obj});
+  tgt=genItem(t,tf,{s,v,obj,mk:t==='PRP'?null:src.mk});
+  instr=tf==='neg'?'Verneine den Satz.':'Mach eine Frage aus dem Satz.';
+ }else{
+  const f=rnd(forms),s=pickSubj(f==='q'),S=rnd(ORDER.filter(x=>x!==t));
+  src=genItem(S,f,{s,v,obj});tgt=genItem(t,f,{s,v,obj});
+  instr='Schreib den Satz im '+T[t].name+'.';
+ }
+ return {type:'trans',kind,t,form:tgt.form,src,tgt,instr,mk:tgt.mk,showMk:kind==='tense'||tgt.mk.w!==src.mk.w,sentence:tgt.sentence};
+}
+
+function shortAns(t,pr,yes){
+ const k=pr==='I'?'1s':(pr==='he'||pr==='she')?'3s':'pl',s3=k==='3s',i1=k==='1s';
+ const A={
+  SP:[s3?'does':'do',s3?"doesn't":"don't"],
+  PP:[i1?'am':s3?'is':'are',i1?"'m not":s3?"isn't":"aren't"],
+  SPA:['did',"didn't"],
+  PAP:[(i1||s3)?'was':'were',(i1||s3)?"wasn't":"weren't"],
+  PRP:[s3?'has':'have',s3?"hasn't":"haven't"],
+  WF:['will',"won't"]};
+ A.GT=A.PP;
+ const a=A[t][yes?0:1];
+ return (yes?'Yes, ':'No, ')+pr+(a.startsWith("'")?'':' ')+a+'.';
+}
+function genShort(t){
+ const q=genItem(t,'q'),yes=Math.random()<.5;
+ const answers=q.s.pr.map(p=>shortAns(t,p,yes));
+ return {type:'short',t,form:'q',mk:null,q,yes,answers,vf:q.vf,sentence:q.sentence+' – '+answers[0]};
+}
+
+// ---------- Prüfen ----------
+const AE={traveled:'travelled',traveling:'travelling'};
+function norm(str){
+ let s=' '+String(str).toLowerCase().replace(/[’‘`´]/g,"'")+' ';
+ s=s.replace(/\bwon't\b/g,'will not').replace(/\bcan't\b/g,'can not').replace(/n't\b/g,' not')
+  .replace(/'m\b/g,' am').replace(/'re\b/g,' are').replace(/'ve\b/g,' have').replace(/'ll\b/g,' will')
+  .replace(/[.,!?;:"()]/g,' ').replace(/\s+/g,' ').trim();
+ s=s.replace(/\b(do|does|did|is|are|was|were|has|have|had)nt\b/g,'$1 not').replace(/\bwont\b/g,'will not').replace(/\bim\b/g,'i am');
+ s=s.split(' ').map(w=>AE[w]||w).join(' ');
+ if(/'s\b/.test(s))return [s.replace(/'s\b/g,' is'),s.replace(/'s\b/g,' has')];
+ return [s];
+}
+function eq(a,b){const A=norm(a),B=norm(b);return A.some(x=>B.includes(x))}
+function lev(a,b){const m=a.length,n=b.length;if(!m)return n;if(!n)return m;let p=Array.from({length:n+1},(_,i)=>i);for(let i=1;i<=m;i++){const c=[i];for(let j=1;j<=n;j++)c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));p=c}return p[n]}
+function near(user,exps){
+ let best=99,L=0;const U=norm(user);
+ for(const e of exps)for(const x of norm(e)){L=Math.max(L,x.length);for(const u of U)best=Math.min(best,lev(u,x))}
+ return best<=(L>14?2:1);
+}
+function checkTrans(it,user){
+ const mw=norm(it.mk.w)[0],U=norm(user),E=norm(it.sentence);
+ const strip=x=>(' '+x+' ').replace(' '+mw+' ',' ').replace(/\s+/g,' ').trim();
+ const hasM=u=>(' '+u+' ').includes(' '+mw+' ');
+ if(U.some(u=>hasM(u)&&E.some(e=>strip(u)===strip(e))))return 'ok';
+ if(U.some(u=>!hasM(u)&&E.some(e=>u===strip(e))))return 'nomark';
+ return 'bad';
+}
+function errHint(it,user){
+ const g=it.type==='trans'?it.tgt:it;
+ if(!g.vf)return '';
+ const u=' '+norm(user)[0]+' ',has=w=>u.includes(' '+w+' ');
+ const v=g.vf,t=g.t,f=g.form,s3=g.s.k==='3s';
+ if(t==='SPA'&&f!=='pos'&&v.p!==v.b&&has(v.p))return `Nach <b>did / didn't</b> steht die Grundform: <b>${v.b}</b> (nicht ${v.p}).`;
+ if(t==='SP'&&f!=='pos'&&s3&&has(v.s3))return `Nach <b>does / doesn't</b> steht die Grundform ohne -s: <b>${v.b}</b>.`;
+ if(t==='SP'&&f==='pos'&&s3&&has(v.b)&&!has(v.s3))return `he / she / it – das <b>-s</b> muss mit: <b>${v.s3}</b>.`;
+ if(t==='PRP'&&v.p!==v.pp&&has(v.p)&&!has(v.pp))return `Present Perfect braucht die 3. Form: <b>${v.pp}</b> (nicht ${v.p}).`;
+ if((t==='PP'||t==='PAP')&&!has(v.ing))return `Continuous-Form: Verb + <b>-ing</b> → <b>${v.ing}</b>.`;
+ if(t==='PP'&&!['am','is','are'].some(has))return `Vergiss <b>am / is / are</b> nicht.`;
+ if(t==='PAP'&&!['was','were'].some(has))return `Vergiss <b>was / were</b> nicht.`;
+ if(t==='GT'&&!has('going'))return `going to-Future: <b>am / is / are + going to</b> + Grundform.`;
+ if(t==='WF'&&!has('will'))return `will-Future: <b>will</b> (verneint: <b>won't</b>) + Grundform.`;
+ return '';
+}
+/*END ENGINE*/
+
+// ---------- App ----------
+const app=document.getElementById('app');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const MODES=[
+ {k:'rec',icon:'🔍',label:'Erkennen',desc:'Welche Zeitform ist das?'},
+ {k:'fill',icon:'✏️',label:'Einsetzen',desc:'Verb in die richtige Form setzen'},
+ {k:'trans',icon:'🔄',label:'Umformen',desc:'Andere Zeit, verneinen, Frage'},
+ {k:'short',icon:'💬',label:'Kurzantworten',desc:'Yes, she does. / No, I haven\'t.'},
+ {k:'mix',icon:'🎲',label:'Gemischt',desc:'Alles durcheinander'}
+];
+const FORMS=[{k:'pos',l:'✓ positiv'},{k:'neg',l:'✗ verneint'},{k:'q',l:'? Frage'}];
+const TYPE_LABEL={rec:'🔍 Erkennen',fill:'✏️ Einsetzen',trans:'🔄 Umformen',short:'💬 Kurzantwort'};
+
+let S={tenses:['SP','PP','SPA'],mode:'mix',forms:['pos','neg','q'],count:10,hint:false};
+try{const x=JSON.parse(localStorage.getItem('tt-settings'));if(x&&x.tenses)S={...S,...x}}catch(e){}
+const save=()=>{try{localStorage.setItem('tt-settings',JSON.stringify(S))}catch(e){}};
+
+let items=[],idx=0,score=0,results=[],answered=false,tries=0;
+
+function renderSetup(){
+ app.innerHTML=`
+ <div class="card"><h2>1 · Welche Zeitformen?</h2>
+  <div class="chips">${ORDER.map(k=>`<button class="chip ${S.tenses.includes(k)?'on':''}" data-t="${k}" style="--c:${T[k].c}">${T[k].name}</button>`).join('')}</div>
+  <div class="links"><button class="btn-link sm" data-all="1">alle wählen</button><button class="btn-link sm" data-all="0">keine</button></div></div>
+ <div class="card"><h2>2 · Übungsart</h2>
+  <div class="modes">${MODES.map(m=>`<button class="mode ${S.mode===m.k?'on':''}" data-m="${m.k}"><b>${m.icon} ${m.label}</b><small>${m.desc}</small></button>`).join('')}</div></div>
+ <div class="card"><h2>3 · Satzarten</h2>
+  <div class="chips">${FORMS.map(f=>`<button class="chip ${S.forms.includes(f.k)?'on':''}" data-f="${f.k}">${f.l}</button>`).join('')}</div></div>
+ <div class="card"><h2>4 · Optionen</h2>
+  <div class="opt-row"><span>Anzahl Aufgaben</span><div class="seg">${[10,15,20].map(n=>`<button class="${S.count===n?'on':''}" data-n="${n}">${n}</button>`).join('')}</div></div>
+  <div class="opt-row"><span>Beim Einsetzen die Zeitform anzeigen<br><small style="color:var(--muted)">Aus = selber an den Signalwörtern erkennen</small></span><button class="switch ${S.hint?'on':''}" id="hintSw" aria-label="Zeitform anzeigen"></button></div></div>
+ <button class="primary" id="start">Los geht's →</button>
+ <p class="err" id="err"></p>`;
+ app.onclick=e=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.t){const k=b.dataset.t;S.tenses=S.tenses.includes(k)?S.tenses.filter(x=>x!==k):[...S.tenses,k]}
+  else if(b.dataset.all){S.tenses=b.dataset.all==='1'?ORDER.slice():[]}
+  else if(b.dataset.m){S.mode=b.dataset.m}
+  else if(b.dataset.f){const k=b.dataset.f;S.forms=S.forms.includes(k)?S.forms.filter(x=>x!==k):[...S.forms,k]}
+  else if(b.dataset.n){S.count=+b.dataset.n}
+  else if(b.id==='hintSw'){S.hint=!S.hint}
+  else if(b.id==='start'){return start()}
+  else return;
+  save();renderSetup();
+ };
+}
+
+function makeItem(type){
+ const t=rnd(S.tenses),form=rnd(S.forms);
+ if(type==='trans')return genTrans(t,S.forms);
+ if(type==='short')return genShort(t);
+ const pool=POOL.filter(p=>p.t===t&&(p.f||'pos')===form);
+ const it=(pool.length&&Math.random()<.35)?poolItem(rnd(pool)):genItem(t,form);
+ it.type=type;return it;
+}
+function buildRound(){
+ const out=[],seen=new Set();
+ for(let i=0;i<S.count;i++){
+  const type=S.mode==='mix'?rnd(['rec','fill','trans','short']):S.mode;
+  let it,n=0;
+  do{it=makeItem(type);n++}while(seen.has(it.sentence)&&n<30);
+  seen.add(it.sentence);out.push(it);
+ }
+ return out;
+}
+function start(list){
+ const err=document.getElementById('err');
+ if(!list){
+  if(!S.tenses.length){err.textContent='Wähle mindestens eine Zeitform.';return}
+  if(!S.forms.length&&S.mode!=='short'){err.textContent='Wähle mindestens eine Satzart.';return}
+ }
+ items=list||buildRound();idx=0;score=0;results=[];
+ renderTask();
+}
+
+function tenseTag(it){
+ if(S.hint)return `<span class="tt" style="--c:${T[it.t].c}">${T[it.t].name}</span>`;
+ if(it.t==='WF')return `<span class="tt" style="--c:${T.WF.c}">will</span>`;
+ if(it.t==='GT')return `<span class="tt" style="--c:${T.GT.c}">going to</span>`;
+ return '';
+}
+function renderTask(){
+ const it=items[idx];answered=false;tries=0;
+ let body='';
+ if(it.type==='rec'){
+  const others=shuffle(S.tenses.filter(x=>x!==it.t)).concat(shuffle(ORDER.filter(x=>x!==it.t&&!S.tenses.includes(x))));
+  const opts=shuffle([it.t,...others.slice(0,3)]);
+  body=`<p class="instr">Welche Zeitform ist das?</p>
+   <div class="sentence" id="sent">${esc(it.sentence)}</div>
+   <div class="opts">${opts.map(k=>`<button data-o="${k}">${T[k].name}</button>`).join('')}</div>`;
+ }else if(it.type==='fill'){
+  const w=Math.max(8,it.gap.length+3);
+  body=`<p class="instr">${it.form==='q'?'Ergänze die Frage.':'Setze das Verb in der richtigen Form ein.'} ${tenseTag(it)}</p>
+   <div class="sentence">${esc(it.before)}<input id="inp" style="width:${w}ch" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">${esc(it.after)} <span class="hint">(${esc(it.hint)})</span></div>`;
+ }else if(it.type==='short'){
+  body=`<p class="instr">Antworte mit einer Kurzantwort: ${it.yes?'👍 <b>Ja</b>':'👎 <b>Nein</b>'}</p>
+   <div class="src">${esc(it.q.sentence)}</div>
+   <textarea class="full" id="inp" rows="1" placeholder="${it.yes?'Yes, …':'No, …'}" autocomplete="off" autocapitalize="sentences" autocorrect="off" spellcheck="false"></textarea>`;
+ }else{
+  body=`<p class="instr">${it.instr}</p>
+   <div class="src">${esc(it.src.sentence)}</div>
+   ${it.showMk?`<p class="sig">Signalwort: <b>${esc(it.mk.w)}</b></p>`:''}
+   <textarea class="full" id="inp" rows="2" placeholder="Schreib den ganzen Satz …" autocomplete="off" autocapitalize="sentences" autocorrect="off" spellcheck="false"></textarea>`;
+ }
+ app.innerHTML=`
+ <div class="qtop"><button class="btn-link" id="quit">✕ Beenden</button><span>${idx+1} / ${items.length}</span><span>⭐ ${score}</span></div>
+ <div class="bar"><div style="width:${idx/items.length*100}%"></div></div>
+ <div class="card"><div class="tag">${TYPE_LABEL[it.type]}</div>${body}
+  <div id="fb"></div>
+  <div class="actions">${it.type==='rec'?'':'<button class="primary" id="go">Prüfen</button>'}</div></div>`;
+ app.onclick=e=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.id==='quit')return renderSetup();
+  if(b.dataset.o&&!answered)return answerRec(b.dataset.o);
+  if(b.id==='go')return answered?next():check();
+ };
+ const inp=document.getElementById('inp');if(inp)inp.focus();
+}
+function shortHint(it,val){
+ const u=' '+norm(val)[0]+' ',v=it.vf;
+ if(!/^ ?(yes|no) /.test(u))return 'Beginne mit <b>Yes,</b> oder <b>No,</b>';
+ if([v.b,v.s3,v.p,v.pp,v.ing].some(w=>u.includes(' '+w+' ')))return 'Bei Kurzantworten wiederholst du nur das <b>Hilfsverb</b> – nicht das ganze Verb.';
+ return 'Nimm das <b>Hilfsverb aus der Frage</b> und pass es an das Pronomen an.';
+}
+function explain(it){
+ const d=T[it.t];
+ if(it.type==='short')return `<div class="rule"><b>Kurzantwort:</b> Yes / No + Pronomen + <b>Hilfsverb aus der Frage</b> (do, does, did, am, is, are, was, were, have, has, will).<br>Aus „you“ wird „I“ oder „we“, aus „Tom“ wird „he“.</div><div class="rule"><span class="tt" style="--c:${d.c}">${d.name}</span></div>`;
+ let h=`<div class="rule"><span class="tt" style="--c:${d.c}">${d.name}</span> ${d.use}.<br><b>Bildung:</b> ${d[it.form]}</div>`;
+ if(it.mk)h+=`<div class="rule"><b>Signalwort:</b> <i>${esc(it.mk.w)}</i> → ${d.name}</div>`;
+ return h;
+}
+function markSent(it){return esc(it.before)+'<mark>'+esc(it.gap)+'</mark>'+esc(it.after)}
+function finish(ok,user,html,kind){
+ answered=true;if(ok)score++;
+ results.push({item:items[idx],ok,user});
+ document.getElementById('fb').innerHTML=`<div class="fb ${kind}">${html}</div>`;
+ const act=document.querySelector('.actions');
+ act.innerHTML=`<button class="primary" id="go">${idx+1<items.length?'Weiter →':'Auswertung →'}</button>`;
+ document.querySelector('.qtop span:last-child').textContent='⭐ '+score;
+ const inp=document.getElementById('inp');if(inp)inp.disabled=true;
+ document.getElementById('go').focus();
+}
+function answerRec(k){
+ const it=items[idx],ok=k===it.t;
+ document.querySelectorAll('.opts button').forEach(b=>{b.disabled=true;if(b.dataset.o===it.t)b.classList.add('right');else if(b.dataset.o===k)b.classList.add('wrong')});
+ document.getElementById('sent').innerHTML=markSent(it);
+ finish(ok,T[k].name,`<div class="fbt">${ok?'Richtig! 🎉':'Leider falsch.'}</div>${ok?'':`Das ist <b>${T[it.t].name}</b>.<br>`}Erkennbar an: <mark>${esc(it.gap)}</mark>${explain(it)}`,ok?'ok':'bad');
+}
+function check(){
+ const it=items[idx],inp=document.getElementById('inp'),val=inp.value.trim();
+ if(!val){inp.focus();return}
+ const fb=document.getElementById('fb');
+ let ok,nomark=false;
+ if(it.type==='fill'){ok=eq(val,it.gap)||eq(val,it.sentence)}
+ else if(it.type==='short'){ok=it.answers.some(a=>eq(val,a))}
+ else{const r=checkTrans(it,val);ok=r==='ok';nomark=r==='nomark'}
+ if(!ok&&tries===0){
+  if(nomark){tries=1;fb.innerHTML=`<div class="fb warn"><div class="fbt">Fast!</div>Das Signalwort <b>${esc(it.mk.w)}</b> fehlt noch. Noch ein Versuch.</div>`;inp.focus();return}
+  if(near(val,it.type==='fill'?[it.gap]:it.type==='short'?it.answers:[it.sentence])){tries=1;fb.innerHTML=`<div class="fb warn"><div class="fbt">Fast!</div>Prüfe die Schreibweise. Noch ein Versuch.</div>`;inp.focus();return}
+ }
+ const sol=it.type==='fill'?markSent(it):'<mark>'+esc(it.type==='short'?it.answers.join('  oder  '):it.sentence)+'</mark>';
+ const tip=ok?'':it.type==='short'?shortHint(it,val):errHint(it,val);
+ finish(ok,val,`<div class="fbt">${ok?'Richtig! 🎉':'Leider falsch.'}</div>
+  ${ok?'':`<div>Deine Antwort: <s>${esc(val)}</s></div>`}
+  <div class="sol">${ok?'':'Richtig ist: '}${sol}</div>
+  ${tip?`<div class="tip">💡 ${tip}</div>`:''}${explain(it)}`,ok?'ok':'bad');
+}
+function next(){idx++;idx<items.length?renderTask():renderResults()}
+
+function renderResults(){
+ const pct=Math.round(score/items.length*100);
+ const msg=pct>=90?'Hervorragend! 🏆':pct>=70?'Gut gemacht! 👍':pct>=50?'Nicht schlecht – weiter üben! 💪':'Bleib dran – nochmal üben hilft! 🔁';
+ const by={};results.forEach(r=>{const k=r.item.t;by[k]=by[k]||{n:0,ok:0};by[k].n++;if(r.ok)by[k].ok++});
+ const wrong=results.filter(r=>!r.ok);
+ app.innerHTML=`
+ <div class="card"><div class="big">${score} / ${items.length}<small>${msg}</small></div></div>
+ <div class="card"><h2>Nach Zeitform</h2>${ORDER.filter(k=>by[k]).map(k=>{const p=Math.round(by[k].ok/by[k].n*100);return `<div class="stat"><span>${T[k].name}</span><div class="track"><div style="width:${p}%;background:${T[k].c}"></div></div><b>${by[k].ok}/${by[k].n}</b></div>`}).join('')}</div>
+ ${wrong.length?`<div class="card"><h2>Deine Fehler</h2>${wrong.map(r=>`<div class="mist">${r.item.type==='trans'||r.item.type==='short'?esc(r.item.sentence):markSent(r.item)}<br><small>Deine Antwort: <span class="you">${esc(r.user)}</span> · ${T[r.item.t].name}</small></div>`).join('')}</div>`:''}
+ <div class="btns">
+  ${wrong.length?'<button class="primary" id="redo">Fehler nochmal üben</button>':''}
+  <button class="${wrong.length?'secondary':'primary'}" id="again">Neue Runde</button>
+  <button class="secondary" id="setup">Einstellungen ändern</button>
+ </div>`;
+ app.onclick=e=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.id==='redo')start(shuffle(wrong.map(r=>r.item)));
+  if(b.id==='again')start();
+  if(b.id==='setup')renderSetup();
+ };
+}
+
+document.addEventListener('keydown',e=>{
+ if(e.key!=='Enter'||!items.length||!document.getElementById('fb'))return;
+ const it=items[idx];if(!it)return;
+ if(answered){e.preventDefault();next()}
+ else if(it.type!=='rec'&&document.activeElement&&document.activeElement.id==='inp'){e.preventDefault();check()}
+});
+
+const modal=document.getElementById('modal');
+document.getElementById('rulesBtn').onclick=()=>{
+ document.getElementById('modalBody').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">Die Zeitformen</h2><button class="btn-link" id="mclose">✕ Schliessen</button></div>
+ ${ORDER.map(k=>{const d=T[k];return `<div class="rt"><span class="tt" style="--c:${d.c}">${d.name}</span> ${d.use}
+  <p>✓ ${d.pos}</p><p>✗ ${d.neg}</p><p>? ${d.q}</p><p style="color:var(--muted)">Signalwörter: <i>${d.sig}</i></p></div>`}).join('')}`;
+ modal.classList.remove('hidden');
+ document.getElementById('mclose').onclick=()=>modal.classList.add('hidden');
+};
+modal.onclick=e=>{if(e.target===modal)modal.classList.add('hidden')};
+
+renderSetup();
+</script>
+</body>
+</html>
