@@ -257,6 +257,156 @@ const POOL=[
  {t:'GT',f:'neg',s:'We {aren\'t going to take} the bus. We\'ll walk.',h:'not / take'}
 ];
 
+// Kontext-Aufgaben: {gap} = Lösung, h = Hinweis, w = Begründung, f = 'neg' / 'q'
+const CTX=[
+ {t:'SP',s:'My sister is a vegetarian. She never {eats} meat.',h:'eat',w:'never → Gewohnheit'},
+ {t:'SP',s:'Tom {walks} to school every morning. It takes him ten minutes.',h:'walk',w:'every morning → Gewohnheit'},
+ {t:'SP',s:'I\'m not a morning person. I usually {get} up at seven.',h:'get',w:'usually → Gewohnheit'},
+ {t:'SP',s:'Lena loves animals. She {wants} to become a vet.',h:'want',w:'want ist ein Zustandsverb → kein Continuous'},
+ {t:'SP',s:'The shops in our village {close} at 6.30 pm.',h:'close',w:'Feste Zeiten, Fahrpläne → Simple Present'},
+ {t:'SP',f:'q',s:'{Do you like} pizza? – Yes, I love it!',h:'you / like',w:'like ist ein Zustandsverb (Vorliebe)'},
+ {t:'SP',s:'My dad works in Zurich. He {takes} the train every day.',h:'take',w:'every day → Gewohnheit'},
+ {t:'SP',f:'neg',s:'We {don\'t go} to school on Wednesday afternoons.',h:'not / go',w:'on Wednesday afternoons → regelmässig'},
+ {t:'SP',s:'Ben is very sporty. He {plays} football three times a week.',h:'play',w:'three times a week → regelmässig'},
+ {t:'SP',s:'The sun {rises} in the east.',h:'rise',w:'Naturgesetz / Tatsache'},
+ {t:'SP',s:'My grandparents live in Ticino. We {visit} them every summer.',h:'visit',w:'every summer → regelmässig'},
+ {t:'SP',f:'neg',s:'I {don\'t understand} this word. What does it mean?',h:'not / understand',w:'understand ist ein Zustandsverb → kein Continuous'},
+ {t:'SP',f:'q',s:'How often {does your brother play} video games?',h:'your brother / play',w:'How often → Frage nach einer Gewohnheit'},
+ {t:'SP',s:'Mia is always late. She often {misses} the bus.',h:'miss',w:'often → Gewohnheit'},
+ {t:'SP',s:'Our English lesson {starts} at 8.20.',h:'start',w:'Stundenplan → Simple Present'},
+ {t:'SP',f:'neg',s:'Cats {don\'t like} water.',h:'not / like',w:'Allgemeine Tatsache'},
+ {t:'SP',s:'My mum is a nurse. She {works} at the hospital.',h:'work',w:'Beruf, dauerhafter Zustand'},
+ {t:'SP',f:'q',s:'What time {do you usually have} dinner?',h:'you / usually / have',w:'usually → Gewohnheit'},
+ {t:'SP',s:'Leon {knows} all the answers. He\'s really clever.',h:'know',w:'know ist ein Zustandsverb → kein Continuous'},
+ {t:'SP',s:'In Switzerland, people {speak} four languages.',h:'speak',w:'Allgemeine Tatsache'},
+
+ {t:'PP',s:'Look! The baby {is crying}. Can you help me?',h:'cry',w:'Look! → passiert gerade jetzt'},
+ {t:'PP',s:'Please be quiet. Dad {is sleeping}.',h:'sleep',w:'be quiet → passiert gerade jetzt'},
+ {t:'PP',s:'Where is Tim? – He\'s in the garden. He {is playing} with the dog.',h:'play',w:'Was er in diesem Moment tut'},
+ {t:'PP',s:'Listen! Someone {is singing} in the bathroom.',h:'sing',w:'Listen! → passiert gerade jetzt'},
+ {t:'PP',s:'I can\'t come to the phone right now. I {am having} a shower.',h:'have',w:'right now → passiert gerade jetzt'},
+ {t:'PP',f:'neg',s:'Turn off the TV! You {aren\'t watching} it anyway.',h:'not / watch',w:'Was in diesem Moment (nicht) passiert'},
+ {t:'PP',f:'q',s:'Why {are you laughing}? What\'s so funny?',h:'you / laugh',w:'Frage nach dem, was gerade passiert'},
+ {t:'PP',s:'It {is raining} at the moment, so take an umbrella.',h:'rain',w:'at the moment → passiert gerade jetzt'},
+ {t:'PP',s:'Hurry up! The bus {is coming}!',h:'come',w:'Hurry up! → passiert gerade jetzt'},
+ {t:'PP',s:'Shh! The teacher {is explaining} the homework.',h:'explain',w:'Shh! → passiert gerade jetzt'},
+ {t:'PP',s:'Look at Lisa! She {is wearing} a funny hat today.',h:'wear',w:'Look at … → jetzt zu sehen'},
+ {t:'PP',s:'My parents aren\'t at home. They {are shopping} in town.',h:'shop',w:'Was sie in diesem Moment tun'},
+ {t:'PP',f:'q',s:'{Is it snowing} outside? I want to go sledging!',h:'it / snow',w:'Frage nach dem, was gerade passiert'},
+ {t:'PP',s:'Normally I walk to school, but today I {am taking} the bus.',h:'take',w:'but today → Ausnahme, nicht die Gewohnheit'},
+ {t:'PP',f:'q',s:'What {are you doing}? – I\'m writing a message to Jana.',h:'you / do',w:'Frage nach dem, was gerade passiert'},
+ {t:'PP',s:'Can you turn the music down? I {am trying} to study.',h:'try',w:'Passiert gerade jetzt'},
+ {t:'PP',s:'Look! The cat {is climbing} up the tree.',h:'climb',w:'Look! → passiert gerade jetzt'},
+ {t:'PP',s:'We {are learning} about the Romans in history this week.',h:'learn',w:'this week → läuft gerade, vorübergehend'},
+ {t:'PP',f:'neg',s:'He isn\'t busy. He {isn\'t doing} anything right now.',h:'not / do',w:'right now → passiert gerade jetzt'},
+ {t:'PP',s:'Be careful, the floor is wet! Someone {is cleaning} the kitchen.',h:'clean',w:'Passiert gerade jetzt'},
+
+ {t:'SPA',s:'Last weekend we {went} to Europapark. It was great!',h:'go',w:'Last weekend → abgeschlossen, Zeitpunkt bekannt'},
+ {t:'SPA',f:'neg',s:'I {didn\'t do} my homework yesterday because I was ill.',h:'not / do',w:'yesterday → Simple Past'},
+ {t:'SPA',f:'q',s:'{Did you see} the football match last night?',h:'you / see',w:'last night → Simple Past'},
+ {t:'SPA',s:'When I was six, I {broke} my arm.',h:'break',w:'When I was six → abgeschlossen'},
+ {t:'SPA',s:'Mozart {wrote} his first song at the age of five.',h:'write',w:'Abgeschlossen, Mozart lebt nicht mehr'},
+ {t:'SPA',s:'Yesterday Anna {lost} her phone on the bus.',h:'lose',w:'Yesterday → Simple Past'},
+ {t:'SPA',s:'We {had} pizza for dinner last night.',h:'have',w:'last night → Simple Past'},
+ {t:'SPA',s:'Two years ago my family {moved} to a new flat.',h:'move',w:'two years ago → Simple Past'},
+ {t:'SPA',s:'The film started at eight and {finished} at ten.',h:'finish',w:'Abgeschlossene Abfolge in der Vergangenheit'},
+ {t:'SPA',s:'I {called} you three times yesterday! Where were you?',h:'call',w:'yesterday → Simple Past'},
+ {t:'SPA',f:'q',s:'Where {did you buy} those shoes? They look great.',h:'you / buy',w:'Kauf ist abgeschlossen, bestimmter Moment'},
+ {t:'SPA',s:'In 2008 Switzerland and Austria {hosted} the Euro.',h:'host',w:'in 2008 → Simple Past'},
+ {t:'SPA',f:'neg',s:'My grandpa {didn\'t have} a computer when he was young.',h:'not / have',w:'when he was young → abgeschlossen'},
+ {t:'SPA',s:'First I opened the door, then I {saw} the surprise.',h:'see',w:'Abfolge von Handlungen in der Vergangenheit'},
+ {t:'SPA',s:'The Titanic {sank} in 1912.',h:'sink',w:'in 1912 → Simple Past'},
+ {t:'SPA',s:'I {met} my best friend in kindergarten.',h:'meet',w:'in kindergarten → abgeschlossen'},
+ {t:'SPA',s:'Sorry, I {forgot} your birthday last week!',h:'forget',w:'last week → Simple Past'},
+ {t:'SPA',f:'q',s:'How {did you get} home after the party?',h:'you / get',w:'after the party → abgeschlossen'},
+ {t:'SPA',f:'neg',s:'We {didn\'t win} the game on Saturday. We lost 1:3.',h:'not / win',w:'on Saturday → abgeschlossen'},
+ {t:'SPA',s:'Leo {fell} asleep during the film last night.',h:'fall',w:'last night → Simple Past'},
+
+ {t:'PAP',s:'I {was having} breakfast when the phone rang.',h:'have',w:'Lief gerade, als etwas dazwischenkam (when …)'},
+ {t:'PAP',s:'At 9 o\'clock last night we {were watching} a film.',h:'watch',w:'Zu einem Zeitpunkt in der Vergangenheit im Gang'},
+ {t:'PAP',s:'It {was raining} when we left school.',h:'rain',w:'Lief gerade, als wir gingen'},
+ {t:'PAP',f:'q',s:'What {were you doing} when the lights went out?',h:'you / do',w:'Lief gerade, als etwas passierte'},
+ {t:'PAP',s:'While Mum {was cooking}, Dad was setting the table.',h:'cook',w:'While → zwei Handlungen gleichzeitig im Gang'},
+ {t:'PAP',s:'Sara fell off her bike while she {was riding} home.',h:'ride',w:'while → Handlung lief gerade'},
+ {t:'PAP',s:'Sorry, I didn\'t hear you. I {was listening} to music.',h:'listen',w:'Lief gerade in dem Moment'},
+ {t:'PAP',s:'The kids {were playing} in the garden when the storm started.',h:'play',w:'Lief gerade, als der Sturm begann'},
+ {t:'PAP',f:'neg',s:'He {wasn\'t paying} attention when the teacher explained the task.',h:'not / pay',w:'Lief (nicht), als etwas passierte'},
+ {t:'PAP',f:'q',s:'{Were you sleeping} when I called you?',h:'you / sleep',w:'Lief gerade, als ich anrief'},
+ {t:'PAP',s:'When I arrived at the party, everybody {was dancing}.',h:'dance',w:'War schon im Gang, als ich ankam'},
+ {t:'PAP',s:'We saw a deer while we {were driving} through the forest.',h:'drive',w:'while → Handlung lief gerade'},
+ {t:'PAP',s:'This time yesterday I {was sitting} on a plane to London.',h:'sit',w:'This time yesterday → im Gang'},
+ {t:'PAP',s:'Tom cut his finger while he {was making} a sandwich.',h:'make',w:'while → Handlung lief gerade'},
+ {t:'PAP',s:'It was a beautiful day. The sun {was shining} and the birds were singing.',h:'shine',w:'Hintergrund einer Geschichte'},
+ {t:'PAP',s:'My phone rang while I {was taking} a test. So embarrassing!',h:'take',w:'while → Handlung lief gerade'},
+ {t:'PAP',f:'neg',s:'They {weren\'t working} when the boss came in. They were chatting.',h:'not / work',w:'Was (nicht) lief, als der Chef kam'},
+ {t:'PAP',s:'When the teacher came in, the students {were talking} loudly.',h:'talk',w:'War im Gang, als die Lehrerin kam'},
+ {t:'PAP',f:'q',s:'What {was Lisa wearing} at the party last night?',h:'Lisa / wear',w:'Zustand während der Party'},
+ {t:'PAP',s:'I met my old teacher while I {was waiting} for the bus.',h:'wait',w:'while → Handlung lief gerade'},
+
+ {t:'PRP',s:'Oh no! I {have lost} my key. Now I can\'t open the door.',h:'lose',w:'Folge ist jetzt wichtig (Now I can\'t …)'},
+ {t:'PRP',f:'q',s:'{Have you ever been} to London? – No, never.',h:'you / ever / be',w:'ever → Erfahrung bis jetzt'},
+ {t:'PRP',s:'No, thanks, I\'m not hungry. I {have just eaten}.',h:'just / eat',w:'just → gerade eben, Folge jetzt'},
+ {t:'PRP',f:'neg',s:'Tim {hasn\'t finished} his project yet. He needs more time.',h:'not / finish',w:'yet → bis jetzt noch nicht'},
+ {t:'PRP',s:'We {have lived} in this house since 2018.',h:'live',w:'since → von damals bis jetzt'},
+ {t:'PRP',s:'My sister {has already seen} this film three times.',h:'already / see',w:'already → bis jetzt, Zeitpunkt unwichtig'},
+ {t:'PRP',f:'q',s:'{Has the bus left} yet? – Yes, two minutes ago.',h:'the bus / leave',w:'yet → bis jetzt'},
+ {t:'PRP',s:'I {have never eaten} sushi. Is it good?',h:'never / eat',w:'never → Erfahrung bis jetzt'},
+ {t:'PRP',s:'Look! Someone {has painted} the wall. It looks great now.',h:'paint',w:'Ergebnis jetzt sichtbar'},
+ {t:'PRP',s:'They {have known} each other for ten years.',h:'know',w:'for → Dauer bis jetzt'},
+ {t:'PRP',s:'Ben can\'t play today. He {has broken} his leg.',h:'break',w:'Folge jetzt wichtig (can\'t play today)'},
+ {t:'PRP',f:'neg',s:'I {haven\'t seen} Sara this week. Is she ill?',h:'not / see',w:'this week → Zeitraum ist noch nicht vorbei'},
+ {t:'PRP',s:'We {have just won} the game! Let\'s celebrate!',h:'just / win',w:'just → gerade eben'},
+ {t:'PRP',f:'q',s:'How long {have you had} your dog?',h:'you / have',w:'How long → Dauer bis jetzt'},
+ {t:'PRP',s:'The film {has already started}. Let\'s go in quickly!',h:'already / start',w:'already → Folge jetzt wichtig'},
+ {t:'PRP',s:'Mum {has made} a cake. Do you want a piece?',h:'make',w:'Ergebnis jetzt da'},
+ {t:'PRP',s:'I {have been} to Italy three times.',h:'be',w:'Erfahrung, Zeitpunkt unwichtig'},
+ {t:'PRP',f:'q',s:'{Have you done} your homework yet?',h:'you / do',w:'yet → bis jetzt'},
+ {t:'PRP',s:'My dad {has worked} at this company since 2010.',h:'work',w:'since → von damals bis jetzt'},
+ {t:'PRP',s:'Lisa looks so different! She {has cut} her hair.',h:'cut',w:'Ergebnis jetzt sichtbar'},
+
+ {t:'WF',s:'I think it {will rain} tomorrow. Take an umbrella.',h:'rain',w:'I think → Vermutung'},
+ {t:'WF',s:'The phone is ringing. – Don\'t worry, I {will get} it!',h:'get',w:'Spontane Entscheidung'},
+ {t:'WF',f:'neg',s:'I promise I {won\'t tell} anyone your secret.',h:'not / tell',w:'I promise → Versprechen'},
+ {t:'WF',s:'Maybe people {will live} on Mars one day.',h:'live',w:'Maybe → Vermutung über die Zukunft'},
+ {t:'WF',s:'That bag looks heavy. I {will help} you.',h:'help',w:'Spontanes Angebot'},
+ {t:'WF',s:'Do you think Switzerland {will win} the World Cup?',h:'win',w:'Do you think → Vermutung'},
+ {t:'WF',s:'I\'m sure you {will pass} the test. You studied a lot.',h:'pass',w:'I\'m sure → Vermutung'},
+ {t:'WF',s:'It\'s cold in here. – OK, I {will close} the window.',h:'close',w:'Spontane Entscheidung'},
+ {t:'WF',f:'q',s:'{Will you help} me with my homework, please?',h:'you / help',w:'Bitte → will'},
+ {t:'WF',s:'Don\'t touch the dog. It {will bite} you!',h:'bite',w:'Warnung / Vorhersage'},
+ {t:'WF',s:'In 2050, cars {will drive} without drivers.',h:'drive',w:'Vorhersage über die ferne Zukunft'},
+ {t:'WF',s:'I\'m thirsty. – Wait, I {will get} you a glass of water.',h:'get',w:'Spontanes Angebot'},
+ {t:'WF',f:'neg',s:'She probably {won\'t come} to the party. She\'s ill.',h:'not / come',w:'probably → Vermutung'},
+ {t:'WF',s:'I {will call} you tonight, I promise!',h:'call',w:'I promise → Versprechen'},
+ {t:'WF',s:'Robots {will do} many of our jobs in the future.',h:'do',w:'Vorhersage über die ferne Zukunft'},
+ {t:'WF',s:'Don\'t worry about the money. I {will pay} for the tickets.',h:'pay',w:'Spontanes Angebot'},
+ {t:'WF',s:'I don\'t think it {will snow} this weekend.',h:'snow',w:'I don\'t think → Vermutung'},
+ {t:'WF',f:'q',s:'What do you think? {Will it be} sunny tomorrow?',h:'it / be',w:'What do you think → Vermutung'},
+ {t:'WF',s:'I\'m hungry. – I {will make} you a sandwich.',h:'make',w:'Spontanes Angebot'},
+ {t:'WF',s:'Perhaps we {will meet} again one day.',h:'meet',w:'Perhaps → Vermutung'},
+
+ {t:'GT',s:'Look at those dark clouds! It {is going to rain}.',h:'rain',w:'Sichere Anzeichen (dark clouds)'},
+ {t:'GT',s:'We {are going to visit} our grandparents next weekend. It\'s all planned.',h:'visit',w:'It\'s all planned → Plan'},
+ {t:'GT',s:'I\'ve bought the paint. I {am going to paint} my room on Saturday.',h:'paint',w:'Plan, schon vorbereitet'},
+ {t:'GT',s:'Watch out! You {are going to fall}!',h:'fall',w:'Sichere Anzeichen – gleich passiert es'},
+ {t:'GT',s:'Tom has decided. He {is going to start} an apprenticeship as a carpenter.',h:'start',w:'has decided → Absicht'},
+ {t:'GT',f:'q',s:'{Are you going to watch} the match tonight?',h:'you / watch',w:'Frage nach einem Plan'},
+ {t:'GT',f:'neg',s:'She {isn\'t going to buy} the jacket. It\'s too expensive.',h:'not / buy',w:'Entscheidung / Absicht'},
+ {t:'GT',f:'q',s:'What {are you going to do} after school today?',h:'you / do',w:'Frage nach einem Plan'},
+ {t:'GT',s:'We {are going to move} to a bigger flat next month. We\'ve signed the contract.',h:'move',w:'Plan, schon festgelegt'},
+ {t:'GT',s:'The car is much too fast. It {is going to crash}!',h:'crash',w:'Sichere Anzeichen'},
+ {t:'GT',s:'I\'ve got my ticket! I {am going to see} my favourite band in concert!',h:'see',w:'Plan, Ticket schon gekauft'},
+ {t:'GT',s:'My brother {is going to learn} Spanish next year. He has already signed up.',h:'learn',w:'Plan, schon angemeldet'},
+ {t:'GT',s:'Lisa is so tired. She {is going to fall} asleep any second.',h:'fall',w:'Sichere Anzeichen'},
+ {t:'GT',f:'neg',s:'We {aren\'t going to take} the bus. We\'ve decided to walk.',h:'not / take',w:'We\'ve decided → Absicht'},
+ {t:'GT',s:'Look at that boy on the wall! He {is going to jump}!',h:'jump',w:'Sichere Anzeichen'},
+ {t:'GT',s:'I\'m saving money because I {am going to buy} a new bike.',h:'buy',w:'Absicht, Plan'},
+ {t:'GT',s:'Mum has got flour, eggs and sugar. She {is going to bake} a cake.',h:'bake',w:'Sichere Anzeichen / Plan'},
+ {t:'GT',f:'q',s:'Where {are you going to spend} your holidays this summer?',h:'you / spend',w:'Frage nach einem Plan'},
+ {t:'GT',s:'It\'s 7.58! We {are going to be} late for school!',h:'be',w:'Sichere Anzeichen'},
+ {t:'GT',s:'Leo {is going to have} a party on Friday. He has invited 20 people.',h:'have',w:'Plan, schon eingeladen'}
+];
+
 const rnd=a=>a[Math.floor(Math.random()*a.length)];
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
@@ -312,6 +462,7 @@ function poolItem(p){
  const m=p.s.match(/^(.*)\{(.+?)\}(.*)$/);
  return {src:'pool',t:p.t,form:p.f||'pos',before:m[1],gap:m[2],after:m[3],hint:p.h,sentence:m[1]+m[2]+m[3],mk:null};
 }
+function ctxItem(p){const it=poolItem(p);it.type='ctx';it.why=p.w;return it}
 function genTrans(t,forms){
  const other=forms.filter(f=>f!=='pos');
  const kind=(forms.includes('pos')&&other.length&&Math.random()<.5)?'form':'tense';
@@ -401,11 +552,12 @@ const MODES=[
  {k:'rec',icon:'🔍',label:'Erkennen',desc:'Welche Zeitform ist das?'},
  {k:'fill',icon:'✏️',label:'Einsetzen',desc:'Verb in die richtige Form setzen'},
  {k:'trans',icon:'🔄',label:'Umformen',desc:'Andere Zeit, verneinen, Frage'},
+ {k:'ctx',icon:'🧩',label:'Zeit wählen',desc:'Aus dem Zusammenhang die richtige Zeit finden'},
  {k:'short',icon:'💬',label:'Kurzantworten',desc:'Yes, she does. / No, I haven\'t.'},
  {k:'mix',icon:'🎲',label:'Gemischt',desc:'Alles durcheinander'}
 ];
 const FORMS=[{k:'pos',l:'✓ positiv'},{k:'neg',l:'✗ verneint'},{k:'q',l:'? Frage'}];
-const TYPE_LABEL={rec:'🔍 Erkennen',fill:'✏️ Einsetzen',trans:'🔄 Umformen',short:'💬 Kurzantwort'};
+const TYPE_LABEL={rec:'🔍 Erkennen',fill:'✏️ Einsetzen',trans:'🔄 Umformen',short:'💬 Kurzantwort',ctx:'🧩 Zeit wählen'};
 
 let S={tenses:['SP','PP','SPA'],mode:'mix',forms:['pos','neg','q'],count:10,hint:false};
 try{const x=JSON.parse(localStorage.getItem('tt-settings'));if(x&&x.tenses)S={...S,...x}}catch(e){}
@@ -445,6 +597,7 @@ function makeItem(type){
  const t=rnd(S.tenses),form=rnd(S.forms);
  if(type==='trans')return genTrans(t,S.forms);
  if(type==='short')return genShort(t);
+ if(type==='ctx'){const c=CTX.filter(p=>p.t===t);return ctxItem(rnd(c))}
  const pool=POOL.filter(p=>p.t===t&&(p.f||'pos')===form);
  const it=(pool.length&&Math.random()<.35)?poolItem(rnd(pool)):genItem(t,form);
  it.type=type;return it;
@@ -452,7 +605,7 @@ function makeItem(type){
 function buildRound(){
  const out=[],seen=new Set();
  for(let i=0;i<S.count;i++){
-  const type=S.mode==='mix'?rnd(['rec','fill','trans','short']):S.mode;
+  const type=S.mode==='mix'?rnd(['rec','fill','trans','short','ctx']):S.mode;
   let it,n=0;
   do{it=makeItem(type);n++}while(seen.has(it.sentence)&&n<30);
   seen.add(it.sentence);out.push(it);
@@ -463,7 +616,7 @@ function start(list){
  const err=document.getElementById('err');
  if(!list){
   if(!S.tenses.length){err.textContent='Wähle mindestens eine Zeitform.';return}
-  if(!S.forms.length&&S.mode!=='short'){err.textContent='Wähle mindestens eine Satzart.';return}
+  if(!S.forms.length&&S.mode!=='short'&&S.mode!=='ctx'){err.textContent='Wähle mindestens eine Satzart.';return}
  }
  items=list||buildRound();idx=0;score=0;results=[];
  renderTask();
@@ -487,6 +640,10 @@ function renderTask(){
  }else if(it.type==='fill'){
   const w=Math.max(8,it.gap.length+3);
   body=`<p class="instr">${it.form==='q'?'Ergänze die Frage.':'Setze das Verb in der richtigen Form ein.'} ${tenseTag(it)}</p>
+   <div class="sentence">${esc(it.before)}<input id="inp" style="width:${w}ch" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">${esc(it.after)} <span class="hint">(${esc(it.hint)})</span></div>`;
+ }else if(it.type==='ctx'){
+  const w=Math.max(8,it.gap.length+3);
+  body=`<p class="instr">Welche Zeit passt? Setze das Verb richtig ein.</p>
    <div class="sentence">${esc(it.before)}<input id="inp" style="width:${w}ch" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">${esc(it.after)} <span class="hint">(${esc(it.hint)})</span></div>`;
  }else if(it.type==='short'){
   body=`<p class="instr">Antworte mit einer Kurzantwort: ${it.yes?'👍 <b>Ja</b>':'👎 <b>Nein</b>'}</p>
@@ -521,7 +678,8 @@ function shortHint(it,val){
 function explain(it){
  const d=T[it.t];
  if(it.type==='short')return `<div class="rule"><b>Kurzantwort:</b> Yes / No + Pronomen + <b>Hilfsverb aus der Frage</b> (do, does, did, am, is, are, was, were, have, has, will).<br>Aus „you“ wird „I“ oder „we“, aus „Tom“ wird „he“.</div><div class="rule"><span class="tt" style="--c:${d.c}">${d.name}</span></div>`;
- let h=`<div class="rule"><span class="tt" style="--c:${d.c}">${d.name}</span> ${d.use}.<br><b>Bildung:</b> ${d[it.form]}</div>`;
+ let h=it.why?`<div class="rule"><b>Warum?</b> ${esc(it.why)}</div>`:'';
+ h+=`<div class="rule"><span class="tt" style="--c:${d.c}">${d.name}</span> ${d.use}.<br><b>Bildung:</b> ${d[it.form]}</div>`;
  if(it.mk)h+=`<div class="rule"><b>Signalwort:</b> <i>${esc(it.mk.w)}</i> → ${d.name}</div>`;
  return h;
 }
@@ -547,14 +705,14 @@ function check(){
  if(!val){inp.focus();return}
  const fb=document.getElementById('fb');
  let ok,nomark=false;
- if(it.type==='fill'){ok=eq(val,it.gap)||eq(val,it.sentence)}
+ if(it.type==='fill'||it.type==='ctx'){ok=eq(val,it.gap)||eq(val,it.sentence)}
  else if(it.type==='short'){ok=it.answers.some(a=>eq(val,a))}
  else{const r=checkTrans(it,val);ok=r==='ok';nomark=r==='nomark'}
  if(!ok&&tries===0){
   if(nomark){tries=1;fb.innerHTML=`<div class="fb warn"><div class="fbt">Fast!</div>Das Signalwort <b>${esc(it.mk.w)}</b> fehlt noch. Noch ein Versuch.</div>`;inp.focus();return}
-  if(near(val,it.type==='fill'?[it.gap]:it.type==='short'?it.answers:[it.sentence])){tries=1;fb.innerHTML=`<div class="fb warn"><div class="fbt">Fast!</div>Prüfe die Schreibweise. Noch ein Versuch.</div>`;inp.focus();return}
+  if(near(val,(it.type==='fill'||it.type==='ctx')?[it.gap]:it.type==='short'?it.answers:[it.sentence])){tries=1;fb.innerHTML=`<div class="fb warn"><div class="fbt">Fast!</div>Prüfe die Schreibweise. Noch ein Versuch.</div>`;inp.focus();return}
  }
- const sol=it.type==='fill'?markSent(it):'<mark>'+esc(it.type==='short'?it.answers.join('  oder  '):it.sentence)+'</mark>';
+ const sol=(it.type==='fill'||it.type==='ctx')?markSent(it):'<mark>'+esc(it.type==='short'?it.answers.join('  oder  '):it.sentence)+'</mark>';
  const tip=ok?'':it.type==='short'?shortHint(it,val):errHint(it,val);
  finish(ok,val,`<div class="fbt">${ok?'Richtig! 🎉':'Leider falsch.'}</div>
   ${ok?'':`<div>Deine Antwort: <s>${esc(val)}</s></div>`}
