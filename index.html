@@ -131,79 +131,127 @@ const T={
 };
 
 const SUBJ=[
- {w:'I',k:'1s',poss:'my',pr:['I']},{w:'you',k:'pl',poss:'your',pr:['I','we']},{w:'he',k:'3s',poss:'his',pr:['he']},{w:'she',k:'3s',poss:'her',pr:['she']},
- {w:'we',k:'pl',poss:'our',pr:['we','you']},{w:'they',k:'pl',poss:'their',pr:['they']},{w:'my brother',k:'3s',poss:'his',pr:['he']},{w:'my sister',k:'3s',poss:'her',pr:['she']},
- {w:'Tom',k:'3s',poss:'his',pr:['he']},{w:'Lisa',k:'3s',poss:'her',pr:['she']},{w:'my friends',k:'pl',poss:'their',pr:['they']},{w:'Mia and Leon',k:'pl',poss:'their',pr:['they']}
+ {w:'I',k:'1s',poss:'my',pr:['I']},
+ {w:'you',k:'pl',poss:'your',pr:['I','we']},
+ {w:'he',k:'3s',poss:'his',pr:['he']},
+ {w:'she',k:'3s',poss:'her',pr:['she']},
+ {w:'we',k:'pl',poss:'our',pr:['we','you']},
+ {w:'they',k:'pl',poss:'their',pr:['they']},
+ {w:'my brother',k:'3s',poss:'his',pr:['he']},
+ {w:'my sister',k:'3s',poss:'her',pr:['she']},
+ {w:'my best friend',k:'3s',poss:'his',pr:['he']},
+ {w:'my mum',k:'3s',poss:'her',pr:['she']},
+ {w:'my dad',k:'3s',poss:'his',pr:['he']},
+ {w:'our teacher',k:'3s',poss:'her',pr:['she']},
+ {w:'my cousin',k:'3s',poss:'his',pr:['he']},
+ {w:'the coach',k:'3s',poss:'his',pr:['he']},
+ {w:'Tom',k:'3s',poss:'his',pr:['he']},
+ {w:'Lisa',k:'3s',poss:'her',pr:['she']},
+ {w:'Noah',k:'3s',poss:'his',pr:['he']},
+ {w:'Emma',k:'3s',poss:'her',pr:['she']},
+ {w:'my friends',k:'pl',poss:'their',pr:['they']},
+ {w:'my parents',k:'pl',poss:'their',pr:['they']},
+ {w:'the students',k:'pl',poss:'their',pr:['they']},
+ {w:'Mia and Leon',k:'pl',poss:'their',pr:['they']},
+ {w:'Sara and Ben',k:'pl',poss:'their',pr:['they']},
+ {w:'our neighbours',k:'pl',poss:'their',pr:['they']}
 ];
 
 const VERBS=[
- {b:'play',o:['football','video games','the guitar','tennis']},
- {b:'watch',o:['a film','TV','a football match']},
- {b:'eat',p:'ate',pp:'eaten',o:['a pizza','an apple','lunch']},
- {b:'drink',p:'drank',pp:'drunk',o:['a cup of tea','a glass of water']},
- {b:'read',p:'read',pp:'read',o:['a book','a magazine','the news']},
- {b:'write',p:'wrote',pp:'written',o:['an email','a letter','a story']},
- {b:'do',p:'did',pp:'done',o:['{poss} homework','the dishes','the shopping']},
- {b:'make',p:'made',pp:'made',o:['a cake','breakfast','a video']},
- {b:'cook',o:['dinner','spaghetti']},
- {b:'go',p:'went',pp:'gone',o:['to school','to the cinema','swimming',{o:'to London',rare:1,ever:1}]},
- {b:'buy',p:'bought',pp:'bought',o:['new shoes','a present','bread']},
- {b:'clean',o:['the kitchen','the car','{poss} room']},
- {b:'tidy',o:['{poss} room','the garage']},
- {b:'visit',o:[{o:'London',rare:1,ever:1},'{poss} grandma','the museum']},
- {b:'take',p:'took',pp:'taken',o:['the bus','a photo','the train']},
- {b:'ride',p:'rode',pp:'ridden',o:['a bike',{o:'a horse',ever:1}]},
- {b:'swim',p:'swam',pp:'swum',ing:'swimming',o:['in the lake']},
- {b:'run',p:'ran',pp:'run',ing:'running',o:['in the park']},
- {b:'sing',p:'sang',pp:'sung',o:['a song']},
- {b:'draw',p:'drew',pp:'drawn',o:['a picture']},
- {b:'learn',o:['new words','French']},
- {b:'meet',p:'met',pp:'met',o:['{poss} friends']},
- {b:'call',o:['{poss} grandma','a friend']},
- {b:'send',p:'sent',pp:'sent',o:['a message','a postcard']},
- {b:'wash',o:['the car','the dishes']},
- {b:'listen',o:['to music','to a podcast']},
- {b:'walk',o:['the dog']},
- {b:'fly',p:'flew',pp:'flown',o:[{o:'to Spain',rare:1,ever:1}]},
- {b:'win',p:'won',pp:'won',ing:'winning',o:['the game',{o:'a prize',rare:1,ever:1}]},
- {b:'carry',o:['the bags']},
- {b:'study',o:['for the test']},
- {b:'try',o:[{o:'sushi',ever:1}]},
- {b:'stop',dbl:1,o:['the car']},
- {b:'plan',dbl:1,o:['a party']},
- {b:'chat',dbl:1,o:['with friends']},
- {b:'travel',dbl:1,o:[{o:'to Italy',rare:1,ever:1}]},
- {b:'bring',p:'brought',pp:'brought',o:['a cake']},
- {b:'build',p:'built',pp:'built',o:['a treehouse']},
- {b:'feed',p:'fed',pp:'fed',o:['the cat']},
- {b:'fix',o:['{poss} bike']},
- {b:'finish',o:['{poss} homework','the project']},
- {b:'miss',o:['the bus']},
- {b:'catch',p:'caught',pp:'caught',o:['the bus','the ball']},
- {b:'throw',p:'threw',pp:'thrown',o:['the ball']},
- {b:'leave',p:'left',pp:'left',o:['the house']},
- {b:'wear',p:'wore',pp:'worn',o:['a jacket','a cap']},
- {b:'tell',p:'told',pp:'told',o:['a joke']},
- {b:'cut',p:'cut',pp:'cut',ing:'cutting',o:['the bread']},
- {b:'grow',p:'grew',pp:'grown',o:['tomatoes']},
- {b:'help',o:['{poss} dad','the teacher']},
- {b:'open',o:['the window']},
- {b:'close',o:['the door']},
- {b:'paint',o:['a picture','the fence']},
- {b:'dance',o:['at the party']}
+ {b:'play',o:['football','video games','the guitar','tennis','basketball','volleyball','chess','board games']},
+ {b:'watch',o:['a film','TV','a football match','a series','a documentary','the sunset']},
+ {b:'eat',p:'ate',pp:'eaten',o:['a pizza','an apple','lunch','breakfast','a sandwich','chocolate','pasta']},
+ {b:'drink',p:'drank',pp:'drunk',o:['a cup of tea','a glass of water','orange juice','hot chocolate','milk']},
+ {b:'read',p:'read',pp:'read',o:['a book','a magazine','the news','a comic','an article','a novel']},
+ {b:'write',p:'wrote',pp:'written',o:['an email','a letter','a story','a message','a poem','a summary']},
+ {b:'do',p:'did',pp:'done',o:['{poss} homework','the dishes','the shopping','yoga','a puzzle']},
+ {b:'make',p:'made',pp:'made',o:['a cake','breakfast','a video','a sandwich','a poster','coffee']},
+ {b:'cook',o:['dinner','spaghetti','soup','rice','a meal']},
+ {b:'go',p:'went',pp:'gone',o:['to school','to the cinema','swimming','shopping','to the gym',{o:'to London',rare:1,ever:1},{o:'to Paris',rare:1,ever:1}]},
+ {b:'buy',p:'bought',pp:'bought',o:['new shoes','a present','bread','groceries','a ticket','a backpack']},
+ {b:'clean',o:['the kitchen','the car','{poss} room','the bathroom','the windows']},
+ {b:'tidy',o:['{poss} room','the garage','the desk','the living room']},
+ {b:'visit',o:[{o:'London',rare:1,ever:1},{o:'Rome',rare:1,ever:1},'{poss} grandma','the museum','the zoo','{poss} aunt']},
+ {b:'take',p:'took',pp:'taken',o:['the bus','a photo','the train','a break','a walk','notes']},
+ {b:'ride',p:'rode',pp:'ridden',o:['a bike','a scooter',{o:'a horse',ever:1},{o:'a motorbike',ever:1}]},
+ {b:'swim',p:'swam',pp:'swum',ing:'swimming',o:['in the lake','in the sea','in the pool']},
+ {b:'run',p:'ran',pp:'run',ing:'running',o:['in the park','a marathon','to the station','around the lake']},
+ {b:'sing',p:'sang',pp:'sung',o:['a song','in the choir','on stage']},
+ {b:'draw',p:'drew',pp:'drawn',o:['a picture','a map','a portrait','a comic']},
+ {b:'learn',o:['new words','French','Spanish','the lyrics','a new skill']},
+ {b:'meet',p:'met',pp:'met',o:['{poss} friends','{poss} cousin','the team','at the station']},
+ {b:'call',o:['{poss} grandma','a friend','{poss} parents','the doctor']},
+ {b:'send',p:'sent',pp:'sent',o:['a message','a postcard','an email','a photo']},
+ {b:'wash',o:['the car','the dishes','{poss} hands','the clothes']},
+ {b:'listen',o:['to music','to a podcast','to the radio','to an audiobook']},
+ {b:'walk',o:['the dog','to school','home','in the forest']},
+ {b:'fly',p:'flew',pp:'flown',o:[{o:'to Spain',rare:1,ever:1},{o:'to New York',rare:1,ever:1},{o:'to Greece',rare:1,ever:1}]},
+ {b:'win',p:'won',pp:'won',ing:'winning',o:['the game','the match',{o:'a prize',rare:1,ever:1},{o:'a medal',rare:1,ever:1}]},
+ {b:'carry',o:['the bags','the boxes','the heavy backpack']},
+ {b:'study',o:['for the test','English','maths','for the exam','history']},
+ {b:'try',o:[{o:'sushi',ever:1},{o:'climbing',ever:1},{o:'surfing',ever:1},'a new recipe']},
+ {b:'stop',dbl:1,o:['the car','the game','the noise']},
+ {b:'plan',dbl:1,o:['a party','a trip','the weekend','a project']},
+ {b:'chat',dbl:1,o:['with friends','online','after class']},
+ {b:'travel',dbl:1,o:[{o:'to Italy',rare:1,ever:1},{o:'around Europe',rare:1,ever:1},'by train']},
+ {b:'bring',p:'brought',pp:'brought',o:['a cake','snacks','the books','a gift']},
+ {b:'build',p:'built',pp:'built',o:['a treehouse','a model','a snowman','a website']},
+ {b:'feed',p:'fed',pp:'fed',o:['the cat','the dog','the birds','the fish']},
+ {b:'fix',o:['{poss} bike','the computer','the door','the lamp']},
+ {b:'finish',o:['{poss} homework','the project','the book','the race']},
+ {b:'miss',o:['the bus','the train','the goal','the class']},
+ {b:'catch',p:'caught',pp:'caught',o:['the bus','the ball','the train','a cold']},
+ {b:'throw',p:'threw',pp:'thrown',o:['the ball','the paper away','the frisbee']},
+ {b:'leave',p:'left',pp:'left',o:['the house','school','the party','early']},
+ {b:'wear',p:'wore',pp:'worn',o:['a jacket','a cap','glasses','a helmet','sneakers']},
+ {b:'tell',p:'told',pp:'told',o:['a joke','a story','the truth','a secret']},
+ {b:'cut',p:'cut',pp:'cut',ing:'cutting',o:['the bread','the paper','the vegetables','the grass']},
+ {b:'grow',p:'grew',pp:'grown',o:['tomatoes','flowers','vegetables','herbs']},
+ {b:'help',o:['{poss} dad','the teacher','{poss} friend','in the kitchen']},
+ {b:'open',o:['the window','the door','the box','the present']},
+ {b:'close',o:['the door','the window','the book','the shop']},
+ {b:'paint',o:['a picture','the fence','{poss} bedroom','a landscape']},
+ {b:'dance',o:['at the party','in the living room','to the music']},
+ {b:'bake',o:['cookies','a birthday cake','muffins','bread']},
+ {b:'pack',o:['{poss} bag','the suitcase','lunch']},
+ {b:'check',o:['{poss} phone','the timetable','the answers','the weather']},
+ {b:'practice',o:['the piano','English','football','for the concert']},
+ {b:'order',o:['a pizza','drinks','tickets online','a book']},
+ {b:'repair',o:['the skateboard','the chair','the phone screen']},
+ {b:'climb',o:['the mountain','a tree','the wall']},
+ {b:'cross',o:['the street','the bridge','the river']},
+ {b:'collect',o:['stamps','shells','old coins','stickers']},
+ {b:'water',o:['the plants','the flowers','the garden']},
+ {b:'share',o:['the snacks','a taxi','the link','an umbrella']},
+ {b:'explain',o:['the rules','the task','the problem','the joke']},
+ {b:'forget',p:'forgot',pp:'forgotten',o:['{poss} keys','the password','{poss} umbrella','the homework']},
+ {b:'find',p:'found',pp:'found',o:['a wallet','the answer','{poss} phone','a shortcut']},
+ {b:'lose',p:'lost',pp:'lost',o:['{poss} keys','the match','{poss} wallet','the ticket']},
+ {b:'break',p:'broke',pp:'broken',o:['a glass','{poss} phone','a window','the record']},
+ {b:'choose',p:'chose',pp:'chosen',o:['a movie','the team','a book','the colour']},
+ {b:'speak',p:'spoke',pp:'spoken',o:['English','French','to the teacher','loudly']},
+ {b:'spend',p:'spent',pp:'spent',o:['money','the afternoon','time with friends','the weekend outside']},
+ {b:'sleep',p:'slept',pp:'slept',o:['well','for eight hours','on the sofa','in a tent']},
+ {b:'wake',p:'woke',pp:'woken',o:['up early','up late']},
+ {b:'sit',p:'sat',pp:'sat',ing:'sitting',o:['on the bench','in the garden','near the window','in the front row']},
+ {b:'stand',p:'stood',pp:'stood',o:['at the bus stop','in line','near the door']},
+ {b:'wait',o:['for the bus','for {poss} friends','outside','in the queue']},
+ {b:'start',o:['the game','a new book','training','the engine']},
+ {b:'answer',o:['the question','the phone','the email','the door']}
 ];
 
 const MARK={
- SP:{d:['every day','every weekend','on Saturdays','twice a week'],r:['every summer','once a year']},
- PP:{d:['right now','at the moment','now']},
- SPA:{d:['yesterday','last week','two days ago','last weekend'],r:['last summer','last year']},
- PAP:{d:['when the phone rang',"at 8 o'clock last night",'at this time yesterday','when Mum came home']},
- WF:{d:['tomorrow','next week','soon'],r:['next year','one day']},
- GT:{d:['tomorrow','next weekend','this evening'],r:['next summer','next year']}
+ SP:{d:['every day','every weekend','on Saturdays','twice a week','every morning','on Mondays','in the evening','after school','most days'],r:['every summer','once a year','every winter']},
+ PP:{d:['right now','at the moment','now','today','this week']},
+ SPA:{d:['yesterday','last week','two days ago','last weekend','on Monday','yesterday evening','three weeks ago','this morning'],r:['last summer','last year','in 2022']},
+ PAP:{d:['when the phone rang',"at 8 o'clock last night",'at this time yesterday','when Mum came home','when it started to rain','at 6 pm yesterday','while we were eating']},
+ WF:{d:['tomorrow','next week','soon','tonight','this weekend','later'],r:['next year','one day','in the future']},
+ GT:{d:['tomorrow','next weekend','this evening','next Monday','on Saturday','this afternoon'],r:['next summer','next year','in July']}
 };
 
-// Handgeschriebene Sätze: {gap} = Lösung, h = Hinweis in Klammern
+// Handgeschriebene Sätze: {gap} = Lösung, h = Hinweis in Klammern (20 pro Zeitform = 140)
 const POOL=[
+ // Present Simple (20)
  {t:'SP',s:'My dad {drives} to work every morning.',h:'drive'},
  {t:'SP',f:'neg',s:'We {don\'t have} school on Saturdays.',h:'not / have'},
  {t:'SP',f:'q',s:'{Does your sister like} horror films?',h:'your sister / like'},
@@ -214,6 +262,18 @@ const POOL=[
  {t:'SP',s:'Water {boils} at 100 degrees.',h:'boil'},
  {t:'SP',s:'My brother never {tidies} his room.',h:'tidy'},
  {t:'SP',s:'Tom {watches} YouTube videos every evening.',h:'watch'},
+ {t:'SP',s:'The library {opens} at nine o\'clock.',h:'open'},
+ {t:'SP',f:'neg',s:'My little sister {doesn\'t know} how to swim yet.',h:'not / know'},
+ {t:'SP',f:'q',s:'Where {do your grandparents live}?',h:'your grandparents / live'},
+ {t:'SP',s:'Our dog always {barks} at the postman.',h:'bark'},
+ {t:'SP',s:'Earth {goes} around the sun.',h:'go'},
+ {t:'SP',f:'neg',s:'I {don\'t drink} coffee in the evening.',h:'not / drink'},
+ {t:'SP',f:'q',s:'{Does this train stop} in Bern?',h:'this train / stop'},
+ {t:'SP',s:'Emma {practices} the violin twice a week.',h:'practice'},
+ {t:'SP',s:'Penguins {live} in the Southern Hemisphere.',h:'live'},
+ {t:'SP',f:'q',s:'What time {does the film start}?',h:'the film / start'},
+
+ // Present Continuous (20)
  {t:'PP',s:'Look! It {is snowing}.',h:'snow'},
  {t:'PP',s:'Be quiet, please. The baby {is sleeping}.',h:'sleep'},
  {t:'PP',f:'neg',s:'I {am not watching} TV right now. I\'m doing my homework.',h:'not / watch'},
@@ -224,6 +284,18 @@ const POOL=[
  {t:'PP',f:'neg',s:'We {aren\'t working} on the project today.',h:'not / work'},
  {t:'PP',s:'Listen! Someone {is knocking} at the door.',h:'knock'},
  {t:'PP',s:'My parents {are having} dinner right now.',h:'have'},
+ {t:'PP',s:'Look at those birds! They {are flying} south.',h:'fly'},
+ {t:'PP',f:'neg',s:'Tom {isn\'t wearing} his glasses today.',h:'not / wear'},
+ {t:'PP',f:'q',s:'Who {are you waiting} for?',h:'you / wait'},
+ {t:'PP',s:'I {am reading} a really exciting book this week.',h:'read'},
+ {t:'PP',s:'The water {is boiling}. Can you turn off the stove?',h:'boil'},
+ {t:'PP',f:'neg',s:'They {aren\'t coming} to the party tonight.',h:'not / come'},
+ {t:'PP',f:'q',s:'{Is your brother studying} for his maths exam?',h:'your brother / study'},
+ {t:'PP',s:'Watch out! A car {is coming}!',h:'come'},
+ {t:'PP',s:'She {is talking} on the phone in the hallway.',h:'talk'},
+ {t:'PP',f:'q',s:'What {are the kids doing} in the garden?',h:'the kids / do'},
+
+ // Past Simple (20)
  {t:'SPA',s:'Last summer we {went} to Italy.',h:'go'},
  {t:'SPA',f:'neg',s:'I {didn\'t see} the match last night.',h:'not / see'},
  {t:'SPA',f:'q',s:'{Did you finish} your homework yesterday?',h:'you / finish'},
@@ -234,6 +306,18 @@ const POOL=[
  {t:'SPA',f:'neg',s:'My grandma {didn\'t have} a mobile phone when she was young.',h:'not / have'},
  {t:'SPA',f:'q',s:'Where {did you go} on holiday last year?',h:'you / go'},
  {t:'SPA',s:'Tim {fell} off his bike yesterday.',h:'fall'},
+ {t:'SPA',s:'We {ate} delicious pancakes for breakfast on Sunday.',h:'eat'},
+ {t:'SPA',f:'neg',s:'He {didn\'t answer} my message yesterday.',h:'not / answer'},
+ {t:'SPA',f:'q',s:'When {did the concert end}?',h:'the concert / end'},
+ {t:'SPA',s:'My uncle {built} this wooden table himself.',h:'build'},
+ {t:'SPA',s:'The bell {rang} and all the students ran outside.',h:'ring'},
+ {t:'SPA',f:'neg',s:'We {didn\'t understand} the last question in the test.',h:'not / understand'},
+ {t:'SPA',f:'q',s:'{Did Lisa win} the race on Saturday?',h:'Lisa / win'},
+ {t:'SPA',s:'I {found} an old photo album in the attic.',h:'find'},
+ {t:'SPA',s:'They {arrived} at the airport two hours early.',h:'arrive'},
+ {t:'SPA',f:'q',s:'What {did you buy} at the market?',h:'you / buy'},
+
+ // Past Continuous (20)
  {t:'PAP',s:'I {was having} a shower when the phone rang.',h:'have'},
  {t:'PAP',s:'At 8 o\'clock last night we {were watching} a film.',h:'watch'},
  {t:'PAP',s:'It {was raining} when we left the house.',h:'rain'},
@@ -244,6 +328,18 @@ const POOL=[
  {t:'PAP',s:'The kids {were playing} outside when the storm started.',h:'play'},
  {t:'PAP',f:'neg',s:'We {weren\'t paying} attention, so we missed the exit.',h:'not / pay'},
  {t:'PAP',s:'My dad {was driving} too fast when the police stopped him.',h:'drive'},
+ {t:'PAP',s:'The sun {was shining} brightly when we woke up.',h:'shine'},
+ {t:'PAP',f:'neg',s:'I {wasn\'t feeling} well yesterday afternoon.',h:'not / feel'},
+ {t:'PAP',f:'q',s:'Where {were they going} when you saw them?',h:'they / go'},
+ {t:'PAP',s:'Noah {was reading} a comic while waiting for the dentist.',h:'read'},
+ {t:'PAP',s:'At midnight everyone {was sleeping} except me.',h:'sleep'},
+ {t:'PAP',f:'neg',s:'He {wasn\'t wearing} a helmet when he crashed.',h:'not / wear'},
+ {t:'PAP',f:'q',s:'{Was it snowing} when you left school?',h:'it / snow'},
+ {t:'PAP',s:'Birds {were singing} in the trees early that morning.',h:'sing'},
+ {t:'PAP',s:'We {were crossing} the bridge when the fireworks began.',h:'cross'},
+ {t:'PAP',f:'q',s:'Who {was talking} to Lisa in the corridor?',h:'talk'},
+
+ // Present Perfect (20)
  {t:'PRP',s:'I {have already seen} this film.',h:'already / see'},
  {t:'PRP',f:'q',s:'{Have you ever been} to London?',h:'you / ever / be'},
  {t:'PRP',f:'neg',s:'She {hasn\'t finished} her project yet.',h:'not / finish'},
@@ -254,6 +350,18 @@ const POOL=[
  {t:'PRP',s:'I {have never eaten} sushi.',h:'never / eat'},
  {t:'PRP',s:'They {have known} each other for ten years.',h:'know'},
  {t:'PRP',f:'neg',s:'He {hasn\'t done} his homework yet.',h:'not / do'},
+ {t:'PRP',s:'We {have visited} three different countries this year.',h:'visit'},
+ {t:'PRP',f:'q',s:'{Have you ever ridden} a horse?',h:'you / ever / ride'},
+ {t:'PRP',f:'neg',s:'I {haven\'t read} that book yet.',h:'not / read'},
+ {t:'PRP',s:'Someone {has left} a bag on the bench.',h:'leave'},
+ {t:'PRP',s:'Emma {has played} the piano since she was six.',h:'play'},
+ {t:'PRP',f:'q',s:'How many goals {has Tom scored} this season?',h:'Tom / score'},
+ {t:'PRP',f:'neg',s:'My parents {haven\'t met} my new teacher yet.',h:'not / meet'},
+ {t:'PRP',s:'The train {has just arrived} at platform 4.',h:'just / arrive'},
+ {t:'PRP',s:'I {have forgotten} his phone number.',h:'forget'},
+ {t:'PRP',f:'q',s:'{Has it stopped} raining yet?',h:'it / stop'},
+
+ // will-Future (20)
  {t:'WF',s:'I think it {will rain} tomorrow.',h:'rain'},
  {t:'WF',s:'Don\'t worry, I {will help} you.',h:'help'},
  {t:'WF',s:'Robots {will do} a lot of our jobs in the future.',h:'do'},
@@ -264,6 +372,18 @@ const POOL=[
  {t:'WF',f:'neg',s:'The tickets {won\'t be} expensive.',h:'not / be'},
  {t:'WF',s:'I promise I {will call} you tonight.',h:'call'},
  {t:'WF',s:'Do you think Switzerland {will win} the next match?',h:'win'},
+ {t:'WF',s:'In 100 years, people {will travel} to other planets.',h:'travel'},
+ {t:'WF',f:'neg',s:'He probably {won\'t remember} to bring the book.',h:'not / remember'},
+ {t:'WF',f:'q',s:'When {will we get} our test results?',h:'we / get'},
+ {t:'WF',s:'I\'m tired. I think I {will go} to bed early tonight.',h:'go'},
+ {t:'WF',s:'One day scientists {will find} a cure for this illness.',h:'find'},
+ {t:'WF',f:'neg',s:'Don\'t worry, the dog {won\'t hurt} you.',h:'not / hurt'},
+ {t:'WF',f:'q',s:'{Will there be} flying cars in the future?',h:'there / be'},
+ {t:'WF',s:'I {will send} you the link right now.',h:'send'},
+ {t:'WF',s:'Perhaps they {will move} to a bigger city next year.',h:'move'},
+ {t:'WF',f:'q',s:'What {will the weather be} like tomorrow?',h:'the weather / be'},
+
+ // going to-Future (20)
  {t:'GT',s:'We {are going to visit} our grandparents next weekend.',h:'visit'},
  {t:'GT',s:'Look at those dark clouds! It {is going to rain}.',h:'rain'},
  {t:'GT',s:'I {am going to study} hard for the test.',h:'study'},
@@ -273,11 +393,22 @@ const POOL=[
  {t:'GT',f:'q',s:'What {are you going to do} after school?',h:'you / do'},
  {t:'GT',s:'Be careful! You {are going to fall}!',h:'fall'},
  {t:'GT',s:'Tom {is going to start} an apprenticeship next summer.',h:'start'},
- {t:'GT',f:'neg',s:'We {aren\'t going to take} the bus. We\'ll walk.',h:'not / take'}
+ {t:'GT',f:'neg',s:'We {aren\'t going to take} the bus. We\'ll walk.',h:'not / take'},
+ {t:'GT',s:'I {am going to clean} my room this afternoon.',h:'clean'},
+ {t:'GT',f:'q',s:'Who {is going to bring} the drinks for the party?',h:'bring'},
+ {t:'GT',f:'neg',s:'They {aren\'t going to travel} abroad this summer.',h:'not / travel'},
+ {t:'GT',s:'Look at that glass on the edge! It {is going to fall}!',h:'fall'},
+ {t:'GT',s:'Mia {is going to bake} a chocolate cake for her mum.',h:'bake'},
+ {t:'GT',f:'q',s:'{Is Noah going to join} the football club?',h:'Noah / join'},
+ {t:'GT',f:'neg',s:'I {am not going to spend} all my pocket money today.',h:'not / spend'},
+ {t:'GT',s:'We {are going to camp} near Lake Lucerne next weekend.',h:'camp'},
+ {t:'GT',s:'Watch out! That ball {is going to hit} the window!',h:'hit'},
+ {t:'GT',f:'q',s:'How {are you going to get} to the station tomorrow?',h:'you / get'}
 ];
 
-// Kontext-Aufgaben: {gap} = Lösung, h = Hinweis, w = Begründung, f = 'neg' / 'q'
+// Kontext-Aufgaben: {gap} = Lösung, h = Hinweis, w = Begründung, f = 'neg' / 'q' (35 pro Zeitform = 245)
 const CTX=[
+ // Present Simple (35)
  {t:'SP',s:'My sister is a vegetarian. She never {eats} meat.',h:'eat',w:'never → Gewohnheit'},
  {t:'SP',s:'Tom {walks} to school every morning. It takes him ten minutes.',h:'walk',w:'every morning → Gewohnheit'},
  {t:'SP',s:'I\'m not a morning person. I usually {get} up at seven.',h:'get',w:'usually → Gewohnheit'},
@@ -298,7 +429,23 @@ const CTX=[
  {t:'SP',f:'q',s:'What time {do you usually have} dinner?',h:'you / usually / have',w:'usually → Gewohnheit'},
  {t:'SP',s:'Leon {knows} all the answers. He\'s really clever.',h:'know',w:'know ist ein Zustandsverb → kein Continuous'},
  {t:'SP',s:'In Switzerland, people {speak} four languages.',h:'speak',w:'Allgemeine Tatsache'},
+ {t:'SP',s:'Water {freezes} at zero degrees Celsius.',h:'freeze',w:'Naturgesetz / Tatsache'},
+ {t:'SP',f:'neg',s:'My phone is broken, so it {doesn\'t work} properly.',h:'not / work',w:'Dauerhafter Zustand'},
+ {t:'SP',s:'Every Sunday morning, my dad {bakes} fresh bread.',h:'bake',w:'Every Sunday morning → Gewohnheit'},
+ {t:'SP',f:'q',s:'{Does Sarah believe} in ghosts?',h:'Sarah / believe',w:'believe ist ein Zustandsverb → kein Continuous'},
+ {t:'SP',s:'This backpack {belongs} to my older brother.',h:'belong',w:'belong ist ein Zustandsverb → kein Continuous'},
+ {t:'SP',s:'The museum {opens} at 10 am from Tuesday to Sunday.',h:'open',w:'Öffnungszeiten / Fahrpläne → Present Simple'},
+ {t:'SP',f:'neg',s:'I {don\'t remember} his name. Sorry!',h:'not / remember',w:'remember ist ein Zustandsverb → kein Continuous'},
+ {t:'SP',s:'On Fridays, we always {order} pizza for dinner.',h:'order',w:'On Fridays / always → Gewohnheit'},
+ {t:'SP',f:'q',s:'How much {does this ticket cost}?',h:'this ticket / cost',w:'cost ist ein Zustandsverb → kein Continuous'},
+ {t:'SP',s:'My cousin lives in Canada, so we rarely {see} each other.',h:'see',w:'rarely → Regelmässigkeit'},
+ {t:'SP',s:'Bees {make} honey from flower nectar.',h:'make',w:'Allgemeine Tatsache'},
+ {t:'SP',f:'neg',s:'Noah {doesn\'t need} any help. He can do it alone.',h:'not / need',w:'need ist ein Zustandsverb → kein Continuous'},
+ {t:'SP',s:'Before bed, I always {brush} my teeth and read for ten minutes.',h:'brush',w:'always → tägliche Routine'},
+ {t:'SP',f:'q',s:'Which bus {goes} to the train station?',h:'go',w:'Fahrplan / regelmässige Route'},
+ {t:'SP',s:'A good dictionary {helps} when you learn new languages.',h:'help',w:'Allgemeine Tatsache'},
 
+ // Present Continuous (35)
  {t:'PP',s:'Look! The baby {is crying}. Can you help me?',h:'cry',w:'Look! → passiert gerade jetzt'},
  {t:'PP',s:'Please be quiet. Dad {is sleeping}.',h:'sleep',w:'be quiet → passiert gerade jetzt'},
  {t:'PP',s:'Where is Tim? – He\'s in the garden. He {is playing} with the dog.',h:'play',w:'Was er in diesem Moment tut'},
@@ -319,7 +466,23 @@ const CTX=[
  {t:'PP',s:'We {are learning} about the Romans in history this week.',h:'learn',w:'this week → läuft gerade, vorübergehend'},
  {t:'PP',f:'neg',s:'He isn\'t busy. He {isn\'t doing} anything right now.',h:'not / do',w:'right now → passiert gerade jetzt'},
  {t:'PP',s:'Be careful, the floor is wet! Someone {is cleaning} the kitchen.',h:'clean',w:'Passiert gerade jetzt'},
+ {t:'PP',s:'Hold on a second, I {am looking} for my keys.',h:'look',w:'Hold on → passiert gerade jetzt'},
+ {t:'PP',f:'neg',s:'Emma usually drinks tea, but today she {isn\'t drinking} anything.',h:'not / drink',w:'today → vorübergehende Situation'},
+ {t:'PP',s:'Look out the window! The neighbours {are painting} their fence.',h:'paint',w:'Look out the window → jetzt zu sehen'},
+ {t:'PP',f:'q',s:'Why {is Tom running} so fast? Is he late?',h:'Tom / run',w:'Frage nach dem, was gerade passiert'},
+ {t:'PP',s:'Smells great! Mum {is baking} apple pie in the kitchen.',h:'bake',w:'Passiert gerade jetzt'},
+ {t:'PP',s:'Our school team {is winning} 2:0 at the moment!',h:'win',w:'at the moment → laufendes Spiel'},
+ {t:'PP',f:'neg',s:'Don\'t bother him, he {isn\'t playing} – he\'s doing his homework.',h:'not / play',w:'Passiert gerade jetzt'},
+ {t:'PP',s:'My sister {is staying} with our aunt in Geneva this month.',h:'stay',w:'this month → vorübergehend'},
+ {t:'PP',f:'q',s:'{Are you using} this computer, or can I check my emails?',h:'you / use',w:'Frage nach dem Moment'},
+ {t:'PP',s:'Listen to that noise! Someone {is practicing} the drums upstairs.',h:'practice',w:'Listen → passiert gerade jetzt'},
+ {t:'PP',s:'Quick, grab your coat! Dad {is waiting} in the car.',h:'wait',w:'Quick → passiert gerade jetzt'},
+ {t:'PP',f:'neg',s:'We {aren\'t taking} the train today because there is a strike.',h:'not / take',w:'today → vorübergehende Ausnahme'},
+ {t:'PP',s:'Look at the scoreboard – our team {is losing}!',h:'lose',w:'Look at → aktueller Stand'},
+ {t:'PP',f:'q',s:'Where {is Mia going} with that huge suitcase?',h:'Mia / go',w:'Frage nach dem, was gerade geschieht'},
+ {t:'PP',s:'I {am sitting} on the train right now and watching the mountains.',h:'sit',w:'right now → passiert gerade jetzt'},
 
+ // Past Simple (35)
  {t:'SPA',s:'Last weekend we {went} to Europapark. It was great!',h:'go',w:'Last weekend → abgeschlossen, Zeitpunkt bekannt'},
  {t:'SPA',f:'neg',s:'I {didn\'t do} my homework yesterday because I was ill.',h:'not / do',w:'yesterday → Past Simple'},
  {t:'SPA',f:'q',s:'{Did you see} the football match last night?',h:'you / see',w:'last night → Past Simple'},
@@ -340,7 +503,23 @@ const CTX=[
  {t:'SPA',f:'q',s:'How {did you get} home after the party?',h:'you / get',w:'after the party → abgeschlossen'},
  {t:'SPA',f:'neg',s:'We {didn\'t win} the game on Saturday. We lost 1:3.',h:'not / win',w:'on Saturday → abgeschlossen'},
  {t:'SPA',s:'Leo {fell} asleep during the film last night.',h:'fall',w:'last night → Past Simple'},
+ {t:'SPA',s:'In 1969, Neil Armstrong {walked} on the moon.',h:'walk',w:'In 1969 → abgeschlossenes historisches Ereignis'},
+ {t:'SPA',f:'neg',s:'Sara {didn\'t come} to school on Monday because she had a fever.',h:'not / come',w:'on Monday → abgeschlossen'},
+ {t:'SPA',s:'I {woke} up at six this morning and went for a run.',h:'wake',w:'this morning (vorbei) → Past Simple'},
+ {t:'SPA',f:'q',s:'{Did your parents enjoy} their trip to Scotland?',h:'your parents / enjoy',w:'Abgeschlossene Reise in der Vergangenheit'},
+ {t:'SPA',s:'Tom {spent} all his money on a new skateboard last month.',h:'spend',w:'last month → Past Simple'},
+ {t:'SPA',s:'We {swam} in the lake every day during the summer holidays.',h:'swim',w:'during the summer holidays → abgeschlossen'},
+ {t:'SPA',f:'neg',s:'The bus was late, so I {didn\'t arrive} until nine.',h:'not / arrive',w:'Abgeschlossenes Ereignis in der Vergangenheit'},
+ {t:'SPA',s:'She {took} fifty photos at the zoo yesterday.',h:'take',w:'yesterday → Past Simple'},
+ {t:'SPA',f:'q',s:'Who {told} you about the surprise party?',h:'tell',w:'Abgeschlossene Handlung in der Vergangenheit'},
+ {t:'SPA',s:'Yesterday evening we {cooked} spaghetti and watched a movie.',h:'cook',w:'Yesterday evening → Past Simple'},
+ {t:'SPA',s:'My brother {caught} a huge fish when we went camping.',h:'catch',w:'when we went camping → abgeschlossen'},
+ {t:'SPA',f:'neg',s:'I {didn\'t hear} my alarm clock this morning!',h:'not / hear',w:'this morning → abgeschlossen'},
+ {t:'SPA',s:'They {built} this bridge over a hundred years ago.',h:'build',w:'over a hundred years ago → Past Simple'},
+ {t:'SPA',f:'q',s:'Why {did you leave} the concert so early?',h:'you / leave',w:'Abgeschlossenes Ereignis'},
+ {t:'SPA',s:'Emma {gave} me a great book for my birthday last year.',h:'give',w:'last year → Past Simple'},
 
+ // Past Continuous (35)
  {t:'PAP',s:'I {was having} breakfast when the phone rang.',h:'have',w:'Lief gerade, als etwas dazwischenkam (when …)'},
  {t:'PAP',s:'At 9 o\'clock last night we {were watching} a film.',h:'watch',w:'Zu einem Zeitpunkt in der Vergangenheit im Gang'},
  {t:'PAP',s:'It {was raining} when we left school.',h:'rain',w:'Lief gerade, als wir gingen'},
@@ -361,7 +540,23 @@ const CTX=[
  {t:'PAP',s:'When the teacher came in, the students {were talking} loudly.',h:'talk',w:'War im Gang, als die Lehrerin kam'},
  {t:'PAP',f:'q',s:'What {was Lisa wearing} at the party last night?',h:'Lisa / wear',w:'Zustand während der Party'},
  {t:'PAP',s:'I met my old teacher while I {was waiting} for the bus.',h:'wait',w:'while → Handlung lief gerade'},
+ {t:'PAP',s:'At 4 pm yesterday, Noah {was practicing} the guitar in his room.',h:'practice',w:'At 4 pm yesterday → Zeitpunkt in der Vergangenheit'},
+ {t:'PAP',f:'neg',s:'We {weren\'t looking} when the ball flew over the fence.',h:'not / look',w:'Lief (nicht), als etwas geschah'},
+ {t:'PAP',s:'While I {was walking} the dog, I found a twenty-franc note.',h:'walk',w:'While → laufende Handlung unterbrochen'},
+ {t:'PAP',f:'q',s:'Why {was the baby crying} at three in the morning?',h:'the baby / cry',w:'Bestimmter Zeitpunkt in der Vergangenheit'},
+ {t:'PAP',s:'Emma dropped her phone while she {was running} for the train.',h:'run',w:'while → Handlung lief gerade'},
+ {t:'PAP',s:'The wind {was blowing} hard and leaves were falling everywhere.',h:'blow',w:'Hintergrundbeschreibung in der Vergangenheit'},
+ {t:'PAP',f:'neg',s:'I {wasn\'t driving} fast when the accident happened.',h:'not / drive',w:'Lief (nicht), als der Unfall geschah'},
+ {t:'PAP',s:'We {were having} dinner when the doorbell suddenly rang.',h:'have',w:'Lief gerade, als es klingelte'},
+ {t:'PAP',f:'q',s:'{Were your friends waiting} for you at the station?',h:'your friends / wait',w:'War im Gang, als du ankamst'},
+ {t:'PAP',s:'While the boys {were playing} chess, the girls were painting.',h:'play',w:'While → zwei gleichzeitige Handlungen'},
+ {t:'PAP',s:'At 7.30 this morning I {was still sleeping}!',h:'still / sleep',w:'At 7.30 this morning → im Gang'},
+ {t:'PAP',f:'neg',s:'You {weren\'t listening} to me! You were looking at your phone.',h:'not / listen',w:'Was in dem Moment in der Vergangenheit geschah'},
+ {t:'PAP',s:'My dad hurt his back while he {was carrying} a heavy box.',h:'carry',w:'while → Handlung lief gerade'},
+ {t:'PAP',f:'q',s:'Where {were you sitting} when the fire alarm went off?',h:'you / sit',w:'Position während eines Ereignisses'},
+ {t:'PAP',s:'They {were swimming} in the sea when they spotted a dolphin.',h:'swim',w:'Lief gerade, als sie den Delfin sahen'},
 
+ // Present Perfect (35)
  {t:'PRP',s:'Oh no! I {have lost} my key. Now I can\'t open the door.',h:'lose',w:'Folge ist jetzt wichtig (Now I can\'t …)'},
  {t:'PRP',f:'q',s:'{Have you ever been} to London? – No, never.',h:'you / ever / be',w:'ever → Erfahrung bis jetzt'},
  {t:'PRP',s:'No, thanks, I\'m not hungry. I {have just eaten}.',h:'just / eat',w:'just → gerade eben, Folge jetzt'},
@@ -382,7 +577,23 @@ const CTX=[
  {t:'PRP',f:'q',s:'{Have you done} your homework yet?',h:'you / do',w:'yet → bis jetzt'},
  {t:'PRP',s:'My dad {has worked} at this company since 2010.',h:'work',w:'since → von damals bis jetzt'},
  {t:'PRP',s:'Lisa looks so different! She {has cut} her hair.',h:'cut',w:'Ergebnis jetzt sichtbar'},
+ {t:'PRP',s:'You don\'t need to clean the kitchen. I {have already done} it.',h:'already / do',w:'already → Ergebnis jetzt da'},
+ {t:'PRP',f:'neg',s:'We {haven\'t decided} where to go on holiday yet.',h:'not / decide',w:'yet → bis jetzt noch nicht'},
+ {t:'PRP',f:'q',s:'{Have you ever tried} climbing? It\'s awesome!',h:'you / ever / try',w:'ever → Erfahrung bis jetzt'},
+ {t:'PRP',s:'My phone battery is dead because I {have forgotten} my charger.',h:'forget',w:'Folge ist jetzt spürbar'},
+ {t:'PRP',s:'Noah {has collected} over 500 football stickers so far.',h:'collect',w:'so far → bis jetzt'},
+ {t:'PRP',f:'neg',s:'It {hasn\'t rained} for three weeks. The garden is really dry.',h:'not / rain',w:'for three weeks → Dauer bis jetzt'},
+ {t:'PRP',s:'Great news! Emma {has won} first prize in the art competition!',h:'win',w:'Neuigkeit mit Bezug zur Gegenwart'},
+ {t:'PRP',f:'q',s:'{Has the postman brought} any letters today?',h:'the postman / bring',w:'today → Zeitraum läuft noch'},
+ {t:'PRP',s:'I {have read} that book twice – it\'s my absolute favourite.',h:'read',w:'Erfahrung, Zeitpunkt unwichtig'},
+ {t:'PRP',f:'neg',s:'They {haven\'t arrived} yet. Maybe their train is delayed.',h:'not / arrive',w:'yet → bis jetzt noch nicht'},
+ {t:'PRP',s:'Look at the ground! It {has snowed} overnight.',h:'snow',w:'Ergebnis jetzt sichtbar'},
+ {t:'PRP',s:'My aunt {has been} a teacher for twenty years.',h:'be',w:'for twenty years → Dauer bis jetzt'},
+ {t:'PRP',f:'q',s:'{Have you found} your missing headphones yet?',h:'you / find',w:'yet → bis jetzt'},
+ {t:'PRP',s:'Someone {has eaten} all the biscuits! The tin is empty.',h:'eat',w:'Ergebnis jetzt sichtbar (tin is empty)'},
+ {t:'PRP',f:'neg',s:'I {have never flown} in a helicopter, but I\'d love to.',h:'never / fly',w:'never → Erfahrung bis jetzt'},
 
+ // will-Future (35)
  {t:'WF',s:'I think it {will rain} tomorrow. Take an umbrella.',h:'rain',w:'I think → Vermutung → will. «is going to rain» ist auch richtig, wenn man schon Anzeichen sieht (z. B. Wolken).',alt:['is going to rain']},
  {t:'WF',s:'The phone is ringing. – Don\'t worry, I {will get} it!',h:'get',w:'Spontane Entscheidung'},
  {t:'WF',f:'neg',s:'I promise I {won\'t tell} anyone your secret.',h:'not / tell',w:'I promise → Versprechen'},
@@ -403,7 +614,23 @@ const CTX=[
  {t:'WF',f:'q',s:'What do you think? {Will it be} sunny tomorrow?',h:'it / be',w:'What do you think → Vermutung → will. «Is it going to be» ist auch richtig.',alt:['Is it going to be']},
  {t:'WF',s:'I\'m hungry. – I {will make} you a sandwich.',h:'make',w:'Spontanes Angebot'},
  {t:'WF',s:'Perhaps we {will meet} again one day.',h:'meet',w:'Perhaps → Vermutung'},
+ {t:'WF',s:'Oh no, I forgot my pen! – Here, I {will lend} you mine.',h:'lend',w:'Spontanes Angebot im Moment'},
+ {t:'WF',f:'neg',s:'I\'m sure the exam {won\'t be} as hard as you think.',h:'not / be',w:'I\'m sure → Vermutung / Beruhigung'},
+ {t:'WF',s:'Wait for me! I {will come} with you!',h:'come',w:'Spontane Entscheidung'},
+ {t:'WF',f:'q',s:'{Will you pass} me the salt, please?',h:'you / pass',w:'Höfliche Bitte → will'},
+ {t:'WF',s:'One day, humans {will travel} to other solar systems.',h:'travel',w:'One day → ferne Zukunft / Vorhersage'},
+ {t:'WF',s:'I can\'t decide what to order. Hmm, I {will have} the pasta.',h:'have',w:'Spontane Entscheidung beim Bestellen'},
+ {t:'WF',f:'neg',s:'Don\'t worry, I {won\'t forget} to water your plants.',h:'not / forget',w:'Versprechen → won\'t'},
+ {t:'WF',s:'I hope everything {will go} well at your interview.',h:'go',w:'I hope → Wunsch / Vermutung'},
+ {t:'WF',f:'q',s:'Do you think people {will still read} paper books in 2080?',h:'still / read',w:'Do you think → Vermutung'},
+ {t:'WF',s:'Look, the door is locked. – No problem, I {will open} it.',h:'open',w:'Spontane Reaktion'},
+ {t:'WF',s:'Probably, electric planes {will carry} passengers in 30 years.',h:'carry',w:'Probably → Vermutung'},
+ {t:'WF',f:'neg',s:'If you don\'t hurry, you {won\'t catch} the last bus.',h:'not / catch',w:'Vorhersage / Warnung'},
+ {t:'WF',s:'I {will send} you the photos as soon as I get home, I promise.',h:'send',w:'I promise → Versprechen'},
+ {t:'WF',f:'q',s:'{Will you be} angry if I\'m five minutes late?',h:'you / be',w:'Frage nach einer Reaktion in der Zukunft'},
+ {t:'WF',s:'I guess Tom {will arrive} around seven o\'clock.',h:'arrive',w:'I guess → Vermutung'},
 
+ // going to-Future (35)
  {t:'GT',s:'Look at those dark clouds! It {is going to rain}.',h:'rain',w:'Sichere Anzeichen (dark clouds)'},
  {t:'GT',s:'We {are going to visit} our grandparents next weekend. It\'s all planned.',h:'visit',w:'It\'s all planned → Plan'},
  {t:'GT',s:'I\'ve bought the paint. I {am going to paint} my room on Saturday.',h:'paint',w:'Plan, schon vorbereitet'},
@@ -423,7 +650,22 @@ const CTX=[
  {t:'GT',s:'Mum has got flour, eggs and sugar. She {is going to bake} a cake.',h:'bake',w:'Sichere Anzeichen / Plan'},
  {t:'GT',f:'q',s:'Where {are you going to spend} your holidays this summer?',h:'you / spend',w:'Frage nach einem Plan'},
  {t:'GT',s:'It\'s 7.58! We {are going to be} late for school!',h:'be',w:'Sichere Anzeichen (7.58!) → going to. «will be» wird hier auch akzeptiert.',alt:['will be']},
- {t:'GT',s:'Leo {is going to have} a party on Friday. He has invited 20 people.',h:'have',w:'Plan, schon eingeladen'}
+ {t:'GT',s:'Leo {is going to have} a party on Friday. He has invited 20 people.',h:'have',w:'Plan, schon eingeladen'},
+ {t:'GT',s:'Look at the thermometer – it\'s minus five! The lake {is going to freeze}.',h:'freeze',w:'Sichere Anzeichen (minus five)'},
+ {t:'GT',f:'neg',s:'I {am not going to watch} TV tonight because I want to finish my book.',h:'not / watch',w:'Feste Absicht / Plan'},
+ {t:'GT',s:'Sarah has packed her bags. She {is going to fly} to Greece tomorrow morning.',h:'fly',w:'Plan, schon vorbereitet'},
+ {t:'GT',f:'q',s:'{Is your team going to participate} in the tournament next month?',h:'your team / participate',w:'Frage nach einem Plan'},
+ {t:'GT',s:'Careful with that cup! You {are going to spill} your tea!',h:'spill',w:'Sichere Anzeichen – gleich passiert es'},
+ {t:'GT',s:'Next week, our class {is going to visit} the science museum.',h:'visit',w:'Festgelegter Schulausflug / Plan'},
+ {t:'GT',f:'neg',s:'Noah {isn\'t going to play} on Saturday because he injured his ankle.',h:'not / play',w:'Steht schon fest'},
+ {t:'GT',s:'Look at the sky! The sun is coming out – it {is going to be} a lovely day.',h:'be',w:'Sichere Anzeichen am Himmel'},
+ {t:'GT',f:'q',s:'How long {are they going to stay} in Vienna?',h:'they / stay',w:'Frage nach Reiseplänen'},
+ {t:'GT',s:'My dad bought wood and nails. He {is going to build} a birdhouse.',h:'build',w:'Vorbereiteter Plan'},
+ {t:'GT',s:'Look at that dog running towards the puddle – it {is going to splash} us!',h:'splash',w:'Sichere Anzeichen'},
+ {t:'GT',f:'neg',s:'We {aren\'t going to eat} out tonight; Mum has already cooked.',h:'not / eat',w:'Steht schon fest'},
+ {t:'GT',s:'I\'ve made up my mind. I {am going to clean} my whole room this weekend.',h:'clean',w:'I\'ve made up my mind → feste Absicht'},
+ {t:'GT',f:'q',s:'What {is Emma going to wear} to the school dance?',h:'Emma / wear',w:'Frage nach einem Plan'},
+ {t:'GT',s:'The referee is looking at his watch. He {is going to blow} the final whistle!',h:'blow',w:'Sichere Anzeichen'}
 ];
 
 const rnd=a=>a[Math.floor(Math.random()*a.length)];
@@ -584,6 +826,15 @@ const TYPE_LABEL={rec:'🔍 Erkennen',fill:'✏️ Einsetzen',trans:'🔄 Umform
 let S={tenses:['SP'],mode:'fill',forms:['pos','neg','q'],count:10,hint:false};
 const save=()=>{};
 
+// Rundenübergreifendes Gedächtnis, damit Sätze erst nach Durchlauf wiederholt werden
+const globalSeen=new Set();
+function pickFresh(arr){
+ const fresh=arr.filter(x=>!globalSeen.has(x.s));
+ if(fresh.length)return rnd(fresh);
+ arr.forEach(x=>globalSeen.delete(x.s));
+ return rnd(arr);
+}
+
 let items=[],idx=0,score=0,results=[],answered=false,tries=0,infinite=false,seen=new Set(),studentName='';
 
 function renderSetup(){
@@ -618,9 +869,10 @@ function makeItem(type){
  const t=rnd(S.tenses),form=rnd(S.forms);
  if(type==='trans')return genTrans(t,S.forms,S.tenses);
  if(type==='short')return genShort(t);
- if(type==='ctx'){const c=CTX.filter(p=>p.t===t);return ctxItem(rnd(c))}
+ if(type==='ctx'){const c=CTX.filter(p=>p.t===t);const p=pickFresh(c);globalSeen.add(p.s);return ctxItem(p)}
  const pool=POOL.filter(p=>p.t===t&&(p.f||'pos')===form);
- const it=(pool.length&&Math.random()<.35)?poolItem(rnd(pool)):genItem(t,form);
+ if(pool.length&&Math.random()<.35){const p=pickFresh(pool);globalSeen.add(p.s);const it=poolItem(p);it.type=type;return it}
+ const it=genItem(t,form);
  it.type=type;return it;
 }
 function buildRound(n){
@@ -629,8 +881,8 @@ function buildRound(n){
   const type=S.mode==='mix'?rnd(['rec','fill','trans','short','ctx']):S.mode;
   let it;
   let k=0;
-  do{it=makeItem(type);k++}while(seen.has(it.sentence)&&k<30);
-  seen.add(it.sentence);out.push(it);
+  do{it=makeItem(type);k++}while((seen.has(it.sentence)||globalSeen.has(it.sentence))&&k<40);
+  seen.add(it.sentence);globalSeen.add(it.sentence);out.push(it);
  }
  return out;
 }
@@ -805,8 +1057,8 @@ document.getElementById('rulesBtn').onclick=()=>{
   <p>✓ ${d.pos}</p><p>✗ ${d.neg}</p><p>? ${d.q}</p><p style="color:var(--muted)">Signalwörter: <i>${d.sig}</i></p></div>`}).join('')}
  <details class="info"><summary><b>👩‍🏫 Info für Lehrpersonen</b></summary>
   <p><b>Zeitformen:</b> Present Simple, Present Continuous, Past Simple, Past Continuous, Present Perfect, will-Future, going to-Future.</p>
-  <p><b>Übungsarten:</b> Erkennen (Multiple Choice), Einsetzen (Signalwörter), Umformen (andere Zeit, Verneinung, Frage), Zeit wählen (140 Kontext-Aufgaben mit Begründung), Kurzantworten, Gemischt.</p>
-  <p><b>Aufgaben:</b> Ein Generator erzeugt laufend neue Sätze. Dazu kommen 210 handgeschriebene Sätze. Mit ∞ üben die Lernenden, bis sie auf „Fertig“ klicken.</p>
+  <p><b>Übungsarten:</b> Erkennen (Multiple Choice), Einsetzen (Signalwörter), Umformen (andere Zeit, Verneinung, Frage), Zeit wählen (245 Kontext-Aufgaben mit Begründung), Kurzantworten, Gemischt.</p>
+  <p><b>Aufgaben:</b> Ein Generator erzeugt laufend neue Sätze aus 24 Subjekten und 80 Verben. Dazu kommen 385 handgeschriebene Sätze. Mit ∞ üben die Lernenden, bis sie auf „Fertig“ klicken.</p>
   <p><b>Prüfung:</b> Kurz- und Langformen gelten beide (doesn't / does not), Gross-/Kleinschreibung zählt nicht. Bei Tippfehlern gibt es einen 2. Versuch – das wird in der Auswertung markiert.</p>
   <p><b>Resultate:</b> Am Schluss tragen die Lernenden ihren Namen ein und machen bei Bedarf einen Screenshot. Unter „Alle Antworten“ sehen sie jede Aufgabe mit Lösung.</p>
   <p><b>Datenschutz:</b> Kein Login, keine Daten werden gesendet oder gespeichert. Beim Neuladen startet die App immer mit Present Simple und Einsetzen.</p>
