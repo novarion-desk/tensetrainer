@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.3 – 17.11.2026
+- Satzgenerator überarbeitet: Jede Verb-Objekt-Kombination ist nur noch in den Zeitformen und mit den Signalwörtern erlaubt, die inhaltlich passen (z. B. keine «You don't tell a joke in the evening»).
+  - Tägliche Routinen nur mit every day / every morning, Missgeschicke (lose, forget, miss …) nur im Past Simple oder mit «has just …», «yet» nur bei erledigbaren Aufgaben.
+  - Schul-Objekte (homework, test) nicht mit Erwachsenen, Besitz im Singular (his room, her bike) nicht mit they / my parents.
+  - Signalwörter bereinigt (z. B. kein «when Mum came home» mehr, das mit «my mum» kollidieren konnte).
+
 ## Version 1.2 – 17.11.2026
 - Amerikanische und britische Schreibweise gelten beide (practise/practice, colour/color, favourite/favorite …).
 - Fragen nach dem Subjekt (Who told …? Which bus goes …?): Erklärung zeigt jetzt «kein do/does/did» statt der normalen Fragebildung.

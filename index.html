@@ -147,114 +147,120 @@ const SUBJ=[
  {w:'my brother',k:'3s',poss:'his',pr:['he']},
  {w:'my sister',k:'3s',poss:'her',pr:['she']},
  {w:'my best friend',k:'3s',poss:'his',pr:['he']},
- {w:'my mum',k:'3s',poss:'her',pr:['she']},
- {w:'my dad',k:'3s',poss:'his',pr:['he']},
- {w:'our teacher',k:'3s',poss:'her',pr:['she']},
+ {w:'my mum',k:'3s',poss:'her',pr:['she'],adult:1},
+ {w:'my dad',k:'3s',poss:'his',pr:['he'],adult:1},
+ {w:'our teacher',k:'3s',poss:'her',pr:['she'],adult:1},
  {w:'my cousin',k:'3s',poss:'his',pr:['he']},
- {w:'the coach',k:'3s',poss:'his',pr:['he']},
+ {w:'the coach',k:'3s',poss:'his',pr:['he'],adult:1},
  {w:'Tom',k:'3s',poss:'his',pr:['he']},
  {w:'Lisa',k:'3s',poss:'her',pr:['she']},
  {w:'Noah',k:'3s',poss:'his',pr:['he']},
  {w:'Emma',k:'3s',poss:'her',pr:['she']},
  {w:'my friends',k:'pl',poss:'their',pr:['they']},
- {w:'my parents',k:'pl',poss:'their',pr:['they']},
+ {w:'my parents',k:'pl',poss:'their',pr:['they'],adult:1},
  {w:'the students',k:'pl',poss:'their',pr:['they']},
  {w:'Mia and Leon',k:'pl',poss:'their',pr:['they']},
  {w:'Sara and Ben',k:'pl',poss:'their',pr:['they']},
- {w:'our neighbours',k:'pl',poss:'their',pr:['they']}
+ {w:'our neighbours',k:'pl',poss:'their',pr:['they'],adult:1}
 ];
 
+// Verb + Objekt, jeweils mit den Zeitformen, in denen die Kombination sinnvoll ist:
+// H = Gewohnheit (Present Simple) · N = gerade im Gang (Present/Past Continuous) · S = Past Simple
+// P = Present Perfect · F = Zukunft (will / going to)
+// Zusatz: X = Besitz im Singular (nicht mit they / my parents …) · T = «yet» passt (erledigbare Aufgabe) · E = «ever» passt (Erfahrung) · R = seltenes Ereignis
+//         D = tägliche Routine (every day / every morning) · K = nur für Kinder/Jugendliche · A = Missgeschick (nur Past Simple / «has just …»)
 const VERBS=[
- {b:'play',o:['football','video games','the guitar','tennis','basketball','volleyball','chess','board games']},
- {b:'watch',o:['a film','TV','a football match','a series','a documentary','the sunset']},
- {b:'eat',p:'ate',pp:'eaten',o:['a pizza','an apple','lunch','breakfast','a sandwich','chocolate','pasta']},
- {b:'drink',p:'drank',pp:'drunk',o:['a cup of tea','a glass of water','orange juice','hot chocolate','milk']},
- {b:'read',p:'read',pp:'read',o:['a book','a magazine','the news','a comic','an article','a novel']},
- {b:'write',p:'wrote',pp:'written',o:['an email','a letter','a story','a message','a poem','a summary']},
- {b:'do',p:'did',pp:'done',o:['{poss} homework','the dishes','the shopping','yoga','a puzzle']},
- {b:'make',p:'made',pp:'made',o:['a cake','breakfast','a video','a sandwich','a poster','coffee']},
- {b:'cook',o:['dinner','spaghetti','soup','rice','a meal']},
- {b:'go',p:'went',pp:'gone',o:['to school','to the cinema','swimming','shopping','to the gym',{o:'to London',rare:1,ever:1},{o:'to Paris',rare:1,ever:1}]},
- {b:'buy',p:'bought',pp:'bought',o:['new shoes','a present','bread','groceries','a ticket','a backpack']},
- {b:'clean',o:['the kitchen','the car','{poss} room','the bathroom','the windows']},
- {b:'tidy',o:['{poss} room','the garage','the desk','the living room']},
- {b:'visit',o:[{o:'London',rare:1,ever:1},{o:'Rome',rare:1,ever:1},'{poss} grandma','the museum','the zoo','{poss} aunt']},
- {b:'take',p:'took',pp:'taken',o:['the bus','a photo','the train','a break','a walk','notes']},
- {b:'ride',p:'rode',pp:'ridden',o:['a bike','a scooter',{o:'a horse',ever:1},{o:'a motorbike',ever:1}]},
- {b:'swim',p:'swam',pp:'swum',ing:'swimming',o:['in the lake','in the sea','in the pool']},
- {b:'run',p:'ran',pp:'run',ing:'running',o:['in the park','a marathon','to the station','around the lake']},
- {b:'sing',p:'sang',pp:'sung',o:['a song','in the choir','on stage']},
- {b:'draw',p:'drew',pp:'drawn',o:['a picture','a map','a portrait','a comic']},
- {b:'learn',o:['new words','French','Spanish','the lyrics','a new skill']},
- {b:'meet',p:'met',pp:'met',o:['{poss} friends','{poss} cousin','the team','at the station']},
- {b:'call',o:['{poss} grandma','a friend','{poss} parents','the doctor']},
- {b:'send',p:'sent',pp:'sent',o:['a message','a postcard','an email','a photo']},
- {b:'wash',o:['the car','the dishes','{poss} hands','the clothes']},
- {b:'listen',o:['to music','to a podcast','to the radio','to an audiobook']},
- {b:'walk',o:['the dog','to school','home','in the forest']},
- {b:'fly',p:'flew',pp:'flown',o:[{o:'to Spain',rare:1,ever:1},{o:'to New York',rare:1,ever:1},{o:'to Greece',rare:1,ever:1}]},
- {b:'win',p:'won',pp:'won',ing:'winning',o:['the game','the match',{o:'a prize',rare:1,ever:1},{o:'a medal',rare:1,ever:1}]},
- {b:'carry',o:['the bags','the boxes','the heavy backpack']},
- {b:'study',o:['for the test','English','maths','for the exam','history']},
- {b:'try',o:[{o:'sushi',ever:1},{o:'climbing',ever:1},{o:'surfing',ever:1},'a new recipe']},
- {b:'stop',dbl:1,o:['the car','the game','the noise']},
- {b:'plan',dbl:1,o:['a party','a trip','the weekend','a project']},
- {b:'chat',dbl:1,o:['with friends','online','after class']},
- {b:'travel',dbl:1,o:[{o:'to Italy',rare:1,ever:1},{o:'around Europe',rare:1,ever:1},'by train']},
- {b:'bring',p:'brought',pp:'brought',o:['a cake','snacks','the books','a gift']},
- {b:'build',p:'built',pp:'built',o:['a treehouse','a model','a snowman','a website']},
- {b:'feed',p:'fed',pp:'fed',o:['the cat','the dog','the birds','the fish']},
- {b:'fix',o:['{poss} bike','the computer','the door','the lamp']},
- {b:'finish',o:['{poss} homework','the project','the book','the race']},
- {b:'miss',o:['the bus','the train','the goal','the class']},
- {b:'catch',p:'caught',pp:'caught',o:['the bus','the ball','the train','a cold']},
- {b:'throw',p:'threw',pp:'thrown',o:['the ball','the paper away','the frisbee']},
- {b:'leave',p:'left',pp:'left',o:['the house','school','the party','early']},
- {b:'wear',p:'wore',pp:'worn',o:['a jacket','a cap','glasses','a helmet','sneakers']},
- {b:'tell',p:'told',pp:'told',o:['a joke','a story','the truth','a secret']},
- {b:'cut',p:'cut',pp:'cut',ing:'cutting',o:['the bread','the paper','the vegetables','the grass']},
- {b:'grow',p:'grew',pp:'grown',o:['tomatoes','flowers','vegetables','herbs']},
- {b:'help',o:['{poss} dad','the teacher','{poss} friend','in the kitchen']},
- {b:'open',o:['the window','the door','the box','the present']},
- {b:'close',o:['the door','the window','the book','the shop']},
- {b:'paint',o:['a picture','the fence','{poss} bedroom','a landscape']},
- {b:'dance',o:['at the party','in the living room','to the music']},
- {b:'bake',o:['cookies','a birthday cake','muffins','bread']},
- {b:'pack',o:['{poss} bag','the suitcase','lunch']},
- {b:'check',o:['{poss} phone','the timetable','the answers','the weather']},
- {b:'practice',o:['the piano','English','football','for the concert']},
- {b:'order',o:['a pizza','drinks','tickets online','a book']},
- {b:'repair',o:['the skateboard','the chair','the phone screen']},
- {b:'climb',o:['the mountain','a tree','the wall']},
- {b:'cross',o:['the street','the bridge','the river']},
- {b:'collect',o:['stamps','shells','old coins','stickers']},
- {b:'water',o:['the plants','the flowers','the garden']},
- {b:'share',o:['the snacks','a taxi','the link','an umbrella']},
- {b:'explain',o:['the rules','the task','the problem','the joke']},
- {b:'forget',p:'forgot',pp:'forgotten',o:['{poss} keys','the password','{poss} umbrella','the homework']},
- {b:'find',p:'found',pp:'found',o:['a wallet','the answer','{poss} phone','a shortcut']},
- {b:'lose',p:'lost',pp:'lost',o:['{poss} keys','the match','{poss} wallet','the ticket']},
- {b:'break',p:'broke',pp:'broken',o:['a glass','{poss} phone','a window','the record']},
- {b:'choose',p:'chose',pp:'chosen',o:['a movie','the team','a book','the colour']},
- {b:'speak',p:'spoke',pp:'spoken',o:['English','French','to the teacher','loudly']},
- {b:'spend',p:'spent',pp:'spent',o:['money','the afternoon','time with friends','the weekend outside']},
- {b:'sleep',p:'slept',pp:'slept',o:['well','for eight hours','on the sofa','in a tent']},
- {b:'wake',p:'woke',pp:'woken',o:['up early','up late']},
- {b:'sit',p:'sat',pp:'sat',ing:'sitting',o:['on the bench','in the garden','near the window','in the front row']},
- {b:'stand',p:'stood',pp:'stood',o:['at the bus stop','in line','near the door']},
- {b:'wait',o:['for the bus','for {poss} friends','outside','in the queue']},
- {b:'start',o:['the game','a new book','training','the engine']},
- {b:'answer',o:['the question','the phone','the email','the door']}
+ {b:'play',o:['football|HNSF','tennis|HNSF','basketball|HNSF','volleyball|HNSF','chess|HNSF','board games|HNSF','video games|HNSF','the guitar|HNSF']},
+ {b:'watch',o:['a film|HNSPF','TV|HNSFD','a football match|HNSPF','a documentary|NSPF','the sunset|NSF']},
+ {b:'eat',p:'ate',pp:'eaten',o:['an apple|HNSPFD','lunch|HNSPFDT','breakfast|HNSPFDT','a sandwich|HNSPF','pasta|HNSF']},
+ {b:'drink',p:'drank',pp:'drunk',o:['a cup of tea|HNSPFD','a glass of water|HNSPFD','orange juice|HNSFD','hot chocolate|HNSF','milk|HNSFD']},
+ {b:'read',p:'read',pp:'read',o:['a book|HNSPF','a magazine|HNSF','the news|HNSPFD','a comic|HNSPF']},
+ {b:'write',p:'wrote',pp:'written',o:['an email|NSPFT','a letter|NSPFT','a story|HNSPF','a poem|NSPF','a message|HNSPF']},
+ {b:'do',p:'did',pp:'done',o:['{poss} homework|HNSPFDTK','the dishes|HNSPFDT','the shopping|HNSPFT','yoga|HNSF','a puzzle|HNSPF']},
+ {b:'make',p:'made',pp:'made',o:['a cake|HNSPFT','breakfast|HNSPFDT','a video|HNSPF','a sandwich|HNSPF','coffee|HNSPFD']},
+ {b:'cook',o:['dinner|HNSPFDT','spaghetti|HNSPF','soup|HNSPF','a meal|NSPF']},
+ {b:'go',p:'went',pp:'gone',o:['to school|HNSDK','to the cinema|HNSF','swimming|HNSF','shopping|HNSF','to the gym|HNSF','to London|SPFER','to Paris|SPFER']},
+ {b:'buy',p:'bought',pp:'bought',o:['new shoes|NSPF','a present|NSPFT','bread|HNSPFD','groceries|HNSPF','a ticket|NSPFT','a backpack|NSPF']},
+ {b:'clean',o:['the kitchen|HNSPFT','the car|HNSPFT','{poss} room|HNSPFTX','the bathroom|HNSPFT','the windows|HNSPFT']},
+ {b:'tidy',o:['{poss} room|HNSPFTX','the garage|NSPFT','the desk|HNSPFT','the living room|HNSPFT']},
+ {b:'visit',o:['London|SPFER','Rome|SPFER','{poss} grandma|HNSPFX','the museum|NSF','the zoo|NSF','{poss} aunt|HNSPFX']},
+ {b:'take',p:'took',pp:'taken',o:['the bus|HNSFD','a photo|NSPF','the train|HNSFD','a break|HNSF','a walk|HNSF']},
+ {b:'ride',p:'rode',pp:'ridden',o:['a bike|HNSF','a scooter|HNSF','a horse|HNSPFE','a motorbike|NSPFE']},
+ {b:'swim',p:'swam',pp:'swum',ing:'swimming',o:['in the lake|HNSF','in the sea|HNSPFE','in the pool|HNSF']},
+ {b:'run',p:'ran',pp:'run',ing:'running',o:['in the park|HNSF','a marathon|SPFER','around the lake|HNSF']},
+ {b:'sing',p:'sang',pp:'sung',o:['a song|NSPF','in the choir|HNSF','on stage|NSPFE']},
+ {b:'draw',p:'drew',pp:'drawn',o:['a picture|HNSPF','a map|NSPFT','a portrait|NSPF','a comic|HNSPF']},
+ {b:'learn',o:['new words|HNSPF','French|HN','Spanish|HN','the lyrics|NSPFT']},
+ {b:'meet',p:'met',pp:'met',o:['{poss} friends|HNSF','{poss} cousin|HNSFX','the team|HNSF']},
+ {b:'call',o:['{poss} grandma|HNSPFTX','a friend|HNSF','{poss} parents|HNSPFT','the doctor|NSPFT']},
+ {b:'send',p:'sent',pp:'sent',o:['a message|HNSPF','a postcard|NSPFT','an email|NSPFT','a photo|NSPF']},
+ {b:'wash',o:['the car|HNSPFT','the dishes|HNSPFDT','{poss} hands|HNSPFD','the clothes|HNSPFT']},
+ {b:'listen',o:['to music|HNSFD','to a podcast|HNSF','to the radio|HNSFD','to an audiobook|HNSF']},
+ {b:'walk',o:['the dog|HNSPFDT','to school|HNSDK','home|HNSF','in the forest|HNSF']},
+ {b:'fly',p:'flew',pp:'flown',o:['to Spain|SPFER','to New York|SPFER','to Greece|SPFER']},
+ {b:'win',p:'won',pp:'won',ing:'winning',o:['the game|NSPF','the match|NSPF','a prize|SPFER','a medal|SPFER']},
+ {b:'carry',o:['the bags|NSF','the boxes|NSPF']},
+ {b:'study',o:['for the test|NSFK','English|HN','maths|HN','for the exam|NSFK','history|HN']},
+ {b:'try',o:['sushi|SPFE','climbing|SPFE','surfing|SPFE','a new recipe|NSPF']},
+ {b:'plan',dbl:1,o:['a party|NSPFT','a trip|NSPFT','a project|NSPF']},
+ {b:'chat',dbl:1,o:['with friends|HNSF','online|HNSF']},
+ {b:'travel',dbl:1,o:['to Italy|SPFER','around Europe|NSPFER','by train|HNSF']},
+ {b:'bring',p:'brought',pp:'brought',o:['a cake|SPF','snacks|SPF','the books|SPFT','a gift|SPF']},
+ {b:'build',p:'built',pp:'built',o:['a treehouse|NSPF','a model plane|NSPF','a snowman|NSPF','a website|NSPF']},
+ {b:'feed',p:'fed',pp:'fed',o:['the cat|HNSPFDT','the dog|HNSPFDT','the birds|HNSPFD','the fish|HNSPFDT']},
+ {b:'fix',o:['{poss} bike|NSPFTX','the computer|NSPFT','the door|NSPFT','the lamp|NSPFT']},
+ {b:'finish',o:['{poss} homework|NSPFTK','the project|NSPFT','the book|NSPFT','the race|SP']},
+ {b:'miss',o:['the bus|A','the train|A','the goal|A']},
+ {b:'catch',p:'caught',pp:'caught',o:['the bus|HNSFD','the train|HNSFD','the ball|NS','a cold|A']},
+ {b:'throw',p:'threw',pp:'thrown',o:['the ball|S','the frisbee|NSF']},
+ {b:'leave',p:'left',pp:'left',o:['the house|HNSPFD','the party|NSPF','early|HSF']},
+ {b:'wear',p:'wore',pp:'worn',o:['a jacket|NSF','a cap|NSF','a helmet|NSF']},
+ {b:'tell',p:'told',pp:'told',o:['a joke|SP','a story|HNSF','the truth|NS','a secret|SP']},
+ {b:'cut',p:'cut',pp:'cut',ing:'cutting',o:['the bread|NSPFT','the vegetables|NSPFT','the grass|HNSPFT']},
+ {b:'help',o:['{poss} dad|HNSPFX','the teacher|NSPF','{poss} friend|HNSPFX','in the kitchen|HNSPF']},
+ {b:'open',o:['the window|NSP','the door|NSP','the box|NSPT','the present|NSPFT']},
+ {b:'close',o:['the door|SP','the window|SP','the shop|HS']},
+ {b:'paint',o:['a picture|HNSPF','the fence|NSPFT','{poss} bedroom|NSPFTX','a landscape|NSPF']},
+ {b:'dance',o:['at the party|NSF','in the living room|HNSF','to the music|NS']},
+ {b:'bake',o:['cookies|HNSPF','a birthday cake|NSPFT','muffins|HNSPF','bread|HNSPF']},
+ {b:'pack',o:['{poss} bag|NSPFTX','the suitcase|NSPFT','lunch|HNSPFD']},
+ {b:'check',o:['{poss} phone|HNSPFDX','the timetable|NSPF','the answers|NSPFT','the weather|HNSPFD']},
+ {b:'practice',o:['the piano|HNSPF','football|HNSF','for the concert|NSF']},
+ {b:'order',o:['a pizza|HNSPF','drinks|NSPF','tickets online|NSPFT','a book|NSPF']},
+ {b:'repair',o:['the skateboard|NSPFT','the chair|NSPFT','the phone screen|NSPFT']},
+ {b:'climb',o:['the mountain|NSPFE','a tree|HNSPF','the wall|NSF']},
+ {b:'cross',o:['the street|HNSD','the bridge|NS','the river|NSF']},
+ {b:'collect',o:['shells on the beach|NSF','stickers for the album|NS']},
+ {b:'water',o:['the plants|HNSPFDT','the flowers|HNSPFT','the garden|HNSPFT']},
+ {b:'share',o:['the snacks|SPF','a taxi|SF','the link|SPF']},
+ {b:'explain',o:['the rules|NSPF','the task|NSPF','the problem|NSPF']},
+ {b:'forget',p:'forgot',pp:'forgotten',o:['{poss} keys|A','the password|A','{poss} umbrella|AX','{poss} homework|AK']},
+ {b:'find',p:'found',pp:'found',o:['a wallet|A','the answer|SPF','{poss} phone|SPX','a shortcut|SPF']},
+ {b:'lose',p:'lost',pp:'lost',o:['{poss} keys|A','the match|SPF','{poss} wallet|AX','the ticket|A']},
+ {b:'break',p:'broke',pp:'broken',o:['a glass|A','{poss} phone|AX','a window|A']},
+ {b:'choose',p:'chose',pp:'chosen',o:['a film|SF','the team|SF','a book|SF','the colour|SF']},
+ {b:'speak',p:'spoke',pp:'spoken',o:['English|HNS','French|HN','to the teacher|NSPF']},
+ {b:'spend',p:'spent',pp:'spent',o:['too much money|SP','time with friends|HNSF']},
+ {b:'sleep',p:'slept',pp:'slept',o:['on the sofa|NSF','in a tent|NSPFE','for ten hours|S']},
+ {b:'wake',p:'woke',pp:'woken',o:['up early|HS','up late|HS']},
+ {b:'sit',p:'sat',pp:'sat',ing:'sitting',o:['on the bench|NS','in the garden|NS','near the window|NS','in the front row|NSF']},
+ {b:'stand',p:'stood',pp:'stood',o:['at the bus stop|NS','in line|NS','near the door|NS']},
+ {b:'wait',o:['for the bus|HNSD','for {poss} friends|NSF','outside|NS','in the queue|NS']},
+ {b:'start',o:['the game|SF','a new book|SPF','the engine|SP']},
+ {b:'answer',o:['the question|SP','the phone|HSP','the email|NSPFT','the door|SP']}
 ];
 
 const MARK={
- SP:{d:['every day','every weekend','on Saturdays','twice a week','every morning','on Mondays','in the evening','after school','most days'],r:['every summer','once a year','every winter']},
- PP:{d:['right now','at the moment','now','today','this week']},
+ SP:{d:['every weekend','on Saturdays','twice a week','once a week','on Mondays','every Sunday'],day:['every day','every morning','every evening'],r:['every summer','once a year','every winter']},
+ PP:{d:['right now','at the moment','now']},
  SPA:{d:['yesterday','last week','two days ago','last weekend','on Monday','yesterday evening','three weeks ago','this morning'],r:['last summer','last year','in 2022']},
- PAP:{d:['when the phone rang',"at 8 o'clock last night",'at this time yesterday','when Mum came home','when it started to rain','at 6 pm yesterday','while we were eating']},
+ PAP:{d:['when the phone rang',"at 8 o'clock last night",'at this time yesterday','when it started to rain','at 6 pm yesterday','when the lights went out']},
  WF:{d:['tomorrow','next week','soon','tonight','this weekend','later'],r:['next year','one day','in the future']},
  GT:{d:['tomorrow','next weekend','this evening','next Monday','on Saturday','this afternoon'],r:['next summer','next year','in July']}
 };
+// Objekte aufbereiten: 'text|TAGS' → {o, tags}
+const TENSE_TAG={SP:'H',PP:'N',PAP:'N',SPA:'S',PRP:'P',WF:'F',GT:'F'};
+VERBS.forEach(v=>{v.o=v.o.map(x=>{const [o,g]=x.split('|');const tags=g.includes('A')?g+'SP':g;return {o,tags,rare:tags.includes('R'),ever:tags.includes('E'),yet:tags.includes('T'),day:tags.includes('D'),kid:tags.includes('K'),acc:tags.includes('A'),sing:tags.includes('X')}})});
 
 // Handgeschriebene Sätze: {gap} = Lösung, h = Hinweis in Klammern (20 pro Zeitform = 140)
 const POOL=[
@@ -686,15 +692,24 @@ function vforms(v){
  const p=v.p||(/e$/.test(b)?b+'d':cy?b.slice(0,-1)+'ied':v.dbl?b+last+'ed':b+'ed');
  return {b,s3,ing,p,pp:v.pp||p};
 }
-function pickObj(v){const o=rnd(v.o);return typeof o==='string'?{o}:o}
+// Passt das Objekt zu Zeitform, Satzart und Subjekt?
+function objOK(obj,t,form,s){
+ if(!obj.tags.includes(TENSE_TAG[t]))return false;
+ if(obj.kid&&s&&s.adult)return false;
+ if(obj.sing&&s&&s.k==='pl'&&s.w!=='you')return false;
+ if(obj.acc&&form==='neg')return false; // «didn't lose his wallet» klingt seltsam
+ if(t==='PRP'&&form!=='pos'){if(obj.acc)return false;if(!(obj.yet||(form==='q'&&obj.ever)))return false}
+ return true;
+}
 function markerFor(t,form,obj){
  if(t==='PRP'){
-  if(form==='pos')return {w:rnd(['already','just']),mid:true};
-  if(form==='q'&&obj.ever&&Math.random()<.6)return {w:'ever',mid:true};
+  if(form==='pos')return {w:obj.acc?'just':rnd(['already','just']),mid:true};
+  if(form==='q'&&obj.ever&&(!obj.yet||Math.random()<.6))return {w:'ever',mid:true};
   return {w:'yet',mid:false};
  }
  const m=MARK[t];let list=obj.rare&&m.r?m.r:m.d;
- if(t==='WF'&&form==='neg')list=list.filter(w=>w!=='soon'); // «won't … soon» klingt unnatürlich
+ if(t==='SP'&&!obj.rare&&obj.day)list=m.day; // tägliche Routine → every day / every morning
+ if(t==='WF'&&form==='neg')list=list.filter(w=>!['soon','one day','in the future'].includes(w)); // «won't … soon» klingt unnatürlich
  return {w:rnd(list),mid:false};
 }
 function build(t,form,s,vf,objStr,mk){
@@ -719,9 +734,19 @@ function build(t,form,s,vf,objStr,mk){
  return {before:cap(s.w)+' ',gap:form==='neg'?neg:pos,after:tail+'.'};
 }
 function pickSubj(noI){let s;do{s=rnd(SUBJ)}while(noI&&s.k==='1s');return s}
+// Zufälliges Verb + Objekt, das zu allen angegebenen Zeitformen passt
+function pickVO(tenses,form,s){
+ for(let i=0;i<500;i++){
+  const v=rnd(VERBS),obj=rnd(v.o);
+  if(tenses.every(t=>objOK(obj,t,form,s)))return {v,obj};
+ }
+ return null;
+}
 function genItem(t,form,o={}){
  const s=o.s||pickSubj(form==='q');
- const v=o.v||rnd(VERBS),vf=vforms(v),obj=o.obj||pickObj(v);
+ let v=o.v,obj=o.obj;
+ if(!v){const p=pickVO([t],form,s);v=p.v;obj=p.obj}
+ const vf=vforms(v);
  const objStr=obj.o.replace('{poss}',s.poss);
  const mk=o.mk||markerFor(t,form,obj);
  const p=build(t,form,s,vf,objStr,mk);
@@ -738,16 +763,20 @@ function genTrans(t,forms,tenses){
  let other=forms.filter(f=>f!=='pos');
  let kind=(forms.includes('pos')&&other.length&&Math.random()<.5)?'form':'tense';
  if(!srcT.length){kind='form';if(!other.length)other=['neg','q']}
- const v=rnd(VERBS),obj=pickObj(v);
  let src,tgt,instr;
  if(kind==='form'){
   const tf=rnd(other),s=pickSubj(tf==='q');
-  src=genItem(t,'pos',{s,v,obj});
-  tgt=genItem(t,tf,{s,v,obj,mk:(t==='PRP'||(t==='WF'&&tf==='neg'&&src.mk.w==='soon'))?null:src.mk});
+  const p=pickVO([t],'pos',s);let vo=p;
+  for(let i=0;i<300&&!(objOK(vo.obj,t,tf,s));i++)vo=pickVO([t],'pos',s);
+  src=genItem(t,'pos',{s,v:vo.v,obj:vo.obj});
+  tgt=genItem(t,tf,{s,v:vo.v,obj:vo.obj,mk:(t==='PRP'||(t==='WF'&&tf==='neg'&&src.mk.w==='soon'))?null:src.mk});
   instr=tf==='neg'?'Verneine den Satz.':'Mach eine Frage aus dem Satz.';
  }else{
-  const f=rnd(forms),s=pickSubj(f==='q'),S=rnd(srcT);
-  src=genItem(S,f,{s,v,obj});tgt=genItem(t,f,{s,v,obj});
+  const f=rnd(forms),s=pickSubj(f==='q');
+  let S=rnd(srcT),vo=pickVO([S,t],f,s);
+  for(let i=0;i<30&&!vo;i++){S=rnd(srcT);vo=pickVO([S,t],f,s)}
+  if(!vo)return genTrans(t,forms.includes('pos')?forms:['pos',...forms],[t]);
+  src=genItem(S,f,{s,v:vo.v,obj:vo.obj});tgt=genItem(t,f,{s,v:vo.v,obj:vo.obj});
   instr='Schreib den Satz im '+T[t].name+'.';
  }
  return {type:'trans',kind,t,form:tgt.form,src,tgt,instr,mk:tgt.mk,showMk:kind==='tense'||tgt.mk.w!==src.mk.w,sentence:tgt.sentence};
@@ -1068,7 +1097,7 @@ document.getElementById('rulesBtn').onclick=()=>{
  <details class="info"><summary><b>👩‍🏫 Info für Lehrpersonen</b></summary>
   <p><b>Zeitformen:</b> Present Simple, Present Continuous, Past Simple, Past Continuous, Present Perfect, will-Future, going to-Future.</p>
   <p><b>Übungsarten:</b> Erkennen (Multiple Choice), Einsetzen (Signalwörter), Umformen (andere Zeit, Verneinung, Frage), Zeit wählen (245 Kontext-Aufgaben mit Begründung), Kurzantworten, Gemischt.</p>
-  <p><b>Aufgaben:</b> Ein Generator erzeugt laufend neue Sätze aus 24 Subjekten und 80 Verben. Dazu kommen 385 handgeschriebene Sätze. Mit ∞ üben die Lernenden, bis sie auf „Fertig“ klicken.</p>
+  <p><b>Aufgaben:</b> Ein Generator erzeugt laufend neue Sätze aus 24 Subjekten und 78 Verben – jede Verb-Objekt-Kombination ist nur in den Zeitformen und mit den Signalwörtern erlaubt, die inhaltlich passen. Dazu kommen 385 handgeschriebene Sätze. Mit ∞ üben die Lernenden, bis sie auf „Fertig“ klicken.</p>
   <p><b>Prüfung:</b> Kurz- und Langformen gelten beide (doesn't / does not), Gross-/Kleinschreibung zählt nicht. Bei Tippfehlern gibt es einen 2. Versuch – das wird in der Auswertung markiert.</p>
   <p><b>Resultate:</b> Am Schluss tragen die Lernenden ihren Namen ein und machen bei Bedarf einen Screenshot. Unter „Alle Antworten“ sehen sie jede Aufgabe mit Lösung.</p>
   <p><b>Datenschutz:</b> Kein Login, keine Daten werden gesendet oder gespeichert. Beim Neuladen startet die App immer mit Present Simple und Einsetzen.</p>
