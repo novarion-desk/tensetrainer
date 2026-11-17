@@ -273,7 +273,7 @@ const POOL=[
  {t:'SP',f:'neg',s:'My little sister {doesn\'t know} how to swim yet.',h:'not / know'},
  {t:'SP',f:'q',s:'Where {do your grandparents live}?',h:'your grandparents / live'},
  {t:'SP',s:'Our dog always {barks} at the postman.',h:'bark'},
- {t:'SP',s:'Earth {goes} around the sun.',h:'go'},
+ {t:'SP',s:'The Earth {goes} around the sun.',h:'go'},
  {t:'SP',f:'neg',s:'I {don\'t drink} coffee in the evening.',h:'not / drink'},
  {t:'SP',f:'q',s:'{Does this train stop} in Bern?',h:'this train / stop'},
  {t:'SP',s:'Emma {practices} the violin twice a week.',h:'practice'},
@@ -296,7 +296,7 @@ const POOL=[
  {t:'PP',f:'q',s:'Who {are you waiting} for?',h:'you / wait'},
  {t:'PP',s:'I {am reading} a really exciting book this week.',h:'read'},
  {t:'PP',s:'The water {is boiling}. Can you turn off the stove?',h:'boil'},
- {t:'PP',f:'neg',s:'They {aren\'t coming} to the party tonight.',h:'not / come'},
+ {t:'PP',f:'neg',s:'We {aren\'t playing} outside right now because it\'s raining.',h:'not / play'},
  {t:'PP',f:'q',s:'{Is your brother studying} for his maths exam?',h:'your brother / study'},
  {t:'PP',s:'Watch out! A car {is coming}!',h:'come'},
  {t:'PP',s:'She {is talking} on the phone in the hallway.',h:'talk'},
@@ -328,7 +328,7 @@ const POOL=[
  {t:'PAP',s:'I {was having} a shower when the phone rang.',h:'have'},
  {t:'PAP',s:'At 8 o\'clock last night we {were watching} a film.',h:'watch'},
  {t:'PAP',s:'It {was raining} when we left the house.',h:'rain'},
- {t:'PAP',f:'q',s:'{Were you sleeping} when I called you?',h:'you / sleep'},
+ {t:'PAP',f:'q',s:'{Were you sleeping} when the fire alarm went off?',h:'you / sleep'},
  {t:'PAP',f:'neg',s:'She {wasn\'t listening} when the teacher explained the task.',h:'not / listen'},
  {t:'PAP',s:'While Tom {was cooking}, his sister was setting the table.',h:'cook'},
  {t:'PAP',f:'q',s:'What {were you doing} at this time yesterday?',h:'you / do'},
@@ -344,7 +344,7 @@ const POOL=[
  {t:'PAP',f:'q',s:'{Was it snowing} when you left school?',h:'it / snow'},
  {t:'PAP',s:'Birds {were singing} in the trees early that morning.',h:'sing'},
  {t:'PAP',s:'We {were crossing} the bridge when the fireworks began.',h:'cross'},
- {t:'PAP',f:'q',s:'Who {was talking} to Lisa in the corridor?',h:'talk'},
+ {t:'PAP',f:'q',sq:1,s:'Who {was talking} to Lisa in the corridor?',h:'talk'},
 
  // Present Perfect (20)
  {t:'PRP',s:'I {have already seen} this film.',h:'already / see'},
@@ -355,7 +355,7 @@ const POOL=[
  {t:'PRP',s:'My brother {has just passed} his driving test.',h:'just / pass'},
  {t:'PRP',f:'q',s:'{Has Nina called} you yet?',h:'Nina / call'},
  {t:'PRP',s:'I {have never eaten} sushi.',h:'never / eat'},
- {t:'PRP',s:'They {have known} each other for ten years.',h:'know'},
+ {t:'PRP',s:'They {have known} each other since primary school.',h:'know'},
  {t:'PRP',f:'neg',s:'He {hasn\'t done} his homework yet.',h:'not / do'},
  {t:'PRP',s:'We {have visited} three different countries this year.',h:'visit'},
  {t:'PRP',f:'q',s:'{Have you ever ridden} a horse?',h:'you / ever / ride'},
@@ -392,9 +392,9 @@ const POOL=[
 
  // going to-Future (20)
  {t:'GT',s:'We {are going to visit} our grandparents next weekend.',h:'visit'},
- {t:'GT',s:'Look at those dark clouds! It {is going to rain}.',h:'rain'},
+ {t:'GT',s:'Look at the grey sky! It {is going to snow}.',h:'snow'},
  {t:'GT',s:'I {am going to study} hard for the test.',h:'study'},
- {t:'GT',f:'q',s:'{Are you going to watch} the match tonight?',h:'you / watch'},
+ {t:'GT',f:'q',s:'{Are you going to visit} your cousins this weekend?',h:'you / visit'},
  {t:'GT',f:'neg',s:'She {isn\'t going to buy} that expensive jacket.',h:'not / buy'},
  {t:'GT',s:'My parents {are going to paint} the kitchen next month.',h:'paint'},
  {t:'GT',f:'q',s:'What {are you going to do} after school?',h:'you / do'},
@@ -402,7 +402,7 @@ const POOL=[
  {t:'GT',s:'Tom {is going to start} an apprenticeship next summer.',h:'start'},
  {t:'GT',f:'neg',s:'We {aren\'t going to take} the bus. We\'ll walk.',h:'not / take'},
  {t:'GT',s:'I {am going to clean} my room this afternoon.',h:'clean'},
- {t:'GT',f:'q',s:'Who {is going to bring} the drinks for the party?',h:'bring'},
+ {t:'GT',f:'q',sq:1,s:'Who {is going to bring} the drinks for the party?',h:'bring'},
  {t:'GT',f:'neg',s:'They {aren\'t going to travel} abroad this summer.',h:'not / travel'},
  {t:'GT',s:'Look at that glass on the edge! It {is going to fall}!',h:'fall'},
  {t:'GT',s:'Mia {is going to bake} a chocolate cake for her mum.',h:'bake'},
@@ -435,7 +435,7 @@ const CTX=[
  {t:'SP',s:'My mum is a nurse. She {works} at the hospital.',h:'work',w:'Beruf, dauerhafter Zustand'},
  {t:'SP',f:'q',s:'What time {do you usually have} dinner?',h:'you / usually / have',w:'usually → Gewohnheit'},
  {t:'SP',s:'Leon {knows} all the answers. He\'s really clever.',h:'know',w:'know ist ein Zustandsverb → kein Continuous'},
- {t:'SP',s:'In Switzerland, people {speak} four languages.',h:'speak',w:'Allgemeine Tatsache'},
+ {t:'SP',s:'In Switzerland, people {speak} four different languages.',h:'speak',w:'Allgemeine Tatsache'},
  {t:'SP',s:'Water {freezes} at zero degrees Celsius.',h:'freeze',w:'Naturgesetz / Tatsache'},
  {t:'SP',f:'neg',s:'My phone is broken, so it {doesn\'t work} properly.',h:'not / work',w:'Dauerhafter Zustand'},
  {t:'SP',s:'Every Sunday morning, my dad {bakes} fresh bread.',h:'bake',w:'Every Sunday morning → Gewohnheit'},
@@ -449,7 +449,7 @@ const CTX=[
  {t:'SP',s:'Bees {make} honey from flower nectar.',h:'make',w:'Allgemeine Tatsache'},
  {t:'SP',f:'neg',s:'Noah {doesn\'t need} any help. He can do it alone.',h:'not / need',w:'need ist ein Zustandsverb → kein Continuous'},
  {t:'SP',s:'Before bed, I always {brush} my teeth and read for ten minutes.',h:'brush',w:'always → tägliche Routine'},
- {t:'SP',f:'q',s:'Which bus {goes} to the train station?',h:'go',w:'Fahrplan / regelmässige Route'},
+ {t:'SP',f:'q',sq:1,s:'Which bus {goes} to the train station?',h:'go',w:'Fahrplan / regelmässige Route'},
  {t:'SP',s:'A good dictionary {helps} when you learn new languages.',h:'help',w:'Allgemeine Tatsache'},
 
  // Present Continuous (35)
@@ -518,7 +518,7 @@ const CTX=[
  {t:'SPA',s:'We {swam} in the lake every day during the summer holidays.',h:'swim',w:'during the summer holidays → abgeschlossen'},
  {t:'SPA',f:'neg',s:'The bus was late, so I {didn\'t arrive} until nine.',h:'not / arrive',w:'Abgeschlossenes Ereignis in der Vergangenheit'},
  {t:'SPA',s:'She {took} fifty photos at the zoo yesterday.',h:'take',w:'yesterday → Past Simple'},
- {t:'SPA',f:'q',s:'Who {told} you about the surprise party?',h:'tell',w:'Abgeschlossene Handlung in der Vergangenheit'},
+ {t:'SPA',f:'q',sq:1,s:'Who {told} you about the surprise party?',h:'tell',w:'Abgeschlossene Handlung in der Vergangenheit'},
  {t:'SPA',s:'Yesterday evening we {cooked} spaghetti and watched a movie.',h:'cook',w:'Yesterday evening → Past Simple'},
  {t:'SPA',s:'My brother {caught} a huge fish when we went camping.',h:'catch',w:'when we went camping → abgeschlossen'},
  {t:'SPA',f:'neg',s:'I {didn\'t hear} my alarm clock this morning!',h:'not / hear',w:'this morning → abgeschlossen'},
@@ -587,7 +587,7 @@ const CTX=[
  {t:'PRP',s:'You don\'t need to clean the kitchen. I {have already done} it.',h:'already / do',w:'already → Ergebnis jetzt da'},
  {t:'PRP',f:'neg',s:'We {haven\'t decided} where to go on holiday yet.',h:'not / decide',w:'yet → bis jetzt noch nicht'},
  {t:'PRP',f:'q',s:'{Have you ever tried} climbing? It\'s awesome!',h:'you / ever / try',w:'ever → Erfahrung bis jetzt'},
- {t:'PRP',s:'My phone battery is dead because I {have forgotten} my charger.',h:'forget',w:'Folge ist jetzt spürbar'},
+ {t:'PRP',s:'I can\'t charge my phone because I {have forgotten} my charger.',h:'forget',w:'Folge ist jetzt spürbar'},
  {t:'PRP',s:'Noah {has collected} over 500 football stickers so far.',h:'collect',w:'so far → bis jetzt'},
  {t:'PRP',f:'neg',s:'It {hasn\'t rained} for three weeks. The garden is really dry.',h:'not / rain',w:'for three weeks → Dauer bis jetzt'},
  {t:'PRP',s:'Great news! Emma {has won} first prize in the art competition!',h:'win',w:'Neuigkeit mit Bezug zur Gegenwart'},
@@ -598,7 +598,7 @@ const CTX=[
  {t:'PRP',s:'My aunt {has been} a teacher for twenty years.',h:'be',w:'for twenty years → Dauer bis jetzt'},
  {t:'PRP',f:'q',s:'{Have you found} your missing headphones yet?',h:'you / find',w:'yet → bis jetzt'},
  {t:'PRP',s:'Someone {has eaten} all the biscuits! The tin is empty.',h:'eat',w:'Ergebnis jetzt sichtbar (tin is empty)'},
- {t:'PRP',f:'neg',s:'I {have never flown} in a helicopter, but I\'d love to.',h:'never / fly',w:'never → Erfahrung bis jetzt'},
+ {t:'PRP',s:'I {have never flown} in a helicopter, but I\'d love to.',h:'never / fly',w:'never → Erfahrung bis jetzt'},
 
  // will-Future (35)
  {t:'WF',s:'I think it {will rain} tomorrow. Take an umbrella.',h:'rain',w:'I think → Vermutung → will. «is going to rain» ist auch richtig, wenn man schon Anzeichen sieht (z. B. Wolken).',alt:['is going to rain']},
@@ -628,10 +628,10 @@ const CTX=[
  {t:'WF',s:'One day, humans {will travel} to other solar systems.',h:'travel',w:'One day → ferne Zukunft / Vorhersage'},
  {t:'WF',s:'I can\'t decide what to order. Hmm, I {will have} the pasta.',h:'have',w:'Spontane Entscheidung beim Bestellen'},
  {t:'WF',f:'neg',s:'Don\'t worry, I {won\'t forget} to water your plants.',h:'not / forget',w:'Versprechen → won\'t'},
- {t:'WF',s:'I hope everything {will go} well at your interview.',h:'go',w:'I hope → Wunsch / Vermutung'},
- {t:'WF',f:'q',s:'Do you think people {will still read} paper books in 2080?',h:'still / read',w:'Do you think → Vermutung'},
+ {t:'WF',s:'I bet our team {will win} on Saturday.',h:'win',w:'I bet → Vermutung → will. «is going to win» ist auch richtig.',alt:['is going to win']},
+ {t:'WF',s:'Do you think people {will still read} paper books in 2080?',h:'still / read',w:'Do you think → Vermutung'},
  {t:'WF',s:'Look, the door is locked. – No problem, I {will open} it.',h:'open',w:'Spontane Reaktion'},
- {t:'WF',s:'Probably, electric planes {will carry} passengers in 30 years.',h:'carry',w:'Probably → Vermutung'},
+ {t:'WF',s:'Electric planes {will probably carry} passengers in 30 years.',h:'probably / carry',w:'Probably → Vermutung'},
  {t:'WF',f:'neg',s:'If you don\'t hurry, you {won\'t catch} the last bus.',h:'not / catch',w:'Vorhersage / Warnung'},
  {t:'WF',s:'I {will send} you the photos as soon as I get home, I promise.',h:'send',w:'I promise → Versprechen'},
  {t:'WF',f:'q',s:'{Will you be} angry if I\'m five minutes late?',h:'you / be',w:'Frage nach einer Reaktion in der Zukunft'},
@@ -693,7 +693,9 @@ function markerFor(t,form,obj){
   if(form==='q'&&obj.ever&&Math.random()<.6)return {w:'ever',mid:true};
   return {w:'yet',mid:false};
  }
- const m=MARK[t];return {w:rnd(obj.rare&&m.r?m.r:m.d),mid:false};
+ const m=MARK[t];let list=obj.rare&&m.r?m.r:m.d;
+ if(t==='WF'&&form==='neg')list=list.filter(w=>w!=='soon'); // «won't … soon» klingt unnatürlich
+ return {w:rnd(list),mid:false};
 }
 function build(t,form,s,vf,objStr,mk){
  const s3=s.k==='3s',i1=s.k==='1s';
@@ -728,7 +730,7 @@ function genItem(t,form,o={}){
 }
 function poolItem(p){
  const m=p.s.match(/^(.*)\{(.+?)\}(.*)$/);
- return {src:'pool',t:p.t,form:p.f||'pos',before:m[1],gap:m[2],after:m[3],hint:p.h,sentence:m[1]+m[2]+m[3],mk:null,alt:p.alt||[]};
+ return {src:'pool',t:p.t,form:p.f||'pos',sq:!!p.sq,before:m[1],gap:m[2],after:m[3],hint:p.h,sentence:m[1]+m[2]+m[3],mk:null,alt:p.alt||[]};
 }
 function ctxItem(p){const it=poolItem(p);it.type='ctx';it.why=p.w;return it}
 function genTrans(t,forms,tenses){
@@ -741,7 +743,7 @@ function genTrans(t,forms,tenses){
  if(kind==='form'){
   const tf=rnd(other),s=pickSubj(tf==='q');
   src=genItem(t,'pos',{s,v,obj});
-  tgt=genItem(t,tf,{s,v,obj,mk:t==='PRP'?null:src.mk});
+  tgt=genItem(t,tf,{s,v,obj,mk:(t==='PRP'||(t==='WF'&&tf==='neg'&&src.mk.w==='soon'))?null:src.mk});
   instr=tf==='neg'?'Verneine den Satz.':'Mach eine Frage aus dem Satz.';
  }else{
   const f=rnd(forms),s=pickSubj(f==='q'),S=rnd(srcT);
@@ -771,7 +773,8 @@ function genShort(t){
 }
 
 // ---------- Prüfen ----------
-const AE={traveled:'travelled',traveling:'travelling'};
+// Amerikanische und britische Schreibweise gelten beide (werden vor dem Vergleich vereinheitlicht)
+const AE={traveled:'travelled',traveling:'travelling',practise:'practice',practises:'practices',practised:'practiced',practising:'practicing',colour:'color',favourite:'favorite',neighbours:'neighbors',neighbour:'neighbor',centre:'center',theatre:'theater',realise:'realize',realised:'realized',organise:'organize',organised:'organized',grey:'gray',cancelled:'canceled',cancelling:'canceling'};
 function norm(str){
  let s=' '+String(str).toLowerCase().replace(/[’‘`´]/g,"'")+' ';
  s=s.replace(/\bwon't\b/g,'will not').replace(/\bcan't\b/g,'can not').replace(/n't\b/g,' not')
@@ -962,7 +965,7 @@ function explain(it){
  const d=T[it.t];
  if(it.type==='short')return `<div class="rule"><b>Kurzantwort:</b> Yes / No + Pronomen + <b>Hilfsverb aus der Frage</b> (do, does, did, am, is, are, was, were, have, has, will).<br>Aus „you“ wird „I“ oder „we“, aus „Tom“ wird „he“.</div><div class="rule"><span class="tt" style="--c:${d.c}">${d.name}</span></div>`;
  let h=it.why?`<div class="rule"><b>Warum?</b> ${esc(it.why)}</div>`:'';
- h+=`<div class="rule"><span class="tt" style="--c:${d.c}">${d.name}</span> ${d.use}.<br><b>Bildung:</b> ${d[it.form]}</div>`;
+ h+=`<div class="rule"><span class="tt" style="--c:${d.c}">${d.name}</span> ${d.use}.<br><b>Bildung:</b> ${it.sq?'Frage nach dem Subjekt (<b>Who / What / Which …?</b>): <b>kein</b> do / does / did, keine Umstellung – das Verb steht wie im Aussagesatz.':d[it.form]}</div>`;
  if(it.mk)h+=`<div class="rule"><b>Signalwort:</b> <i>${esc(it.mk.w)}</i> → ${d.name}</div>`;
  return h;
 }
