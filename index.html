@@ -978,7 +978,11 @@ function renderTask(){
   <div class="actions">${it.type==='rec'?'':'<button class="primary" id="go">Prüfen</button>'}</div></div>`;
  app.onclick=e=>{
   const b=e.target.closest('button');if(!b)return;
-  if(b.id==='quit')return (infinite&&results.length)?renderResults():renderSetup();
+  if(b.id==='quit'){
+  if(infinite&&results.length)return renderResults();
+  if(results.length&&!confirm('Runde wirklich beenden?\nDeine bisherigen Antworten gehen verloren.'))return;
+  return renderSetup();
+ }
   if(b.dataset.o&&!answered)return answerRec(b.dataset.o);
   if(b.id==='go')return answered?next():check();
  };

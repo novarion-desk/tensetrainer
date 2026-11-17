@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 1.4 – 17.11.2026
+- «✕ Beenden» während einer Runde fragt nach: «Runde wirklich beenden?» (nur wenn schon Antworten gegeben wurden).
+
 ## Version 1.3 – 17.11.2026
 - Satzgenerator überarbeitet: Jede Verb-Objekt-Kombination ist nur noch in den Zeitformen und mit den Signalwörtern erlaubt, die inhaltlich passen (z. B. keine «You don't tell a joke in the evening»).
   - Tägliche Routinen nur mit every day / every morning, Missgeschicke (lose, forget, miss …) nur im Past Simple oder mit «has just …», «yet» nur bei erledigbaren Aufgaben.
