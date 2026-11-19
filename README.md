@@ -11,6 +11,7 @@ Live-App: https://novarion-desk.github.io/tensetrainer/
 
 ## Zu einer älteren Version zurück
 
+- Version 2.0: https://novarion-desk.github.io/tensetrainer/versions/v2.0/
 - Version 1.4: https://novarion-desk.github.io/tensetrainer/versions/v1.4/
 - Version 1: https://novarion-desk.github.io/tensetrainer/versions/v1/
 
