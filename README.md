@@ -11,8 +11,9 @@ Live-App: https://novarion-desk.github.io/tensetrainer/
 
 ## Zu einer älteren Version zurück
 
+- Version 1.4: https://novarion-desk.github.io/tensetrainer/versions/v1.4/
 - Version 1: https://novarion-desk.github.io/tensetrainer/versions/v1/
 
 ## Daten
 
-Kein Login, nichts wird gesendet. Nur die Schriftgrösse wird im Browser gemerkt.
+Kein Login, nichts wird gesendet. Nur Sprache und Schriftgrösse werden im Browser gemerkt.

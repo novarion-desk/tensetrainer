@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 2.0 – 19.11.2026
+- App auf Englisch (Standard) oder Deutsch: Schalter **EN | DE** oben rechts, wird pro Gerät gemerkt. Übersetzt sind alle Knöpfe, Anleitungen, Rückmeldungen, Regeln, die Begründungen der 245 Kontext-Aufgaben und die Auswertung.
+- Neue **Verbliste** (📋 Verbs / Verben) neben den Regeln: alle drei Formen mit deutscher Übersetzung – zuerst 123 unregelmässige, dann 71 regelmässige Verben (alphabetisch). Suche nach jeder Form oder dem deutschen Wort, Filter Alle / Unregelmässig / Regelmässig. Bei den regelmässigen sind Schreibbesonderheiten markiert (Doppelkonsonant, y → ied, nur -d).
+
 ## Version 1.4 – 17.11.2026
 - «✕ Beenden» während einer Runde fragt nach: «Runde wirklich beenden?» (nur wenn schon Antworten gegeben wurden).
 

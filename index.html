@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -106,6 +106,29 @@ details.all[open] summary{margin-bottom:8px}
 .info{background:#f7f6f2;border-radius:10px;padding:12px 14px;margin:10px 0 4px;font-size:15px}
 .info p{margin:4px 0}
 footer{text-align:center;color:var(--muted);font-size:13px;margin-top:24px}
+header{flex-wrap:wrap;gap:8px}
+.lang{border-width:2px}.lang button{padding:4px 10px;font-size:14px;font-weight:800}
+/* Verbliste */
+.vtools{position:sticky;top:-20px;background:#fff;padding:4px 0 10px;z-index:2;border-bottom:1px solid var(--line);margin-bottom:6px}
+.vsearch{width:100%;font:inherit;font-size:17px;border:2px solid var(--line);border-radius:10px;padding:9px 12px;margin:8px 0}
+.vsearch:focus{outline:none;border-color:var(--accent)}
+.vrow2{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.vseg button{padding:5px 12px;font-size:14px}
+.vcount{color:var(--muted);font-size:14px}
+.vsec{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:800;margin:16px 0 4px}
+.vlegend{font-size:13px;color:var(--muted);margin:0 0 6px}
+.vt{width:100%;border-collapse:collapse;font-size:16px}
+.vt th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:6px 8px;border-bottom:2px solid var(--line)}
+.vt td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.vt tr:nth-child(even) td{background:#faf9f6}
+.vt td.b{font-weight:800}
+.vt td.de{color:var(--muted);font-size:15px}
+.vt td.f{color:#1d3fb3;font-weight:600}
+.vtag{display:inline-block;font-size:11px;font-weight:800;border-radius:6px;padding:1px 6px;margin-left:4px;vertical-align:1px;white-space:nowrap}
+.vtag.dbl,.vtag.y{background:var(--warnbg);color:var(--warn)}
+.vtag.e{background:#eef0f3;color:#5b6475}
+.vt mark{padding:0 1px}
+@media (max-width:560px){.vt thead th:last-child{display:none}.vt th{padding:6px}.vt tr{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--line)}.vt td{border:0;padding:4px 6px}.vt td.de{grid-column:1/-1;padding-top:0}}
 @media (max-width:520px){.sentence{font-size:19px}.opts{grid-template-columns:1fr}.stat{grid-template-columns:120px 1fr 40px}}
 </style>
 </head>
@@ -114,18 +137,25 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:24px}
   <header>
     <div class="logo">Tense<span>Trainer</span></div>
     <div class="hdr-r">
-      <button class="fs" id="fsMinus" aria-label="Schrift kleiner">A−</button>
-      <button class="fs" id="fsPlus" aria-label="Schrift grösser">A+</button>
-      <button class="btn-link" id="rulesBtn">📘 Regeln</button>
+      <div class="seg lang" id="langSeg" role="group" aria-label="Language / Sprache"><button data-l="en">EN</button><button data-l="de">DE</button></div>
+      <button class="fs" id="fsMinus" aria-label="A−">A−</button>
+      <button class="fs" id="fsPlus" aria-label="A+">A+</button>
+      <button class="btn-link" id="rulesBtn">📘 Rules</button>
+      <button class="btn-link" id="verbsBtn">📋 Verbs</button>
     </div>
   </header>
   <main id="app"></main>
-  <footer>Tense Trainer · Englisch Oberstufe</footer>
+  <footer id="foot">Tense Trainer</footer>
 </div>
 <div class="modal hidden" id="modal"><div class="card" id="modalBody"></div></div>
 
 <script>
 /*ENGINE*/
+// Sprache: Englisch (Standard) oder Deutsch – wird pro Gerät gemerkt
+let LANG='en';try{const l=localStorage.getItem('tt-lang');if(l==='de'||l==='en')LANG=l}catch(e){}
+const L=(de,en)=>LANG==='en'?en:de;
+const WHY_EN={"never → Gewohnheit": "never → habit", "every morning → Gewohnheit": "every morning → habit", "usually → Gewohnheit": "usually → habit", "want ist ein Zustandsverb → kein Continuous": "want is a state verb → no continuous", "Feste Zeiten, Fahrpläne → Present Simple": "fixed times, timetables → Present Simple", "like ist ein Zustandsverb (Vorliebe)": "like is a state verb (preference)", "every day → Gewohnheit": "every day → habit", "on Wednesday afternoons → regelmässig": "on Wednesday afternoons → regular", "three times a week → regelmässig": "three times a week → regular", "Naturgesetz / Tatsache": "law of nature / fact", "every summer → regelmässig": "every summer → regular", "understand ist ein Zustandsverb → kein Continuous": "understand is a state verb → no continuous", "How often → Frage nach einer Gewohnheit": "How often → question about a habit", "often → Gewohnheit": "often → habit", "Stundenplan → Present Simple": "timetable → Present Simple", "Allgemeine Tatsache": "general fact", "Beruf, dauerhafter Zustand": "job, permanent situation", "know ist ein Zustandsverb → kein Continuous": "know is a state verb → no continuous", "Dauerhafter Zustand": "permanent situation", "Every Sunday morning → Gewohnheit": "Every Sunday morning → habit", "believe ist ein Zustandsverb → kein Continuous": "believe is a state verb → no continuous", "belong ist ein Zustandsverb → kein Continuous": "belong is a state verb → no continuous", "Öffnungszeiten / Fahrpläne → Present Simple": "opening hours / timetables → Present Simple", "remember ist ein Zustandsverb → kein Continuous": "remember is a state verb → no continuous", "On Fridays / always → Gewohnheit": "On Fridays / always → habit", "cost ist ein Zustandsverb → kein Continuous": "cost is a state verb → no continuous", "rarely → Regelmässigkeit": "rarely → regularity", "need ist ein Zustandsverb → kein Continuous": "need is a state verb → no continuous", "always → tägliche Routine": "always → daily routine", "Fahrplan / regelmässige Route": "timetable / regular route", "Look! → passiert gerade jetzt": "Look! → happening right now", "be quiet → passiert gerade jetzt": "be quiet → happening right now", "Was er in diesem Moment tut": "what he is doing at this moment", "Listen! → passiert gerade jetzt": "Listen! → happening right now", "right now → passiert gerade jetzt": "right now → happening right now", "Was in diesem Moment (nicht) passiert": "what is (not) happening at this moment", "Frage nach dem, was gerade passiert": "question about what is happening now", "at the moment → passiert gerade jetzt": "at the moment → happening right now", "Hurry up! → passiert gerade jetzt": "Hurry up! → happening right now", "Shh! → passiert gerade jetzt": "Shh! → happening right now", "Look at … → jetzt zu sehen": "Look at … → you can see it now", "Was sie in diesem Moment tun": "what they are doing at this moment", "but today → Ausnahme, nicht die Gewohnheit": "but today → exception, not the habit", "Passiert gerade jetzt": "happening right now", "this week → läuft gerade, vorübergehend": "this week → in progress, temporary", "Hold on → passiert gerade jetzt": "Hold on → happening right now", "today → vorübergehende Situation": "today → temporary situation", "Look out the window → jetzt zu sehen": "Look out the window → you can see it now", "at the moment → laufendes Spiel": "at the moment → game in progress", "this month → vorübergehend": "this month → temporary", "Frage nach dem Moment": "question about the moment", "Listen → passiert gerade jetzt": "Listen → happening right now", "Quick → passiert gerade jetzt": "Quick → happening right now", "today → vorübergehende Ausnahme": "today → temporary exception", "Look at → aktueller Stand": "Look at → current state", "Frage nach dem, was gerade geschieht": "question about what is happening now", "Last weekend → abgeschlossen, Zeitpunkt bekannt": "Last weekend → finished, time known", "yesterday → Past Simple": "yesterday → Past Simple", "last night → Past Simple": "last night → Past Simple", "When I was six → abgeschlossen": "When I was six → finished", "Abgeschlossen, Mozart lebt nicht mehr": "finished, Mozart is no longer alive", "Yesterday → Past Simple": "Yesterday → Past Simple", "two years ago → Past Simple": "two years ago → Past Simple", "Abgeschlossene Abfolge in der Vergangenheit": "finished sequence in the past", "Kauf ist abgeschlossen, bestimmter Moment": "the purchase is finished, a specific moment", "in 2008 → Past Simple": "in 2008 → Past Simple", "when he was young → abgeschlossen": "when he was young → finished", "Abfolge von Handlungen in der Vergangenheit": "sequence of actions in the past", "in 1912 → Past Simple": "in 1912 → Past Simple", "in kindergarten → abgeschlossen": "in kindergarten → finished", "last week → Past Simple": "last week → Past Simple", "after the party → abgeschlossen": "after the party → finished", "on Saturday → abgeschlossen": "on Saturday → finished", "In 1969 → abgeschlossenes historisches Ereignis": "In 1969 → finished historical event", "on Monday → abgeschlossen": "on Monday → finished", "this morning (vorbei) → Past Simple": "this morning (over) → Past Simple", "Abgeschlossene Reise in der Vergangenheit": "finished trip in the past", "last month → Past Simple": "last month → Past Simple", "during the summer holidays → abgeschlossen": "during the summer holidays → finished", "Abgeschlossenes Ereignis in der Vergangenheit": "finished event in the past", "Abgeschlossene Handlung in der Vergangenheit": "finished action in the past", "Yesterday evening → Past Simple": "Yesterday evening → Past Simple", "when we went camping → abgeschlossen": "when we went camping → finished", "this morning → abgeschlossen": "this morning → finished", "over a hundred years ago → Past Simple": "over a hundred years ago → Past Simple", "Abgeschlossenes Ereignis": "finished event", "last year → Past Simple": "last year → Past Simple", "Lief gerade, als etwas dazwischenkam (when …)": "was in progress when something interrupted it (when …)", "Zu einem Zeitpunkt in der Vergangenheit im Gang": "in progress at a point in the past", "Lief gerade, als wir gingen": "was in progress when we left", "Lief gerade, als etwas passierte": "was in progress when something happened", "While → zwei Handlungen gleichzeitig im Gang": "While → two actions in progress at the same time", "while → Handlung lief gerade": "while → action was in progress", "Lief gerade in dem Moment": "was in progress at that moment", "Lief gerade, als der Sturm begann": "was in progress when the storm started", "Lief (nicht), als etwas passierte": "was (not) in progress when something happened", "Lief gerade, als ich anrief": "was in progress when I called", "War schon im Gang, als ich ankam": "was already in progress when I arrived", "This time yesterday → im Gang": "This time yesterday → in progress", "Hintergrund einer Geschichte": "background of a story", "Was (nicht) lief, als der Chef kam": "what was (not) going on when the boss came", "War im Gang, als die Lehrerin kam": "was in progress when the teacher came", "Zustand während der Party": "situation during the party", "At 4 pm yesterday → Zeitpunkt in der Vergangenheit": "At 4 pm yesterday → point in the past", "Lief (nicht), als etwas geschah": "was (not) in progress when something happened", "While → laufende Handlung unterbrochen": "While → action in progress was interrupted", "Bestimmter Zeitpunkt in der Vergangenheit": "specific point in the past", "Hintergrundbeschreibung in der Vergangenheit": "background description in the past", "Lief (nicht), als der Unfall geschah": "was (not) in progress when the accident happened", "Lief gerade, als es klingelte": "was in progress when the bell rang", "War im Gang, als du ankamst": "was in progress when you arrived", "While → zwei gleichzeitige Handlungen": "While → two actions at the same time", "At 7.30 this morning → im Gang": "At 7.30 this morning → in progress", "Was in dem Moment in der Vergangenheit geschah": "what was happening at that moment in the past", "Position während eines Ereignisses": "position during an event", "Lief gerade, als sie den Delfin sahen": "was in progress when they saw the dolphin", "Folge ist jetzt wichtig (Now I can't …)": "the result matters now (Now I can't …)", "ever → Erfahrung bis jetzt": "ever → experience up to now", "just → gerade eben, Folge jetzt": "just → a moment ago, result now", "yet → bis jetzt noch nicht": "yet → not up to now", "since → von damals bis jetzt": "since → from then until now", "already → bis jetzt, Zeitpunkt unwichtig": "already → up to now, time not important", "yet → bis jetzt": "yet → up to now", "never → Erfahrung bis jetzt": "never → experience up to now", "Ergebnis jetzt sichtbar": "result visible now", "for → Dauer bis jetzt": "for → duration up to now", "Folge jetzt wichtig (can't play today)": "the result matters now (can't play today)", "this week → Zeitraum ist noch nicht vorbei": "this week → the period is not over yet", "just → gerade eben": "just → a moment ago", "How long → Dauer bis jetzt": "How long → duration up to now", "already → Folge jetzt wichtig": "already → the result matters now", "Ergebnis jetzt da": "result is here now", "Erfahrung, Zeitpunkt unwichtig": "experience, time not important", "already → Ergebnis jetzt da": "already → result is here now", "Folge ist jetzt spürbar": "the result can be felt now", "so far → bis jetzt": "so far → up to now", "for three weeks → Dauer bis jetzt": "for three weeks → duration up to now", "Neuigkeit mit Bezug zur Gegenwart": "news connected to the present", "today → Zeitraum läuft noch": "today → the period is still going on", "for twenty years → Dauer bis jetzt": "for twenty years → duration up to now", "Ergebnis jetzt sichtbar (tin is empty)": "result visible now (tin is empty)", "I think → Vermutung → will. «is going to rain» ist auch richtig, wenn man schon Anzeichen sieht (z. B. Wolken).": "I think → assumption → will. «is going to rain» is also correct if you can already see signs (e.g. clouds).", "Spontane Entscheidung": "spontaneous decision", "I promise → Versprechen": "I promise → promise", "Maybe → Vermutung über die Zukunft": "Maybe → assumption about the future", "Spontanes Angebot": "spontaneous offer", "Do you think → Vermutung → will. «is going to win» ist auch möglich.": "Do you think → assumption → will. «is going to win» is also possible.", "I'm sure → Vermutung → will. «are going to pass» geht auch, weil es ein Anzeichen gibt (You studied a lot).": "I'm sure → assumption → will. «are going to pass» also works because there is a sign (You studied a lot).", "Bitte → will": "request → will", "Warnung / Vorhersage": "warning / prediction", "Vorhersage über die ferne Zukunft": "prediction about the distant future", "probably → Vermutung → will. «isn't going to come» geht auch, weil es ein Anzeichen gibt (She's ill).": "probably → assumption → will. «isn't going to come» also works because there is a sign (She's ill).", "I don't think → Vermutung → will. «is going to snow» ist auch richtig.": "I don't think → assumption → will. «is going to snow» is also correct.", "What do you think → Vermutung → will. «Is it going to be» ist auch richtig.": "What do you think → assumption → will. «Is it going to be» is also correct.", "Perhaps → Vermutung": "Perhaps → assumption", "Spontanes Angebot im Moment": "spontaneous offer in the moment", "I'm sure → Vermutung / Beruhigung": "I'm sure → assumption / reassurance", "Höfliche Bitte → will": "polite request → will", "One day → ferne Zukunft / Vorhersage": "One day → distant future / prediction", "Spontane Entscheidung beim Bestellen": "spontaneous decision when ordering", "Versprechen → won't": "promise → won't", "I bet → Vermutung → will. «is going to win» ist auch richtig.": "I bet → assumption → will. «is going to win» is also correct.", "Do you think → Vermutung": "Do you think → assumption", "Spontane Reaktion": "spontaneous reaction", "Probably → Vermutung": "Probably → assumption", "Vorhersage / Warnung": "prediction / warning", "Frage nach einer Reaktion in der Zukunft": "question about a reaction in the future", "I guess → Vermutung": "I guess → assumption", "Sichere Anzeichen (dark clouds)": "clear signs (dark clouds)", "It's all planned → Plan": "It's all planned → plan", "Plan, schon vorbereitet": "plan, already prepared", "Sichere Anzeichen – gleich passiert es": "clear signs – it is about to happen", "has decided → Absicht": "has decided → intention", "Frage nach einem Plan": "question about a plan", "Entscheidung / Absicht": "decision / intention", "Plan, schon festgelegt": "plan, already fixed", "Sichere Anzeichen": "clear signs", "Plan, Ticket schon gekauft": "plan, ticket already bought", "Plan, schon angemeldet": "plan, already signed up", "We've decided → Absicht": "We've decided → intention", "Absicht, Plan": "intention, plan", "Sichere Anzeichen / Plan": "clear signs / plan", "Sichere Anzeichen (7.58!) → going to. «will be» wird hier auch akzeptiert.": "clear signs (7.58!) → going to. «will be» is also accepted here.", "Plan, schon eingeladen": "plan, already invited", "Sichere Anzeichen (minus five)": "clear signs (minus five)", "Feste Absicht / Plan": "firm intention / plan", "Festgelegter Schulausflug / Plan": "fixed school trip / plan", "Steht schon fest": "already decided", "Sichere Anzeichen am Himmel": "clear signs in the sky", "Frage nach Reiseplänen": "question about travel plans", "Vorbereiteter Plan": "prepared plan", "I've made up my mind → feste Absicht": "I've made up my mind → firm intention"};
+const whyText=w=>LANG==='en'&&WHY_EN[w]?WHY_EN[w]:w;
 const ORDER=['SP','PP','SPA','PAP','PRP','WF','GT'];
 const T={
  SP:{name:'Present Simple',c:'#2f5bea',use:'Gewohnheiten, Regelmässiges, Fakten',pos:'Grundform – bei he / she / it + <b>-s</b>',neg:"<b>don't / doesn't</b> + Grundform",q:'<b>Do / Does</b> + Subjekt + Grundform',sig:'every day, usually, often, always, never, on Mondays'},
@@ -136,6 +166,17 @@ const T={
  WF:{name:'will-Future',c:'#db2777',use:'Vorhersagen, Vermutungen, spontane Entscheidungen, Versprechen',pos:'<b>will</b> + Grundform',neg:"<b>won't</b> + Grundform",q:'<b>Will</b> + Subjekt + Grundform',sig:'tomorrow, soon, one day, I think …, probably'},
  GT:{name:'going to-Future',c:'#15803d',use:'Pläne, Absichten, sichere Anzeichen',pos:'<b>am / is / are + going to</b> + Grundform',neg:"<b>am not / isn't / aren't + going to</b> + Grundform",q:'<b>Am / Is / Are</b> + Subjekt + <b>going to</b> + Grundform',sig:'tomorrow, next weekend, this evening, Look at …!'}
 };
+
+const T_EN={
+ SP:{use:'habits, routines, facts',pos:'base form – with he / she / it + <b>-s</b>',neg:"<b>don't / doesn't</b> + base form",q:'<b>Do / Does</b> + subject + base form'},
+ PP:{use:'happening right now',pos:'<b>am / is / are</b> + verb-<b>ing</b>',neg:"<b>am not / isn't / aren't</b> + verb-ing",q:'<b>Am / Is / Are</b> + subject + verb-ing'},
+ SPA:{use:'finished in the past, time is known',pos:'verb + <b>-ed</b> or irregular form (go → went)',neg:"<b>didn't</b> + base form",q:'<b>Did</b> + subject + base form'},
+ PAP:{use:'was in progress in the past',pos:'<b>was / were</b> + verb-<b>ing</b>',neg:"<b>wasn't / weren't</b> + verb-ing",q:'<b>Was / Were</b> + subject + verb-ing'},
+ PRP:{use:'past with a link to the present, time not important',pos:'<b>have / has</b> + 3rd form (gone, seen, played)',neg:"<b>haven't / hasn't</b> + 3rd form",q:'<b>Have / Has</b> + subject + 3rd form'},
+ WF:{use:'predictions, assumptions, spontaneous decisions, promises',pos:'<b>will</b> + base form',neg:"<b>won't</b> + base form",q:'<b>Will</b> + subject + base form'},
+ GT:{use:'plans, intentions, clear signs',pos:'<b>am / is / are + going to</b> + base form',neg:"<b>am not / isn't / aren't + going to</b> + base form",q:'<b>Am / Is / Are</b> + subject + <b>going to</b> + base form'}
+};
+const TD=(k,f)=>LANG==='en'?T_EN[k][f]:T[k][f];
 
 const SUBJ=[
  {w:'I',k:'1s',poss:'my',pr:['I']},
@@ -770,14 +811,14 @@ function genTrans(t,forms,tenses){
   for(let i=0;i<300&&!(objOK(vo.obj,t,tf,s));i++)vo=pickVO([t],'pos',s);
   src=genItem(t,'pos',{s,v:vo.v,obj:vo.obj});
   tgt=genItem(t,tf,{s,v:vo.v,obj:vo.obj,mk:(t==='PRP'||(t==='WF'&&tf==='neg'&&src.mk.w==='soon'))?null:src.mk});
-  instr=tf==='neg'?'Verneine den Satz.':'Mach eine Frage aus dem Satz.';
+  instr=tf==='neg'?'neg':'q';
  }else{
   const f=rnd(forms),s=pickSubj(f==='q');
   let S=rnd(srcT),vo=pickVO([S,t],f,s);
   for(let i=0;i<30&&!vo;i++){S=rnd(srcT);vo=pickVO([S,t],f,s)}
   if(!vo)return genTrans(t,forms.includes('pos')?forms:['pos',...forms],[t]);
   src=genItem(S,f,{s,v:vo.v,obj:vo.obj});tgt=genItem(t,f,{s,v:vo.v,obj:vo.obj});
-  instr='Schreib den Satz im '+T[t].name+'.';
+  instr='tense';
  }
  return {type:'trans',kind,t,form:tgt.form,src,tgt,instr,mk:tgt.mk,showMk:kind==='tense'||tgt.mk.w!==src.mk.w,sentence:tgt.sentence};
 }
@@ -834,15 +875,15 @@ function errHint(it,user){
  if(!g.vf)return '';
  const u=' '+norm(user)[0]+' ',has=w=>u.includes(' '+w+' ');
  const v=g.vf,t=g.t,f=g.form,s3=g.s.k==='3s';
- if(t==='SPA'&&f!=='pos'&&v.p!==v.b&&has(v.p))return `Nach <b>did / didn't</b> steht die Grundform: <b>${v.b}</b> (nicht ${v.p}).`;
- if(t==='SP'&&f!=='pos'&&s3&&has(v.s3))return `Nach <b>does / doesn't</b> steht die Grundform ohne -s: <b>${v.b}</b>.`;
- if(t==='SP'&&f==='pos'&&s3&&has(v.b)&&!has(v.s3))return `he / she / it – das <b>-s</b> muss mit: <b>${v.s3}</b>.`;
- if(t==='PRP'&&v.p!==v.pp&&has(v.p)&&!has(v.pp))return `Present Perfect braucht die 3. Form: <b>${v.pp}</b> (nicht ${v.p}).`;
- if((t==='PP'||t==='PAP')&&!has(v.ing))return `Continuous-Form: Verb + <b>-ing</b> → <b>${v.ing}</b>.`;
- if(t==='PP'&&!['am','is','are'].some(has))return `Vergiss <b>am / is / are</b> nicht.`;
- if(t==='PAP'&&!['was','were'].some(has))return `Vergiss <b>was / were</b> nicht.`;
- if(t==='GT'&&!has('going'))return `going to-Future: <b>am / is / are + going to</b> + Grundform.`;
- if(t==='WF'&&!has('will'))return `will-Future: <b>will</b> (verneint: <b>won't</b>) + Grundform.`;
+ if(t==='SPA'&&f!=='pos'&&v.p!==v.b&&has(v.p))return L(`Nach <b>did / didn't</b> steht die Grundform: <b>${v.b}</b> (nicht ${v.p}).`,`After <b>did / didn't</b> use the base form: <b>${v.b}</b> (not ${v.p}).`);
+ if(t==='SP'&&f!=='pos'&&s3&&has(v.s3))return L(`Nach <b>does / doesn't</b> steht die Grundform ohne -s: <b>${v.b}</b>.`,`After <b>does / doesn't</b> use the base form without -s: <b>${v.b}</b>.`);
+ if(t==='SP'&&f==='pos'&&s3&&has(v.b)&&!has(v.s3))return L(`he / she / it – das <b>-s</b> muss mit: <b>${v.s3}</b>.`,`he / she / it – don't forget the <b>-s</b>: <b>${v.s3}</b>.`);
+ if(t==='PRP'&&v.p!==v.pp&&has(v.p)&&!has(v.pp))return L(`Present Perfect braucht die 3. Form: <b>${v.pp}</b> (nicht ${v.p}).`,`The Present Perfect needs the 3rd form: <b>${v.pp}</b> (not ${v.p}).`);
+ if((t==='PP'||t==='PAP')&&!has(v.ing))return L(`Continuous-Form: Verb + <b>-ing</b> → <b>${v.ing}</b>.`,`Continuous form: verb + <b>-ing</b> → <b>${v.ing}</b>.`);
+ if(t==='PP'&&!['am','is','are'].some(has))return L(`Vergiss <b>am / is / are</b> nicht.`,`Don't forget <b>am / is / are</b>.`);
+ if(t==='PAP'&&!['was','were'].some(has))return L(`Vergiss <b>was / were</b> nicht.`,`Don't forget <b>was / were</b>.`);
+ if(t==='GT'&&!has('going'))return L(`going to-Future: <b>am / is / are + going to</b> + Grundform.`,`going to-future: <b>am / is / are + going to</b> + base form.`);
+ if(t==='WF'&&!has('will'))return L(`will-Future: <b>will</b> (verneint: <b>won't</b>) + Grundform.`,`will-future: <b>will</b> (negative: <b>won't</b>) + base form.`);
  return '';
 }
 /*END ENGINE*/
@@ -850,16 +891,18 @@ function errHint(it,user){
 // ---------- App ----------
 const app=document.getElementById('app');
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const MODES=[
- {k:'rec',icon:'🔍',label:'Erkennen',desc:'Welche Zeitform ist das?'},
- {k:'fill',icon:'✏️',label:'Einsetzen',desc:'Verb in die richtige Form setzen'},
- {k:'trans',icon:'🔄',label:'Umformen',desc:'Andere Zeit, verneinen, Frage'},
- {k:'ctx',icon:'🧩',label:'Zeit wählen',desc:'Aus dem Zusammenhang die richtige Zeit finden'},
- {k:'short',icon:'💬',label:'Kurzantworten',desc:'Yes, she does. / No, I haven\'t.'},
- {k:'mix',icon:'🎲',label:'Gemischt',desc:'Alles durcheinander'}
+const MODES_=()=>[
+ {k:'rec',icon:'🔍',label:L('Erkennen','Recognise'),desc:L('Welche Zeitform ist das?','Which tense is it?')},
+ {k:'fill',icon:'✏️',label:L('Einsetzen','Fill in'),desc:L('Verb in die richtige Form setzen','Put the verb in the correct form')},
+ {k:'trans',icon:'🔄',label:L('Umformen','Transform'),desc:L('Andere Zeit, verneinen, Frage','Other tense, negative, question')},
+ {k:'ctx',icon:'🧩',label:L('Zeit wählen','Choose the tense'),desc:L('Aus dem Zusammenhang die richtige Zeit finden','Find the right tense from the context')},
+ {k:'short',icon:'💬',label:L('Kurzantworten','Short answers'),desc:'Yes, she does. / No, I haven\'t.'},
+ {k:'mix',icon:'🎲',label:L('Gemischt','Mixed'),desc:L('Alles durcheinander','Everything mixed up')}
 ];
-const FORMS=[{k:'pos',l:'✓ positiv'},{k:'neg',l:'✗ verneint'},{k:'q',l:'? Frage'}];
-const TYPE_LABEL={rec:'🔍 Erkennen',fill:'✏️ Einsetzen',trans:'🔄 Umformen',short:'💬 Kurzantwort',ctx:'🧩 Zeit wählen'};
+const FORMS_=()=>[{k:'pos',l:L('✓ positiv','✓ positive')},{k:'neg',l:L('✗ verneint','✗ negative')},{k:'q',l:L('? Frage','? question')}];
+const TYPE_LABEL_=()=>({rec:L('🔍 Erkennen','🔍 Recognise'),fill:L('✏️ Einsetzen','✏️ Fill in'),trans:L('🔄 Umformen','🔄 Transform'),short:L('💬 Kurzantwort','💬 Short answer'),ctx:L('🧩 Zeit wählen','🧩 Choose the tense')});
+const instrText=it=>it.instr==='neg'?L('Verneine den Satz.','Make the sentence negative.'):it.instr==='q'?L('Mach eine Frage aus dem Satz.','Turn the sentence into a question.'):L('Schreib den Satz im '+T[it.t].name+'.','Write the sentence in the '+T[it.t].name+'.');
+let screen='setup';
 
 // Startzustand: immer Present Simple + Einsetzen
 let S={tenses:['SP'],mode:'fill',forms:['pos','neg','q'],count:10,hint:false};
@@ -877,18 +920,20 @@ function pickFresh(arr){
 let items=[],idx=0,score=0,results=[],answered=false,tries=0,infinite=false,seen=new Set(),studentName='';
 
 function renderSetup(){
+ screen='setup';items=[];
+ const MODES=MODES_(),FORMS=FORMS_();
  app.innerHTML=`
- <div class="card"><h2>1 · Welche Zeitformen?</h2>
+ <div class="card"><h2>${L('1 · Welche Zeitformen?','1 · Which tenses?')}</h2>
   <div class="chips">${ORDER.map(k=>`<button class="chip ${S.tenses.includes(k)?'on':''}" data-t="${k}" style="--c:${T[k].c}">${T[k].name}</button>`).join('')}</div>
-  <div class="links"><button class="btn-link sm" data-all="1">alle wählen</button><button class="btn-link sm" data-all="0">keine</button></div></div>
- <div class="card"><h2>2 · Übungsart</h2>
+  <div class="links"><button class="btn-link sm" data-all="1">${L('alle wählen','select all')}</button><button class="btn-link sm" data-all="0">${L('keine','none')}</button></div></div>
+ <div class="card"><h2>${L('2 · Übungsart','2 · Exercise type')}</h2>
   <div class="modes">${MODES.map(m=>`<button class="mode ${S.mode===m.k?'on':''}" data-m="${m.k}"><b>${m.icon} ${m.label}</b><small>${m.desc}</small></button>`).join('')}</div></div>
- <div class="card"><h2>3 · Satzarten</h2>
+ <div class="card"><h2>${L('3 · Satzarten','3 · Sentence types')}</h2>
   <div class="chips">${FORMS.map(f=>`<button class="chip ${S.forms.includes(f.k)?'on':''}" data-f="${f.k}">${f.l}</button>`).join('')}</div></div>
- <div class="card"><h2>4 · Optionen</h2>
-  <div class="opt-row"><span>Anzahl Aufgaben</span><div class="seg">${[10,15,20,0].map(n=>`<button class="${S.count===n?'on':''}" data-n="${n}" ${n?'':'title="Unendlich – üben, bis du auf Fertig klickst"'}>${n||'∞'}</button>`).join('')}</div></div>
-  <div class="opt-row"><span>Beim Einsetzen die Zeitform anzeigen<br><small style="color:var(--muted)">Aus = selber an den Signalwörtern erkennen</small></span><button class="switch ${S.hint?'on':''}" id="hintSw" aria-label="Zeitform anzeigen"></button></div></div>
- <button class="primary" id="start">Los geht's →</button>
+ <div class="card"><h2>${L('4 · Optionen','4 · Options')}</h2>
+  <div class="opt-row"><span>${L('Anzahl Aufgaben','Number of tasks')}</span><div class="seg">${[10,15,20,0].map(n=>`<button class="${S.count===n?'on':''}" data-n="${n}" ${n?'':`title="${L('Unendlich – üben, bis du auf Fertig klickst','Endless – practise until you click Done')}"`}>${n||'∞'}</button>`).join('')}</div></div>
+  <div class="opt-row"><span>${L('Beim Einsetzen die Zeitform anzeigen','Show the tense when filling in')}<br><small style="color:var(--muted)">${L('Aus = selber an den Signalwörtern erkennen','Off = find it yourself from the signal words')}</small></span><button class="switch ${S.hint?'on':''}" id="hintSw" aria-label="${L('Zeitform anzeigen','Show tense')}"></button></div></div>
+ <button class="primary" id="start">${L("Los geht's →","Let's go →")}</button>
  <p class="err" id="err"></p>`;
  app.onclick=e=>{
   const b=e.target.closest('button');if(!b)return;
@@ -928,8 +973,8 @@ function buildRound(n){
 function start(list){
  const err=document.getElementById('err');
  if(!list){
-  if(!S.tenses.length){err.textContent='Wähle mindestens eine Zeitform.';return}
-  if(!S.forms.length&&S.mode!=='short'&&S.mode!=='ctx'){err.textContent='Wähle mindestens eine Satzart.';return}
+  if(!S.tenses.length){err.textContent=L('Wähle mindestens eine Zeitform.','Choose at least one tense.');return}
+  if(!S.forms.length&&S.mode!=='short'&&S.mode!=='ctx'){err.textContent=L('Wähle mindestens eine Satzart.','Choose at least one sentence type.');return}
  }
  seen=new Set();infinite=!list&&S.count===0;
  items=list||buildRound(infinite?10:S.count);idx=0;score=0;results=[];
@@ -943,44 +988,46 @@ function tenseTag(it){
  return '';
 }
 function renderTask(){
+ screen='task';
  const it=items[idx];answered=false;tries=0;
+ const TYPE_LABEL=TYPE_LABEL_();
  let body='';
  if(it.type==='rec'){
   const sel=S.tenses.filter(x=>x!==it.t);
   const others=sel.length?shuffle(sel):shuffle(ORDER.filter(x=>x!==it.t));
   const opts=shuffle([it.t,...others.slice(0,3)]);
-  body=`<p class="instr">Welche Zeitform ist das?</p>
+  body=`<p class="instr">${L('Welche Zeitform ist das?','Which tense is it?')}</p>
    <div class="sentence" id="sent">${esc(it.sentence)}</div>
    <div class="opts">${opts.map(k=>`<button data-o="${k}">${T[k].name}</button>`).join('')}</div>`;
  }else if(it.type==='fill'){
   const w=Math.max(8,it.gap.length+3);
-  body=`<p class="instr">${it.form==='q'?'Ergänze die Frage.':'Setze das Verb in der richtigen Form ein.'} ${tenseTag(it)}</p>
+  body=`<p class="instr">${it.form==='q'?L('Ergänze die Frage.','Complete the question.'):L('Setze das Verb in der richtigen Form ein.','Put the verb in the correct form.')} ${tenseTag(it)}</p>
    <div class="sentence">${esc(it.before)}<input id="inp" style="width:${w}ch" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">${esc(it.after)} <span class="hint">(${esc(it.hint)})</span></div>`;
  }else if(it.type==='ctx'){
   const w=Math.max(8,it.gap.length+3);
-  body=`<p class="instr">Welche Zeit passt? Setze das Verb richtig ein.</p>
+  body=`<p class="instr">${L('Welche Zeit passt? Setze das Verb richtig ein.','Which tense fits? Put the verb in the correct form.')}</p>
    <div class="sentence">${esc(it.before)}<input id="inp" style="width:${w}ch" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">${esc(it.after)} <span class="hint">(${esc(it.hint)})</span></div>`;
  }else if(it.type==='short'){
-  body=`<p class="instr">Antworte mit einer Kurzantwort: ${it.yes?'👍 <b>Ja</b>':'👎 <b>Nein</b>'}</p>
+  body=`<p class="instr">${L('Antworte mit einer Kurzantwort:','Give a short answer:')} ${it.yes?L('👍 <b>Ja</b>','👍 <b>Yes</b>'):L('👎 <b>Nein</b>','👎 <b>No</b>')}</p>
    <div class="src">${esc(it.q.sentence)}</div>
    <textarea class="full" id="inp" rows="1" placeholder="${it.yes?'Yes, …':'No, …'}" autocomplete="off" autocapitalize="sentences" autocorrect="off" spellcheck="false"></textarea>`;
  }else{
-  body=`<p class="instr">${it.instr}</p>
+  body=`<p class="instr">${instrText(it)}</p>
    <div class="src">${esc(it.src.sentence)}</div>
-   ${it.showMk?`<p class="sig">Signalwort: <b>${esc(it.mk.w)}</b></p>`:''}
-   <textarea class="full" id="inp" rows="2" placeholder="Schreib den ganzen Satz …" autocomplete="off" autocapitalize="sentences" autocorrect="off" spellcheck="false"></textarea>`;
+   ${it.showMk?`<p class="sig">${L('Signalwort','Signal word')}: <b>${esc(it.mk.w)}</b></p>`:''}
+   <textarea class="full" id="inp" rows="2" placeholder="${L('Schreib den ganzen Satz …','Write the whole sentence …')}" autocomplete="off" autocapitalize="sentences" autocorrect="off" spellcheck="false"></textarea>`;
  }
  app.innerHTML=`
- <div class="qtop"><button class="btn-link" id="quit">${infinite?'✓ Fertig':'✕ Beenden'}</button><span>${infinite?'Aufgabe '+(idx+1)+' · ∞':(idx+1)+' / '+items.length}</span><span>⭐ ${score}</span></div>
+ <div class="qtop"><button class="btn-link" id="quit">${infinite?L('✓ Fertig','✓ Done'):L('✕ Beenden','✕ Quit')}</button><span>${infinite?L('Aufgabe ','Task ')+(idx+1)+' · ∞':(idx+1)+' / '+items.length}</span><span>⭐ ${score}</span></div>
  ${infinite?'':`<div class="bar"><div style="width:${idx/items.length*100}%"></div></div>`}
  <div class="card"><div class="tag">${TYPE_LABEL[it.type]}</div>${body}
   <div id="fb"></div>
-  <div class="actions">${it.type==='rec'?'':'<button class="primary" id="go">Prüfen</button>'}</div></div>`;
+  <div class="actions">${it.type==='rec'?'':`<button class="primary" id="go">${L('Prüfen','Check')}</button>`}</div></div>`;
  app.onclick=e=>{
   const b=e.target.closest('button');if(!b)return;
   if(b.id==='quit'){
   if(infinite&&results.length)return renderResults();
-  if(results.length&&!confirm('Runde wirklich beenden?\nDeine bisherigen Antworten gehen verloren.'))return;
+  if(results.length&&!confirm(L('Runde wirklich beenden?\nDeine bisherigen Antworten gehen verloren.','Really quit this round?\nYour answers so far will be lost.')))return;
   return renderSetup();
  }
   if(b.dataset.o&&!answered)return answerRec(b.dataset.o);
@@ -990,16 +1037,16 @@ function renderTask(){
 }
 function shortHint(it,val){
  const u=' '+norm(val)[0]+' ',v=it.vf;
- if(!/^ ?(yes|no) /.test(u))return 'Beginne mit <b>Yes,</b> oder <b>No,</b>';
- if([v.b,v.s3,v.p,v.pp,v.ing].some(w=>u.includes(' '+w+' ')))return 'Bei Kurzantworten wiederholst du nur das <b>Hilfsverb</b> – nicht das ganze Verb.';
- return 'Nimm das <b>Hilfsverb aus der Frage</b> und pass es an das Pronomen an.';
+ if(!/^ ?(yes|no) /.test(u))return L('Beginne mit <b>Yes,</b> oder <b>No,</b>','Start with <b>Yes,</b> or <b>No,</b>');
+ if([v.b,v.s3,v.p,v.pp,v.ing].some(w=>u.includes(' '+w+' ')))return L('Bei Kurzantworten wiederholst du nur das <b>Hilfsverb</b> – nicht das ganze Verb.','In short answers you only repeat the <b>auxiliary verb</b> – not the whole verb.');
+ return L('Nimm das <b>Hilfsverb aus der Frage</b> und pass es an das Pronomen an.','Take the <b>auxiliary verb from the question</b> and match it to the pronoun.');
 }
 function explain(it){
  const d=T[it.t];
- if(it.type==='short')return `<div class="rule"><b>Kurzantwort:</b> Yes / No + Pronomen + <b>Hilfsverb aus der Frage</b> (do, does, did, am, is, are, was, were, have, has, will).<br>Aus „you“ wird „I“ oder „we“, aus „Tom“ wird „he“.</div><div class="rule"><span class="tt" style="--c:${d.c}">${d.name}</span></div>`;
- let h=it.why?`<div class="rule"><b>Warum?</b> ${esc(it.why)}</div>`:'';
- h+=`<div class="rule"><span class="tt" style="--c:${d.c}">${d.name}</span> ${d.use}.<br><b>Bildung:</b> ${it.sq?'Frage nach dem Subjekt (<b>Who / What / Which …?</b>): <b>kein</b> do / does / did, keine Umstellung – das Verb steht wie im Aussagesatz.':d[it.form]}</div>`;
- if(it.mk)h+=`<div class="rule"><b>Signalwort:</b> <i>${esc(it.mk.w)}</i> → ${d.name}</div>`;
+ if(it.type==='short')return `<div class="rule">${L('<b>Kurzantwort:</b> Yes / No + Pronomen + <b>Hilfsverb aus der Frage</b> (do, does, did, am, is, are, was, were, have, has, will).<br>Aus „you“ wird „I“ oder „we“, aus „Tom“ wird „he“.','<b>Short answer:</b> Yes / No + pronoun + <b>auxiliary verb from the question</b> (do, does, did, am, is, are, was, were, have, has, will).<br>“you” becomes “I” or “we”, “Tom” becomes “he”.')}</div><div class="rule"><span class="tt" style="--c:${d.c}">${d.name}</span></div>`;
+ let h=it.why?`<div class="rule"><b>${L('Warum?','Why?')}</b> ${esc(cap(whyText(it.why)))}</div>`:'';
+ h+=`<div class="rule"><span class="tt" style="--c:${d.c}">${d.name}</span> ${TD(it.t,'use')}.<br><b>${L('Bildung','Form')}:</b> ${it.sq?L('Frage nach dem Subjekt (<b>Who / What / Which …?</b>): <b>kein</b> do / does / did, keine Umstellung – das Verb steht wie im Aussagesatz.','Question about the subject (<b>Who / What / Which …?</b>): <b>no</b> do / does / did, no inversion – the verb stays as in a statement.'):TD(it.t,it.form)}</div>`;
+ if(it.mk)h+=`<div class="rule"><b>${L('Signalwort','Signal word')}:</b> <i>${esc(it.mk.w)}</i> → ${d.name}</div>`;
  return h;
 }
 function markSent(it){return esc(it.before)+'<mark>'+esc(it.gap)+'</mark>'+esc(it.after)}
@@ -1008,7 +1055,7 @@ function finish(ok,user,html,kind){
  results.push({item:items[idx],ok,user,retry:ok&&tries>0});
  document.getElementById('fb').innerHTML=`<div class="fb ${kind}">${html}</div>`;
  const act=document.querySelector('.actions');
- act.innerHTML=`<button class="primary" id="go">${(infinite||idx+1<items.length)?'Weiter →':'Auswertung →'}</button>`;
+ act.innerHTML=`<button class="primary" id="go">${(infinite||idx+1<items.length)?L('Weiter →','Next →'):L('Auswertung →','Results →')}</button>`;
  document.querySelector('.qtop span:last-child').textContent='⭐ '+score;
  const inp=document.getElementById('inp');if(inp)inp.disabled=true;
  document.getElementById('go').focus();
@@ -1017,7 +1064,7 @@ function answerRec(k){
  const it=items[idx],ok=k===it.t;
  document.querySelectorAll('.opts button').forEach(b=>{b.disabled=true;if(b.dataset.o===it.t)b.classList.add('right');else if(b.dataset.o===k)b.classList.add('wrong')});
  document.getElementById('sent').innerHTML=markSent(it);
- finish(ok,T[k].name,`<div class="fbt">${ok?'Richtig! 🎉':'Leider falsch.'}</div>${ok?'':`Das ist <b>${T[it.t].name}</b>.<br>`}Erkennbar an: <mark>${esc(it.gap)}</mark>${explain(it)}`,ok?'ok':'bad');
+ finish(ok,T[k].name,`<div class="fbt">${ok?L('Richtig! 🎉','Correct! 🎉'):L('Leider falsch.','Sorry, wrong.')}</div>${ok?'':L(`Das ist <b>${T[it.t].name}</b>.<br>`,`This is <b>${T[it.t].name}</b>.<br>`)}${L('Erkennbar an','You can tell by')}: <mark>${esc(it.gap)}</mark>${explain(it)}`,ok?'ok':'bad');
 }
 function check(){
  const it=items[idx],inp=document.getElementById('inp'),val=inp.value.trim();
@@ -1028,14 +1075,14 @@ function check(){
  else if(it.type==='short'){ok=it.answers.some(a=>eq(val,a))}
  else{const r=checkTrans(it,val);ok=r==='ok';nomark=r==='nomark'}
  if(!ok&&tries===0){
-  if(nomark){tries=1;fb.innerHTML=`<div class="fb warn"><div class="fbt">Fast!</div>Das Signalwort <b>${esc(it.mk.w)}</b> fehlt noch. Noch ein Versuch.</div>`;inp.focus();return}
-  if(near(val,(it.type==='fill'||it.type==='ctx')?[it.gap,...(it.alt||[])]:it.type==='short'?it.answers:[it.sentence])){tries=1;fb.innerHTML=`<div class="fb warn"><div class="fbt">Fast!</div>Prüfe die Schreibweise. Noch ein Versuch.</div>`;inp.focus();return}
+  if(nomark){tries=1;fb.innerHTML=`<div class="fb warn"><div class="fbt">${L('Fast!','Almost!')}</div>${L(`Das Signalwort <b>${esc(it.mk.w)}</b> fehlt noch. Noch ein Versuch.`,`The signal word <b>${esc(it.mk.w)}</b> is missing. Try again.`)}</div>`;inp.focus();return}
+  if(near(val,(it.type==='fill'||it.type==='ctx')?[it.gap,...(it.alt||[])]:it.type==='short'?it.answers:[it.sentence])){tries=1;fb.innerHTML=`<div class="fb warn"><div class="fbt">${L('Fast!','Almost!')}</div>${L('Prüfe die Schreibweise. Noch ein Versuch.','Check the spelling. Try again.')}</div>`;inp.focus();return}
  }
- const sol=(it.type==='fill'||it.type==='ctx')?markSent(it)+((it.alt&&it.alt.length)?`<br><small>Auch richtig: <b>${esc(it.alt.join(' / '))}</b></small>`:''):'<mark>'+esc(it.type==='short'?it.answers.join('  oder  '):it.sentence)+'</mark>';
+ const sol=(it.type==='fill'||it.type==='ctx')?markSent(it)+((it.alt&&it.alt.length)?`<br><small>${L('Auch richtig','Also correct')}: <b>${esc(it.alt.join(' / '))}</b></small>`:''):'<mark>'+esc(it.type==='short'?it.answers.join(L('  oder  ','  or  ')):it.sentence)+'</mark>';
  const tip=ok?'':it.type==='short'?shortHint(it,val):errHint(it,val);
- finish(ok,val,`<div class="fbt">${ok?'Richtig! 🎉':'Leider falsch.'}</div>
-  ${ok?'':`<div>Deine Antwort: <s>${esc(val)}</s></div>`}
-  <div class="sol">${ok?(tries?'<small>(im 2. Versuch)</small><br>':''):'Richtig ist: '}${sol}</div>
+ finish(ok,val,`<div class="fbt">${ok?L('Richtig! 🎉','Correct! 🎉'):L('Leider falsch.','Sorry, wrong.')}</div>
+  ${ok?'':`<div>${L('Deine Antwort','Your answer')}: <s>${esc(val)}</s></div>`}
+  <div class="sol">${ok?(tries?`<small>${L('(im 2. Versuch)','(2nd try)')}</small><br>`:''):L('Richtig ist: ','Correct answer: ')}${sol}</div>
   ${tip?`<div class="tip">💡 ${tip}</div>`:''}${explain(it)}`,ok?'ok':'bad');
 }
 function next(){
@@ -1046,36 +1093,39 @@ function next(){
 
 function taskText(r){
  const it=r.item;
- if(it.type==='rec')return `${markSent(it)}<br><small>Deine Wahl: <span class="${r.ok?'okc':'you'}">${esc(r.user)}</span>${r.ok?'':` · Richtig: <b>${T[it.t].name}</b>`}</small>`;
- if(it.type==='trans')return `<span class="muted">${esc(it.src.sentence)}</span> → ${esc(it.instr)}<br>Lösung: <mark>${esc(it.sentence)}</mark><br><small>Deine Antwort: <span class="${r.ok?'okc':'you'}">${esc(r.user)}</span></small>`;
- if(it.type==='short')return `${esc(it.q.sentence)} (${it.yes?'Ja':'Nein'})<br>Lösung: <mark>${esc(it.answers.join(' / '))}</mark><br><small>Deine Antwort: <span class="${r.ok?'okc':'you'}">${esc(r.user)}</span></small>`;
- return `${markSent(it)}${it.alt&&it.alt.length?` <small>(auch: ${esc(it.alt.join(' / '))})</small>`:''}<br><small>Deine Antwort: <span class="${r.ok?'okc':'you'}">${esc(r.user)}</span></small>`;
+ const YA=L('Deine Antwort','Your answer'),SOL=L('Lösung','Solution');
+ if(it.type==='rec')return `${markSent(it)}<br><small>${L('Deine Wahl','Your choice')}: <span class="${r.ok?'okc':'you'}">${esc(r.user)}</span>${r.ok?'':` · ${L('Richtig','Correct')}: <b>${T[it.t].name}</b>`}</small>`;
+ if(it.type==='trans')return `<span class="muted">${esc(it.src.sentence)}</span> → ${esc(instrText(it))}<br>${SOL}: <mark>${esc(it.sentence)}</mark><br><small>${YA}: <span class="${r.ok?'okc':'you'}">${esc(r.user)}</span></small>`;
+ if(it.type==='short')return `${esc(it.q.sentence)} (${it.yes?L('Ja','Yes'):L('Nein','No')})<br>${SOL}: <mark>${esc(it.answers.join(' / '))}</mark><br><small>${YA}: <span class="${r.ok?'okc':'you'}">${esc(r.user)}</span></small>`;
+ return `${markSent(it)}${it.alt&&it.alt.length?` <small>(${L('auch','also')}: ${esc(it.alt.join(' / '))})</small>`:''}<br><small>${YA}: <span class="${r.ok?'okc':'you'}">${esc(r.user)}</span></small>`;
 }
 function renderResults(){
+ screen='results';
+ const TYPE_LABEL=TYPE_LABEL_(),MODES=MODES_();
  const n=results.length;
  const pct=n?Math.round(score/n*100):0;
- const msg=pct>=90?'Hervorragend! 🏆':pct>=70?'Gut gemacht! 👍':pct>=50?'Nicht schlecht – weiter üben! 💪':'Bleib dran – nochmal üben hilft! 🔁';
+ const msg=pct>=90?L('Hervorragend! 🏆','Excellent! 🏆'):pct>=70?L('Gut gemacht! 👍','Well done! 👍'):pct>=50?L('Nicht schlecht – weiter üben! 💪','Not bad – keep practising! 💪'):L('Bleib dran – nochmal üben hilft! 🔁','Keep going – practice helps! 🔁');
  const by={};results.forEach(r=>{const k=r.item.t;by[k]=by[k]||{n:0,ok:0};by[k].n++;if(r.ok)by[k].ok++});
  const wrong=results.filter(r=>!r.ok),retry=results.filter(r=>r.retry).length;
  const modeL=MODES.find(m=>m.k===S.mode);
- const d=new Date(),date=d.toLocaleDateString('de-CH')+', '+d.toLocaleTimeString('de-CH',{hour:'2-digit',minute:'2-digit'});
+ const d=new Date(),loc=L('de-CH','en-GB'),date=d.toLocaleDateString(loc)+', '+d.toLocaleTimeString(loc,{hour:'2-digit',minute:'2-digit'});
  app.innerHTML=`
  <div class="card">
-  <input class="name" id="name" placeholder="Dein Name" value="${esc(studentName)}" autocomplete="off">
+  <input class="name" id="name" placeholder="${L('Dein Name','Your name')}" value="${esc(studentName)}" autocomplete="off">
   <div class="big">${score} / ${n}<small>${msg}</small></div>
-  ${retry?`<p class="center muted">davon ${retry} im 2. Versuch</p>`:''}
+  ${retry?`<p class="center muted">${L(`davon ${retry} im 2. Versuch`,`${retry} of them on the 2nd try`)}</p>`:''}
   <p class="center muted">${date} · ${modeL?modeL.icon+' '+modeL.label:''} · ${S.tenses.map(k=>T[k].name).join(', ')}</p>
-  <p class="shot">📸 Mach einen Screenshot, falls deine Lehrperson dein Resultat sehen will.</p>
+  <p class="shot">${L('📸 Mach einen Screenshot, falls deine Lehrperson dein Resultat sehen will.','📸 Take a screenshot if your teacher wants to see your result.')}</p>
  </div>
- <div class="card"><h2>Nach Zeitform</h2>${ORDER.filter(k=>by[k]).map(k=>{const p=Math.round(by[k].ok/by[k].n*100);return `<div class="stat"><span>${T[k].name}</span><div class="track"><div style="width:${p}%;background:${T[k].c}"></div></div><b>${by[k].ok}/${by[k].n}</b></div>`}).join('')}</div>
+ <div class="card"><h2>${L('Nach Zeitform','By tense')}</h2>${ORDER.filter(k=>by[k]).map(k=>{const p=Math.round(by[k].ok/by[k].n*100);return `<div class="stat"><span>${T[k].name}</span><div class="track"><div style="width:${p}%;background:${T[k].c}"></div></div><b>${by[k].ok}/${by[k].n}</b></div>`}).join('')}</div>
  <details class="card all">
-  <summary>📋 Alle Antworten und Lösungen anzeigen <span class="muted">(${n-wrong.length} ✓ · ${wrong.length} ✗)</span></summary>
-  ${results.map((r,i)=>`<div class="mist ${r.ok?'r-ok':'r-bad'}"><b>${i+1}. ${r.ok?'✓':'✗'}</b> <span class="tt" style="--c:${T[r.item.t].c}">${T[r.item.t].name}</span> <small class="muted">${TYPE_LABEL[r.item.type]}${r.retry?' · 2. Versuch':''}</small><br>${taskText(r)}</div>`).join('')}
+  <summary>${L('📋 Alle Antworten und Lösungen anzeigen','📋 Show all answers and solutions')} <span class="muted">(${n-wrong.length} ✓ · ${wrong.length} ✗)</span></summary>
+  ${results.map((r,i)=>`<div class="mist ${r.ok?'r-ok':'r-bad'}"><b>${i+1}. ${r.ok?'✓':'✗'}</b> <span class="tt" style="--c:${T[r.item.t].c}">${T[r.item.t].name}</span> <small class="muted">${TYPE_LABEL[r.item.type]}${r.retry?L(' · 2. Versuch',' · 2nd try'):''}</small><br>${taskText(r)}</div>`).join('')}
  </details>
  <div class="btns">
-  ${wrong.length?'<button class="primary" id="redo">Fehler nochmal üben</button>':''}
-  <button class="${wrong.length?'secondary':'primary'}" id="again">Neue Runde</button>
-  <button class="secondary" id="setup">Einstellungen ändern</button>
+  ${wrong.length?`<button class="primary" id="redo">${L('Fehler nochmal üben','Practise mistakes again')}</button>`:''}
+  <button class="${wrong.length?'secondary':'primary'}" id="again">${L('Neue Runde','New round')}</button>
+  <button class="secondary" id="setup">${L('Einstellungen ändern','Change settings')}</button>
  </div>`;
  document.getElementById('name').oninput=e=>{studentName=e.target.value};
  app.onclick=e=>{
@@ -1094,22 +1144,311 @@ document.addEventListener('keydown',e=>{
 });
 
 const modal=document.getElementById('modal');
-document.getElementById('rulesBtn').onclick=()=>{
- document.getElementById('modalBody').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">Die Zeitformen</h2><button class="btn-link" id="mclose">✕ Schliessen</button></div>
- ${ORDER.map(k=>{const d=T[k];return `<div class="rt"><span class="tt" style="--c:${d.c}">${d.name}</span> ${d.use}
-  <p>✓ ${d.pos}</p><p>✗ ${d.neg}</p><p>? ${d.q}</p><p style="color:var(--muted)">Signalwörter: <i>${d.sig}</i></p></div>`}).join('')}
- <details class="info"><summary><b>👩‍🏫 Info für Lehrpersonen</b></summary>
+let modalKind='';
+function openRules(){
+ modalKind='rules';
+ document.getElementById('modalBody').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">${L('Die Zeitformen','The tenses')}</h2><button class="btn-link" id="mclose">${L('✕ Schliessen','✕ Close')}</button></div>
+ ${ORDER.map(k=>{const d=T[k];return `<div class="rt"><span class="tt" style="--c:${d.c}">${d.name}</span> ${TD(k,'use')}
+  <p>✓ ${TD(k,'pos')}</p><p>✗ ${TD(k,'neg')}</p><p>? ${TD(k,'q')}</p><p style="color:var(--muted)">${L('Signalwörter','Signal words')}: <i>${d.sig}</i></p></div>`}).join('')}
+ ${LANG==='en'?`<details class="info"><summary><b>👩‍🏫 Info for teachers</b></summary>
+  <p><b>Tenses:</b> Present Simple, Present Continuous, Past Simple, Past Continuous, Present Perfect, will-future, going to-future.</p>
+  <p><b>Exercise types:</b> Recognise (multiple choice), Fill in (signal words), Transform (other tense, negative, question), Choose the tense (245 context tasks with explanations), Short answers, Mixed.</p>
+  <p><b>Tasks:</b> A generator keeps creating new sentences from 24 subjects and 78 verbs – each verb-object combination is only used in the tenses and with the signal words that make sense. On top of that there are 385 hand-written sentences. With ∞ students practise until they click “Done”.</p>
+  <p><b>Checking:</b> Short and long forms are both accepted (doesn't / does not), capitalisation doesn't count, British and American spelling are both correct. With typos there is a 2nd try – this is marked in the results.</p>
+  <p><b>Verb list:</b> 📋 Verbs shows all three forms (irregular first, then regular) with German translation and a search.</p>
+  <p><b>Results:</b> At the end students enter their name and take a screenshot if needed. “Show all answers” lists every task with its solution.</p>
+  <p><b>Privacy:</b> No login, no data is sent or stored. Only the language and font size are remembered in the browser.</p>
+ </details>`:`<details class="info"><summary><b>👩‍🏫 Info für Lehrpersonen</b></summary>
   <p><b>Zeitformen:</b> Present Simple, Present Continuous, Past Simple, Past Continuous, Present Perfect, will-Future, going to-Future.</p>
   <p><b>Übungsarten:</b> Erkennen (Multiple Choice), Einsetzen (Signalwörter), Umformen (andere Zeit, Verneinung, Frage), Zeit wählen (245 Kontext-Aufgaben mit Begründung), Kurzantworten, Gemischt.</p>
   <p><b>Aufgaben:</b> Ein Generator erzeugt laufend neue Sätze aus 24 Subjekten und 78 Verben – jede Verb-Objekt-Kombination ist nur in den Zeitformen und mit den Signalwörtern erlaubt, die inhaltlich passen. Dazu kommen 385 handgeschriebene Sätze. Mit ∞ üben die Lernenden, bis sie auf „Fertig“ klicken.</p>
   <p><b>Prüfung:</b> Kurz- und Langformen gelten beide (doesn't / does not), Gross-/Kleinschreibung zählt nicht. Bei Tippfehlern gibt es einen 2. Versuch – das wird in der Auswertung markiert.</p>
   <p><b>Resultate:</b> Am Schluss tragen die Lernenden ihren Namen ein und machen bei Bedarf einen Screenshot. Unter „Alle Antworten“ sehen sie jede Aufgabe mit Lösung.</p>
-  <p><b>Datenschutz:</b> Kein Login, keine Daten werden gesendet oder gespeichert. Beim Neuladen startet die App immer mit Present Simple und Einsetzen.</p>
- </details>`;
+  <p><b>Verbliste:</b> 📋 Verben zeigt alle drei Formen (zuerst unregelmässige, dann regelmässige) mit deutscher Übersetzung und Suche.</p>
+  <p><b>Datenschutz:</b> Kein Login, keine Daten werden gesendet oder gespeichert. Nur Sprache und Schriftgrösse werden im Browser gemerkt.</p>
+ </details>`}`;
  modal.classList.remove('hidden');
- document.getElementById('mclose').onclick=()=>modal.classList.add('hidden');
+ document.getElementById('mclose').onclick=closeModal;
+}
+function closeModal(){modal.classList.add('hidden');modalKind=''}
+document.getElementById('rulesBtn').onclick=openRules;
+modal.onclick=e=>{if(e.target===modal)closeModal()};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.classList.contains('hidden'))closeModal()});
+
+// ---------- Verbliste (alle drei Formen; zuerst unregelmässig, dann regelmässig) ----------
+const IRR=`arise|arose|arisen|entstehen
+awake|awoke|awoken|aufwachen
+be|was / were|been|sein
+bear|bore|born / borne|ertragen; gebären
+beat|beat|beaten|schlagen; besiegen
+become|became|become|werden
+begin|began|begun|beginnen
+bend|bent|bent|biegen
+bet|bet|bet|wetten
+bite|bit|bitten|beissen
+bleed|bled|bled|bluten
+blow|blew|blown|blasen; wehen
+break|broke|broken|brechen; kaputt machen
+bring|brought|brought|bringen
+broadcast|broadcast|broadcast|senden, übertragen
+build|built|built|bauen
+burn|burnt / burned|burnt / burned|brennen; verbrennen
+buy|bought|bought|kaufen
+catch|caught|caught|fangen; erwischen
+choose|chose|chosen|wählen, aussuchen
+come|came|come|kommen
+cost|cost|cost|kosten
+creep|crept|crept|kriechen; schleichen
+cut|cut|cut|schneiden
+deal|dealt|dealt|handeln; austeilen
+dig|dug|dug|graben
+do|did|done|tun, machen
+draw|drew|drawn|zeichnen; ziehen
+dream|dreamt / dreamed|dreamt / dreamed|träumen
+drink|drank|drunk|trinken
+drive|drove|driven|fahren (Auto)
+eat|ate|eaten|essen
+fall|fell|fallen|fallen
+feed|fed|fed|füttern
+feel|felt|felt|fühlen
+fight|fought|fought|kämpfen; streiten
+find|found|found|finden
+fly|flew|flown|fliegen
+forbid|forbade|forbidden|verbieten
+forget|forgot|forgotten|vergessen
+forgive|forgave|forgiven|verzeihen
+freeze|froze|frozen|frieren; einfrieren
+get|got|got / gotten|bekommen; werden
+give|gave|given|geben
+go|went|gone|gehen
+grow|grew|grown|wachsen; anbauen
+hang|hung|hung|hängen
+have|had|had|haben
+hear|heard|heard|hören
+hide|hid|hidden|verstecken
+hit|hit|hit|schlagen; treffen
+hold|held|held|halten
+hurt|hurt|hurt|verletzen; wehtun
+keep|kept|kept|behalten
+kneel|knelt / kneeled|knelt / kneeled|knien
+know|knew|known|wissen; kennen
+lay|laid|laid|legen
+lead|led|led|führen
+lean|leant / leaned|leant / leaned|lehnen
+learn|learnt / learned|learnt / learned|lernen
+leave|left|left|verlassen; abfahren
+lend|lent|lent|ausleihen (jemandem)
+let|let|let|lassen
+lie|lay|lain|liegen
+light|lit|lit|anzünden
+lose|lost|lost|verlieren
+make|made|made|machen; herstellen
+mean|meant|meant|bedeuten; meinen
+meet|met|met|treffen
+pay|paid|paid|bezahlen
+put|put|put|setzen, stellen, legen
+quit|quit|quit|aufhören; kündigen
+read|read|read|lesen
+ride|rode|ridden|reiten; fahren (Velo)
+ring|rang|rung|klingeln; anrufen
+rise|rose|risen|steigen; aufgehen
+run|ran|run|rennen
+say|said|said|sagen
+see|saw|seen|sehen
+seek|sought|sought|suchen
+sell|sold|sold|verkaufen
+send|sent|sent|schicken
+set|set|set|setzen; einstellen
+shake|shook|shaken|schütteln
+shine|shone|shone|scheinen
+shoot|shot|shot|schiessen
+show|showed|shown|zeigen
+shrink|shrank|shrunk|schrumpfen
+shut|shut|shut|schliessen
+sing|sang|sung|singen
+sink|sank|sunk|sinken
+sit|sat|sat|sitzen
+sleep|slept|slept|schlafen
+slide|slid|slid|rutschen, gleiten
+smell|smelt / smelled|smelt / smelled|riechen
+speak|spoke|spoken|sprechen
+spell|spelt / spelled|spelt / spelled|buchstabieren
+spend|spent|spent|ausgeben; verbringen
+spill|spilt / spilled|spilt / spilled|verschütten
+spin|spun|spun|drehen
+spit|spat|spat|spucken
+split|split|split|teilen
+spread|spread|spread|verbreiten
+stand|stood|stood|stehen
+steal|stole|stolen|stehlen
+stick|stuck|stuck|kleben; stecken
+sting|stung|stung|stechen
+strike|struck|struck|schlagen; streiken
+swear|swore|sworn|schwören; fluchen
+sweep|swept|swept|fegen
+swim|swam|swum|schwimmen
+swing|swung|swung|schwingen; schaukeln
+take|took|taken|nehmen
+teach|taught|taught|unterrichten
+tear|tore|torn|zerreissen
+tell|told|told|erzählen; sagen
+think|thought|thought|denken
+throw|threw|thrown|werfen
+understand|understood|understood|verstehen
+wake|woke|woken|aufwachen; wecken
+wear|wore|worn|tragen (Kleidung)
+win|won|won|gewinnen
+write|wrote|written|schreiben`.trim().split('\n').map(l=>{const [b,p,pp,de]=l.split('|');return {b,p,pp,de,irr:1}});
+const REG=`answer|answered|antworten
+arrive|arrived|ankommen
+ask|asked|fragen
+bake|baked|backen
+call|called|anrufen; rufen
+carry|carried|tragen
+change|changed|ändern; wechseln
+chat|chatted|plaudern, chatten
+check|checked|prüfen, kontrollieren
+clean|cleaned|putzen
+climb|climbed|klettern
+close|closed|schliessen
+collect|collected|sammeln
+cook|cooked|kochen
+cross|crossed|überqueren
+cry|cried|weinen
+dance|danced|tanzen
+decide|decided|entscheiden
+enjoy|enjoyed|geniessen
+explain|explained|erklären
+finish|finished|beenden
+fix|fixed|reparieren
+happen|happened|passieren
+hate|hated|hassen
+help|helped|helfen
+hope|hoped|hoffen
+hurry|hurried|sich beeilen
+invite|invited|einladen
+jump|jumped|springen
+laugh|laughed|lachen
+like|liked|mögen
+listen|listened|zuhören
+live|lived|leben; wohnen
+look|looked|schauen
+love|loved|lieben
+miss|missed|verpassen; vermissen
+move|moved|bewegen; umziehen
+need|needed|brauchen
+open|opened|öffnen
+order|ordered|bestellen
+pack|packed|packen
+paint|painted|malen; streichen
+plan|planned|planen
+play|played|spielen
+practise / practice|practised / practiced|üben
+prefer|preferred|vorziehen, lieber mögen
+rain|rained|regnen
+remember|remembered|sich erinnern
+repair|repaired|reparieren
+share|shared|teilen
+shop|shopped|einkaufen
+smile|smiled|lächeln
+start|started|beginnen, starten
+stay|stayed|bleiben
+stop|stopped|aufhören; anhalten
+study|studied|lernen; studieren
+talk|talked|reden
+tidy|tidied|aufräumen
+travel|travelled / traveled|reisen
+try|tried|versuchen; probieren
+turn|turned|drehen; abbiegen
+use|used|benutzen
+visit|visited|besuchen
+wait|waited|warten
+walk|walked|gehen, spazieren
+want|wanted|wollen
+wash|washed|waschen
+watch|watched|anschauen
+water|watered|giessen
+work|worked|arbeiten
+worry|worried|sich Sorgen machen`.trim().split('\n').map(l=>{const [b,p,de]=l.split('|');return {b,p,pp:p,de,irr:0,note:regNote(b,p)}});
+function regNote(b,p){
+ const b1=b.split(' / ')[0],p1=p.split(' / ')[0];
+ if(/[^aeiou]y$/.test(b1)&&p1.endsWith('ied'))return 'y';
+ const last=b1.slice(-1);
+ if(p1===b1+last+'ed')return 'dbl';
+ if(/e$/.test(b1)&&p1===b1+'d')return 'e';
+ return '';
+}
+let vq='',vf='all';
+const vnorm=x=>String(x).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ß/g,'ss');
+function vmatch(v,q){
+ if(!q)return true;
+ const forms=[v.b,v.p,v.pp].join(' / ').split(' / ').map(vnorm);
+ return forms.some(f=>f.startsWith(q))||vnorm(v.de).split(/[;,()]\s*|\s+/).some(w=>w.startsWith(q))||vnorm(v.de).includes(q)&&q.length>=3;
+}
+function hl(text,q){
+ if(!q)return esc(text);
+ return text.split(' / ').map(t=>vnorm(t).startsWith(q)?`<mark>${esc(t)}</mark>`:esc(t)).join(' / ');
+}
+function noteTag(n){
+ if(n==='dbl')return `<span class="vtag dbl">${L('Doppelkonsonant','double consonant')}</span>`;
+ if(n==='y')return `<span class="vtag y">y → ied</span>`;
+ if(n==='e')return `<span class="vtag e">${L('nur -d','only -d')}</span>`;
+ return '';
+}
+function verbRows(list,q){
+ return list.map(v=>`<tr><td class="b">${hl(v.b,q)}</td><td class="f">${hl(v.p,q)}${v.irr?'':noteTag(v.note)}</td><td class="f">${hl(v.pp,q)}</td><td class="de">${esc(v.de)}</td></tr>`).join('');
+}
+function verbTable(list,q){
+ return `<table class="vt"><thead><tr><th>Infinitive</th><th>Past Simple</th><th>Past Participle</th><th>${L('Deutsch','German')}</th></tr></thead><tbody>${verbRows(list,q)}</tbody></table>`;
+}
+function renderVerbList(){
+ const q=vnorm(vq.trim());
+ const irr=vf!=='reg'?IRR.filter(v=>vmatch(v,q)):[];
+ const reg=vf!=='irr'?REG.filter(v=>vmatch(v,q)):[];
+ const box=document.getElementById('vlist');if(!box)return;
+ box.innerHTML=(irr.length?`<div class="vsec">${L('Unregelmässige Verben','Irregular verbs')} (${irr.length})</div>${verbTable(irr,q)}`:'')+
+  (reg.length?`<div class="vsec">${L('Regelmässige Verben','Regular verbs')} (${reg.length}) – ${L('Past Simple = Past Participle = Verb + -ed','Past Simple = Past Participle = verb + -ed')}</div>
+   <p class="vlegend">${L('Achtung Schreibweise','Watch the spelling')}: stop → sto<b>pp</b>ed ${noteTag('dbl')} · study → stud<b>ied</b> ${noteTag('y')} · live → live<b>d</b> ${noteTag('e')}</p>${verbTable(reg,q)}`:'')+
+  (!irr.length&&!reg.length?`<p class="center muted" style="padding:20px 0">${L('Kein Verb gefunden.','No verb found.')}</p>`:'');
+ document.getElementById('vcount').textContent=`${irr.length+reg.length} ${L('Verben','verbs')}`;
+}
+function openVerbs(){
+ modalKind='verbs';
+ document.getElementById('modalBody').innerHTML=`<div class="vtools">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">${L('Verbliste','Verb list')}</h2><button class="btn-link" id="mclose">${L('✕ Schliessen','✕ Close')}</button></div>
+  <input class="vsearch" id="vsearch" type="search" placeholder="${L('Suchen: go, went, gone oder gehen …','Search: go, went, gone or gehen …')}" value="${esc(vq)}" autocomplete="off" autocapitalize="off" spellcheck="false">
+  <div class="vrow2"><div class="seg vseg" id="vseg">${[['all',L('Alle','All')],['irr',L('Unregelmässig','Irregular')],['reg',L('Regelmässig','Regular')]].map(([k,l])=>`<button data-vf="${k}" class="${vf===k?'on':''}">${l}</button>`).join('')}</div><span class="vcount" id="vcount"></span></div>
+ </div><div id="vlist"></div>`;
+ modal.classList.remove('hidden');
+ document.getElementById('mclose').onclick=closeModal;
+ const inp=document.getElementById('vsearch');
+ inp.oninput=()=>{vq=inp.value;renderVerbList()};
+ document.getElementById('vseg').onclick=e=>{const b=e.target.closest('button');if(!b)return;vf=b.dataset.vf;document.querySelectorAll('#vseg button').forEach(x=>x.classList.toggle('on',x===b));renderVerbList()};
+ renderVerbList();
+ if(matchMedia('(pointer:fine)').matches)inp.focus();
+}
+document.getElementById('verbsBtn').onclick=openVerbs;
+
+// ---------- Sprache umschalten ----------
+function applyLang(){
+ document.documentElement.lang=LANG;
+ document.querySelectorAll('#langSeg button').forEach(b=>b.classList.toggle('on',b.dataset.l===LANG));
+ document.getElementById('rulesBtn').textContent=L('📘 Regeln','📘 Rules');
+ document.getElementById('verbsBtn').textContent=L('📋 Verben','📋 Verbs');
+ document.getElementById('fsMinus').setAttribute('aria-label',L('Schrift kleiner','Smaller text'));
+ document.getElementById('fsPlus').setAttribute('aria-label',L('Schrift grösser','Larger text'));
+ document.getElementById('foot').textContent=L('Tense Trainer · Englisch Oberstufe','Tense Trainer · English for lower secondary');
+}
+document.getElementById('langSeg').onclick=e=>{
+ const b=e.target.closest('button');if(!b||b.dataset.l===LANG)return;
+ LANG=b.dataset.l;try{localStorage.setItem('tt-lang',LANG)}catch(err){}
+ applyLang();
+ if(screen==='setup')renderSetup();
+ else if(screen==='results')renderResults();
+ else if(screen==='task'&&!answered){const v=(document.getElementById('inp')||{}).value;renderTask();const inp=document.getElementById('inp');if(inp&&v)inp.value=v}
+ if(modalKind==='rules')openRules();else if(modalKind==='verbs')openVerbs();
 };
-modal.onclick=e=>{if(e.target===modal)modal.classList.add('hidden')};
+applyLang();
 
 // Schriftgrösse
 const FS=[0.85,1,1.15,1.3,1.5,1.7];let fsi=1;
