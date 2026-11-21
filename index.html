@@ -132,6 +132,33 @@ header{flex-wrap:wrap;gap:8px}
 .vt mark{padding:0 1px}
 @media (max-width:560px){.vt thead th:last-child{display:none}.vt th{padding:6px}.vt tr{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--line)}.vt td{border:0;padding:4px 6px}.vt td.de{grid-column:1/-1;padding-top:0}}
 @media (max-width:520px){.sentence{font-size:19px}.opts{grid-template-columns:1fr}.stat{grid-template-columns:120px 1fr 40px}}
+
+/* ---- Arbeitsblatt (Vorschau + Druck) ---- */
+.sheetbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.sheetbar button{flex:1;min-width:130px}
+.sheet{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px 26px;margin-bottom:16px;color:#111;font-size:15px;line-height:1.45}
+.sheet h1{font-size:1.3em;margin:0 0 2px}
+.sheet .sub{color:#555;font-size:.9em;margin:0 0 10px}
+.sheet .meta{display:flex;gap:24px;margin:10px 0 16px}
+.sheet .meta span{flex:1;border-bottom:1px solid #333;padding-bottom:2px;font-size:.9em;color:#444}
+.sheet .t{break-inside:avoid;margin:0 0 14px}
+.sheet .t .n{font-weight:700;margin-right:6px}
+.sheet .t .ins{font-size:.82em;color:#555;margin-bottom:2px}
+.sheet .blank{display:inline-block;border-bottom:1.5px solid #222;height:1.05em;vertical-align:baseline}
+.sheet .wl{border-bottom:1px solid #999;height:1.9em}
+.sheet .opt{display:inline-block;margin-right:14px;white-space:nowrap}
+.sheet .box{display:inline-block;width:.8em;height:.8em;border:1.5px solid #222;border-radius:2px;margin-right:4px;vertical-align:-1px}
+.sheet .hint{color:#555}
+.sheet .sol-list{columns:1}
+.sheet .sol-list div{break-inside:avoid;margin:0 0 5px}
+@media print{
+ @page{size:A4;margin:14mm}
+ body{background:#fff;font-size:12pt}
+ header,footer,.sheetbar,.modal{display:none!important}
+ .wrap{max-width:none;padding:0}
+ .sheet{border:0;border-radius:0;padding:0;margin:0;font-size:12pt}
+ .sheet.sol{break-before:page}
+}
 </style>
 </head>
 <body>
@@ -939,6 +966,7 @@ function renderSetup(){
   <div class="opt-row"><span>${L('Anzahl Aufgaben','Number of tasks')}</span><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><div class="seg">${[10,15,20,0].map(n=>`<button class="${S.count===n?'on':''}" data-n="${n}" ${n?'':`title="${L('Unendlich – üben, bis du auf Fertig klickst','Endless – practise until you click Done')}"`}>${n||'∞'}</button>`).join('')}</div><input id="countIn" type="number" min="1" max="100" inputmode="numeric" placeholder="${L('eigene','custom')}" value="${[10,15,20,0].includes(S.count)?'':S.count}" class="count-in ${[10,15,20,0].includes(S.count)?'':'on'}" aria-label="${L('Eigene Anzahl Aufgaben','Custom number of tasks')}"></div></div>
   <div class="opt-row"><span>${L('Beim Einsetzen die Zeitform anzeigen','Show the tense when filling in')}<br><small style="color:var(--muted)">${L('Aus = selber an den Signalwörtern erkennen','Off = find it yourself from the signal words')}</small></span><button class="switch ${S.hint?'on':''}" id="hintSw" aria-label="${L('Zeitform anzeigen','Show tense')}"></button></div></div>
  <button class="primary" id="start">${L("Los geht's →","Let's go →")}</button>
+ <button class="secondary" id="sheetBtn" style="margin-top:10px">${L('🖨 Arbeitsblatt (Vorschau, PDF / Druck)','🖨 Worksheet (preview, PDF / print)')}</button>
  <p class="err" id="err"></p>`;
  app.onclick=e=>{
   const b=e.target.closest('button');if(!b)return;
@@ -950,6 +978,7 @@ function renderSetup(){
   else if(b.dataset.n!==undefined){S.count=+b.dataset.n}
   else if(b.id==='hintSw'){S.hint=!S.hint}
   else if(b.id==='start'){return start()}
+  else if(b.id==='sheetBtn'){return openSheet()}
   else return;
   save();renderSetup();
  };
@@ -992,6 +1021,72 @@ function buildRound(n){
   seen.add(it.sentence);globalSeen.add(it.sentence);out.push(it);
  }
  return out;
+}
+// ---------- Arbeitsblatt (Vorschau, Druck / PDF) ----------
+let sheetItems=[];
+function sheetCount(){return S.count>0?S.count:20}
+function buildSheet(){
+ seen=new Set();
+ sheetItems=buildRound(sheetCount());
+ sheetItems.forEach(it=>{
+  if(it.type==='rec'){
+   const sel=S.tenses.filter(x=>x!==it.t);
+   const others=sel.length?shuffle(sel):shuffle(ORDER.filter(x=>x!==it.t));
+   it._opts=shuffle([it.t,...others.slice(0,3)]);
+  }
+ });
+}
+function openSheet(){
+ const err=document.getElementById('err');
+ if(!S.tenses.length){err.textContent=L('Wähle mindestens eine Zeitform.','Choose at least one tense.');return}
+ if(!S.modes.length){err.textContent=L('Wähle mindestens eine Übungsart.','Choose at least one exercise type.');return}
+ if(!S.forms.length&&S.modes.some(m=>m!=='short'&&m!=='ctx')){err.textContent=L('Wähle mindestens eine Satzart.','Choose at least one sentence type.');return}
+ buildSheet();renderSheet();
+}
+function sheetTaskHtml(it,n){
+ const num=`<span class="n">${n}.</span>`;
+ if(it.type==='rec'){
+  return `<div class="t"><div class="ins">${L('Welche Zeitform ist das? Kreuze an.','Which tense is it? Tick one.')}</div>${num}${esc(it.sentence)}<div style="margin-top:4px">${it._opts.map(k=>`<span class="opt"><span class="box"></span>${T[k].name}</span>`).join('')}</div></div>`;
+ }
+ if(it.type==='fill'||it.type==='ctx'){
+  const w=Math.max(9,it.gap.length+6);
+  const ins=it.type==='ctx'?L('Welche Zeit passt? Setze das Verb richtig ein.','Which tense fits? Put the verb in the correct form.'):(it.form==='q'?L('Ergänze die Frage.','Complete the question.'):L('Setze das Verb in der richtigen Form ein.','Put the verb in the correct form.'));
+  const tag=(it.type==='fill'&&S.hint)?` <span class="hint">[${T[it.t].name}]</span>`:'';
+  return `<div class="t"><div class="ins">${ins}${tag}</div>${num}${esc(it.before)}<span class="blank" style="width:${w}ch"></span>${esc(it.after)} <span class="hint">(${esc(it.hint)})</span></div>`;
+ }
+ if(it.type==='short'){
+  return `<div class="t"><div class="ins">${L('Antworte mit einer Kurzantwort:','Give a short answer:')} ${it.yes?L('Ja','Yes'):L('Nein','No')}</div>${num}${esc(it.q.sentence)}<div class="wl"></div></div>`;
+ }
+ return `<div class="t"><div class="ins">${instrText(it)}${it.showMk?' · '+L('Signalwort','Signal word')+': <b>'+esc(it.mk.w)+'</b>':''}</div>${num}${esc(it.src.sentence)}<div class="wl"></div><div class="wl"></div></div>`;
+}
+function sheetSolution(it){
+ if(it.type==='rec')return T[it.t].name;
+ if(it.type==='fill'||it.type==='ctx')return esc([it.gap,...(it.alt||[])].join(' / '));
+ if(it.type==='short')return esc(it.answers.join('  /  '));
+ return esc(it.tgt.sentence);
+}
+function renderSheet(){
+ screen='sheet';
+ const names=S.tenses.map(k=>T[k].name).join(', ');
+ const title=L('Tense Trainer – Arbeitsblatt','Tense Trainer – Worksheet');
+ app.innerHTML=`
+ <div class="sheetbar">
+  <button class="btn-link" id="shBack">${L('‹ Zurück','‹ Back')}</button>
+  <button class="secondary" id="shMix">${L('🔀 Neu mischen','🔀 Shuffle again')}</button>
+  <button class="primary" id="shPrint">${L('🖨 Drucken / PDF','🖨 Print / PDF')}</button>
+ </div>
+ <div class="sheet"><h1>${title}</h1><p class="sub">${esc(names)}</p>
+  <div class="meta"><span>${L('Name:','Name:')}</span><span>${L('Datum:','Date:')}</span></div>
+  ${sheetItems.map((it,i)=>sheetTaskHtml(it,i+1)).join('')}</div>
+ <div class="sheet sol"><h1>${L('Lösungen','Answers')}</h1><p class="sub">${title}</p>
+  <div class="sol-list">${sheetItems.map((it,i)=>`<div><b>${i+1}.</b> ${sheetSolution(it)}</div>`).join('')}</div></div>`;
+ app.onclick=e=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.id==='shBack')return renderSetup();
+  if(b.id==='shMix'){buildSheet();renderSheet();window.scrollTo({top:0});return}
+  if(b.id==='shPrint')return window.print();
+ };
+ window.scrollTo({top:0});
 }
 function start(list){
  const err=document.getElementById('err');
@@ -1453,7 +1548,7 @@ function openVerbs(){
 }
 document.getElementById('verbsBtn').onclick=openVerbs;
 // Feedback: öffnet das Tally-Formular in einem neuen Tab (Version und Gerät werden mitgegeben, keine Personendaten)
-const APP_VERSION='2.2';
+const APP_VERSION='2.3';
 document.getElementById('feedbackBtn').onclick=()=>{
  const q=new URLSearchParams({app:'tensetrainer',version:APP_VERSION,geraet:(navigator.userAgent||'').slice(0,120)});
  window.open('https://tally.so/r/GeR9re?'+q.toString(),'_blank','noopener');

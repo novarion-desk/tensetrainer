@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 2.3 – 21.11.2026
+- Neu: **🖨 Arbeitsblatt** (Einstellungsbildschirm, unter «Los geht's»). Erstellt mit den gewählten Zeitformen, Übungsarten, Satzarten und der gewählten Anzahl (bei ∞: 20) ein A4-Blatt mit Name/Datum, nummerierten Aufgaben und Schreibplatz. Zuerst eine Vorschau, dann «🖨 Drucken / PDF» (im Druckdialog «Als PDF speichern» wählen). «🔀 Neu mischen» erzeugt ein anderes Blatt.
+- Das Lösungsblatt ist immer dabei (eigene Seite am Ende).
+- Sprache folgt EN | DE.
+
 ## Version 2.2 – 21.11.2026
 - Neuer Knopf «💬 Feedback» oben rechts: öffnet ein anonymes Formular (Tally) in einem neuen Tab für Fehler, Inhaltsfehler und Wünsche – für Schüler/innen und Lehrpersonen. Version und Gerät werden automatisch mitgegeben, es werden keine Namen abgefragt.
 
