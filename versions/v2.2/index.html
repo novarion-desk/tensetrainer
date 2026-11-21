@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tense Trainer</title>
+<meta name="theme-color" content="#312E81">
+<link rel="icon" type="image/svg+xml" href="../../icons/icon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Tense Trainer">
+<meta name="mobile-web-app-capable" content="yes">
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--ink:#1d2433;--muted:#667085;--line:#e4e1d8;--accent:#2f5bea;--ok:#1a8a4a;--okbg:#e7f6ee;--bad:#c93c3c;--badbg:#fdeceb;--warn:#a1650f;--warnbg:#fdf3e1;--r:14px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:18px 16px 60px}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.logo{font-weight:800;font-size:24px;letter-spacing:-.02em}
+.logo span{color:var(--accent)}
+button{font:inherit;cursor:pointer}
+.btn-link{background:none;border:0;color:var(--accent);font-weight:600;padding:6px 8px;border-radius:8px}
+.btn-link:hover{background:rgba(47,91,234,.08)}
+.btn-link.sm{font-size:14px;padding:4px 6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-bottom:14px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-weight:600;color:var(--ink)}
+.chip.on{border-color:var(--c,var(--accent));background:color-mix(in srgb,var(--c,var(--accent)) 13%,#fff)}
+.links{margin-top:8px}
+.modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.mode{border:2px solid var(--line);background:#fff;border-radius:12px;padding:12px;text-align:left;color:var(--ink)}
+.mode b{display:block;font-size:17px}
+.mode small{color:var(--muted);font-size:14px}
+.mode.on{border-color:var(--accent);background:#eef2fe}
+.opt-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 0;flex-wrap:wrap}
+.seg{display:flex;border:2px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{border:0;background:#fff;padding:7px 14px;font-weight:600}
+.seg button.on{background:var(--accent);color:#fff}
+.count-in{width:5.5em;border:2px solid var(--line);border-radius:10px;padding:6px 8px;font:inherit;font-weight:600}
+.count-in.on{border-color:var(--accent);background:#eef2fe}
+.switch{position:relative;width:48px;height:28px;border-radius:99px;border:0;background:#cfd4dc;flex:none}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.2s}
+.switch.on{background:var(--accent)}
+.switch.on::after{left:23px}
+.primary{display:block;width:100%;border:0;background:var(--accent);color:#fff;font-weight:700;font-size:18px;padding:14px;border-radius:12px}
+.primary:hover{filter:brightness(1.07)}
+.primary:disabled{opacity:.5;cursor:default}
+.err{color:var(--bad);font-weight:600;text-align:center;min-height:1.5em}
+.qtop{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;font-weight:700}
+.bar{height:8px;background:#e6e3da;border-radius:99px;overflow:hidden;margin-bottom:14px}
+.bar div{height:100%;background:var(--accent);transition:width .3s}
+.tag{display:inline-block;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px}
+.instr{font-weight:700;margin:0 0 14px;font-size:18px}
+.sentence{font-size:22px;line-height:1.9;margin:6px 0 14px}
+.sentence input{font:inherit;font-size:20px;border:0;border-bottom:3px solid var(--accent);background:#f1f4fe;padding:2px 6px;border-radius:6px 6px 0 0;min-width:6ch;max-width:100%;color:var(--ink)}
+.sentence input:focus{outline:none;background:#e6ecfd}
+.hint{color:var(--muted);font-size:18px;white-space:nowrap}
+.tt{display:inline-block;font-size:14px;font-weight:700;padding:2px 10px;border-radius:99px;background:color-mix(in srgb,var(--c) 14%,#fff);color:color-mix(in srgb,var(--c) 80%,#000);border:1px solid color-mix(in srgb,var(--c) 35%,#fff)}
+.src{font-size:21px;background:#f7f6f2;border-left:4px solid var(--line);padding:10px 14px;border-radius:8px;margin-bottom:10px}
+.sig{margin:0 0 12px;color:var(--muted)}
+.sig b{color:var(--ink)}
+textarea.full{width:100%;font:inherit;font-size:20px;border:2px solid var(--line);border-radius:10px;padding:10px 12px;resize:none;min-height:3.2em}
+textarea.full:focus{outline:none;border-color:var(--accent)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opts button{border:2px solid var(--line);background:#fff;border-radius:12px;padding:14px 10px;font-weight:700;color:var(--ink)}
+.opts button:hover:not(:disabled){border-color:var(--accent)}
+.opts button.right{border-color:var(--ok);background:var(--okbg)}
+.opts button.wrong{border-color:var(--bad);background:var(--badbg)}
+.opts button:disabled{cursor:default}
+mark{background:#fff0a8;padding:0 3px;border-radius:4px}
+.fb{border-radius:12px;padding:14px 16px;margin-top:14px;font-size:16px}
+.fb.ok{background:var(--okbg)}.fb.bad{background:var(--badbg)}.fb.warn{background:var(--warnbg)}
+.fbt{font-weight:800;font-size:18px;margin-bottom:4px}
+.fb.ok .fbt{color:var(--ok)}.fb.bad .fbt{color:var(--bad)}.fb.warn .fbt{color:var(--warn)}
+.sol{font-size:18px;margin:6px 0}
+.rule{margin-top:8px}
+.tip{margin-top:8px;font-weight:600}
+.actions{margin-top:16px}
+.big{font-size:56px;font-weight:800;text-align:center;line-height:1.1}
+.big small{display:block;font-size:17px;color:var(--muted);font-weight:600}
+.stat{display:grid;grid-template-columns:170px 1fr 48px;gap:10px;align-items:center;margin:8px 0;font-size:15px}
+.stat .track{height:10px;background:#eee;border-radius:99px;overflow:hidden}
+.stat .track div{height:100%}
+.mist{border-top:1px solid var(--line);padding:10px 0;font-size:16px}
+.mist .you{color:var(--bad)}
+.btns{display:grid;gap:10px}
+.secondary{width:100%;border:2px solid var(--accent);background:#fff;color:var(--accent);font-weight:700;font-size:17px;padding:12px;border-radius:12px}
+.modal{position:fixed;inset:0;background:rgba(20,24,35,.45);display:flex;align-items:flex-start;justify-content:center;padding:20px 12px;overflow:auto;z-index:10}
+.modal.hidden{display:none}
+.modal .card{max-width:720px;width:100%}
+.rt{border-top:1px solid var(--line);padding:12px 0;font-size:15px}
+.rt p{margin:4px 0}
+.hdr-r{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.fs{border:2px solid var(--line);background:#fff;border-radius:10px;padding:4px 10px;font-weight:800;color:var(--ink);min-width:44px}
+.fs:hover{border-color:var(--accent)}
+.fs:disabled{opacity:.35;cursor:default}
+.name{display:block;width:100%;font:inherit;font-size:22px;font-weight:700;text-align:center;border:0;border-bottom:2px dashed var(--line);padding:6px;margin-bottom:12px;color:var(--ink)}
+.name:focus{outline:none;border-bottom-color:var(--accent)}
+.center{text-align:center}.muted{color:var(--muted)}
+.shot{text-align:center;background:#f1f4fe;border-radius:10px;padding:8px 10px;margin:12px 0 0;font-weight:600}
+details.all summary{cursor:pointer;font-weight:700;padding:2px 0}
+details.all[open] summary{margin-bottom:8px}
+.mist.r-bad{background:var(--badbg);border-radius:8px;padding:10px;margin:6px 0;border:0}
+.mist.r-ok{border-top:1px solid var(--line)}
+.okc{color:var(--ok);font-weight:600}
+.info{background:#f7f6f2;border-radius:10px;padding:12px 14px;margin:10px 0 4px;font-size:15px}
+.info p{margin:4px 0}
+footer{text-align:center;color:var(--muted);font-size:13px;margin-top:24px}
+header{flex-wrap:wrap;gap:8px}
+.lang{border-width:2px}.lang button{padding:4px 10px;font-size:14px;font-weight:800}
+/* Verbliste */
+.vtools{position:sticky;top:-20px;background:#fff;padding:4px 0 10px;z-index:2;border-bottom:1px solid var(--line);margin-bottom:6px}
+.vsearch{width:100%;font:inherit;font-size:17px;border:2px solid var(--line);border-radius:10px;padding:9px 12px;margin:8px 0}
+.vsearch:focus{outline:none;border-color:var(--accent)}
+.vrow2{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.vseg button{padding:5px 12px;font-size:14px}
+.vcount{color:var(--muted);font-size:14px}
+.vsec{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:800;margin:16px 0 4px}
+.vlegend{font-size:13px;color:var(--muted);margin:0 0 6px}
+.vt{width:100%;border-collapse:collapse;font-size:16px}
+.vt th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:6px 8px;border-bottom:2px solid var(--line)}
+.vt td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.vt tr:nth-child(even) td{background:#faf9f6}
+.vt td.b{font-weight:800}
+.vt td.de{color:var(--muted);font-size:15px}
+.vt td.f{color:#1d3fb3;font-weight:600}
+.vtag{display:inline-block;font-size:11px;font-weight:800;border-radius:6px;padding:1px 6px;margin-left:4px;vertical-align:1px;white-space:nowrap}
+.vtag.dbl,.vtag.y{background:var(--warnbg);color:var(--warn)}
+.vtag.e{background:#eef0f3;color:#5b6475}
+.vt mark{padding:0 1px}
+@media (max-width:560px){.vt thead th:last-child{display:none}.vt th{padding:6px}.vt tr{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--line)}.vt td{border:0;padding:4px 6px}.vt td.de{grid-column:1/-1;padding-top:0}}
+@media (max-width:520px){.sentence{font-size:19px}.opts{grid-template-columns:1fr}.stat{grid-template-columns:120px 1fr 40px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">Tense<span>Trainer</span></div>
+    <div class="hdr-r">
+      <div class="seg lang" id="langSeg" role="group" aria-label="Language / Sprache"><button data-l="en">EN</button><button data-l="de">DE</button></div>
+      <button class="fs" id="fsMinus" aria-label="A−">A−</button>
+      <button class="fs" id="fsPlus" aria-label="A+">A+</button>
+      <button class="btn-link" id="rulesBtn">📘 Rules</button>
+      <button class="btn-link" id="verbsBtn">📋 Verbs</button>
+      <button class="btn-link" id="feedbackBtn">💬 Feedback</button>
+    </div>
+  </header>
+  <main id="app"></main>
+  <footer id="foot">Tense Trainer</footer>
+</div>
+<div class="modal hidden" id="modal"><div class="card" id="modalBody"></div></div>
+
+<script>
+/*ENGINE*/
+// Sprache: Englisch (Standard) oder Deutsch – wird pro Gerät gemerkt
+let LANG='en';try{const l=localStorage.getItem('tt-lang');if(l==='de'||l==='en')LANG=l}catch(e){}
+const L=(de,en)=>LANG==='en'?en:de;
+const WHY_EN={"never → Gewohnheit": "never → habit", "every morning → Gewohnheit": "every morning → habit", "usually → Gewohnheit": "usually → habit", "want ist ein Zustandsverb → kein Continuous": "want is a state verb → no continuous", "Feste Zeiten, Fahrpläne → Present Simple": "fixed times, timetables → Present Simple", "like ist ein Zustandsverb (Vorliebe)": "like is a state verb (preference)", "every day → Gewohnheit": "every day → habit", "on Wednesday afternoons → regelmässig": "on Wednesday afternoons → regular", "three times a week → regelmässig": "three times a week → regular", "Naturgesetz / Tatsache": "law of nature / fact", "every summer → regelmässig": "every summer → regular", "understand ist ein Zustandsverb → kein Continuous": "understand is a state verb → no continuous", "How often → Frage nach einer Gewohnheit": "How often → question about a habit", "often → Gewohnheit": "often → habit", "Stundenplan → Present Simple": "timetable → Present Simple", "Allgemeine Tatsache": "general fact", "Beruf, dauerhafter Zustand": "job, permanent situation", "know ist ein Zustandsverb → kein Continuous": "know is a state verb → no continuous", "Dauerhafter Zustand": "permanent situation", "Every Sunday morning → Gewohnheit": "Every Sunday morning → habit", "believe ist ein Zustandsverb → kein Continuous": "believe is a state verb → no continuous", "belong ist ein Zustandsverb → kein Continuous": "belong is a state verb → no continuous", "Öffnungszeiten / Fahrpläne → Present Simple": "opening hours / timetables → Present Simple", "remember ist ein Zustandsverb → kein Continuous": "remember is a state verb → no continuous", "On Fridays / always → Gewohnheit": "On Fridays / always → habit", "cost ist ein Zustandsverb → kein Continuous": "cost is a state verb → no continuous", "rarely → Regelmässigkeit": "rarely → regularity", "need ist ein Zustandsverb → kein Continuous": "need is a state verb → no continuous", "always → tägliche Routine": "always → daily routine", "Fahrplan / regelmässige Route": "timetable / regular route", "Look! → passiert gerade jetzt": "Look! → happening right now", "be quiet → passiert gerade jetzt": "be quiet → happening right now", "Was er in diesem Moment tut": "what he is doing at this moment", "Listen! → passiert gerade jetzt": "Listen! → happening right now", "right now → passiert gerade jetzt": "right now → happening right now", "Was in diesem Moment (nicht) passiert": "what is (not) happening at this moment", "Frage nach dem, was gerade passiert": "question about what is happening now", "at the moment → passiert gerade jetzt": "at the moment → happening right now", "Hurry up! → passiert gerade jetzt": "Hurry up! → happening right now", "Shh! → passiert gerade jetzt": "Shh! → happening right now", "Look at … → jetzt zu sehen": "Look at … → you can see it now", "Was sie in diesem Moment tun": "what they are doing at this moment", "but today → Ausnahme, nicht die Gewohnheit": "but today → exception, not the habit", "Passiert gerade jetzt": "happening right now", "this week → läuft gerade, vorübergehend": "this week → in progress, temporary", "Hold on → passiert gerade jetzt": "Hold on → happening right now", "today → vorübergehende Situation": "today → temporary situation", "Look out the window → jetzt zu sehen": "Look out the window → you can see it now", "at the moment → laufendes Spiel": "at the moment → game in progress", "this month → vorübergehend": "this month → temporary", "Frage nach dem Moment": "question about the moment", "Listen → passiert gerade jetzt": "Listen → happening right now", "Quick → passiert gerade jetzt": "Quick → happening right now", "today → vorübergehende Ausnahme": "today → temporary exception", "Look at → aktueller Stand": "Look at → current state", "Frage nach dem, was gerade geschieht": "question about what is happening now", "Last weekend → abgeschlossen, Zeitpunkt bekannt": "Last weekend → finished, time known", "yesterday → Past Simple": "yesterday → Past Simple", "last night → Past Simple": "last night → Past Simple", "When I was six → abgeschlossen": "When I was six → finished", "Abgeschlossen, Mozart lebt nicht mehr": "finished, Mozart is no longer alive", "Yesterday → Past Simple": "Yesterday → Past Simple", "two years ago → Past Simple": "two years ago → Past Simple", "Abgeschlossene Abfolge in der Vergangenheit": "finished sequence in the past", "Kauf ist abgeschlossen, bestimmter Moment": "the purchase is finished, a specific moment", "in 2008 → Past Simple": "in 2008 → Past Simple", "when he was young → abgeschlossen": "when he was young → finished", "Abfolge von Handlungen in der Vergangenheit": "sequence of actions in the past", "in 1912 → Past Simple": "in 1912 → Past Simple", "in kindergarten → abgeschlossen": "in kindergarten → finished", "last week → Past Simple": "last week → Past Simple", "after the party → abgeschlossen": "after the party → finished", "on Saturday → abgeschlossen": "on Saturday → finished", "In 1969 → abgeschlossenes historisches Ereignis": "In 1969 → finished historical event", "on Monday → abgeschlossen": "on Monday → finished", "this morning (vorbei) → Past Simple": "this morning (over) → Past Simple", "Abgeschlossene Reise in der Vergangenheit": "finished trip in the past", "last month → Past Simple": "last month → Past Simple", "during the summer holidays → abgeschlossen": "during the summer holidays → finished", "Abgeschlossenes Ereignis in der Vergangenheit": "finished event in the past", "Abgeschlossene Handlung in der Vergangenheit": "finished action in the past", "Yesterday evening → Past Simple": "Yesterday evening → Past Simple", "when we went camping → abgeschlossen": "when we went camping → finished", "this morning → abgeschlossen": "this morning → finished", "over a hundred years ago → Past Simple": "over a hundred years ago → Past Simple", "Abgeschlossenes Ereignis": "finished event", "last year → Past Simple": "last year → Past Simple", "Lief gerade, als etwas dazwischenkam (when …)": "was in progress when something interrupted it (when …)", "Zu einem Zeitpunkt in der Vergangenheit im Gang": "in progress at a point in the past", "Lief gerade, als wir gingen": "was in progress when we left", "Lief gerade, als etwas passierte": "was in progress when something happened", "While → zwei Handlungen gleichzeitig im Gang": "While → two actions in progress at the same time", "while → Handlung lief gerade": "while → action was in progress", "Lief gerade in dem Moment": "was in progress at that moment", "Lief gerade, als der Sturm begann": "was in progress when the storm started", "Lief (nicht), als etwas passierte": "was (not) in progress when something happened", "Lief gerade, als ich anrief": "was in progress when I called", "War schon im Gang, als ich ankam": "was already in progress when I arrived", "This time yesterday → im Gang": "This time yesterday → in progress", "Hintergrund einer Geschichte": "background of a story", "Was (nicht) lief, als der Chef kam": "what was (not) going on when the boss came", "War im Gang, als die Lehrerin kam": "was in progress when the teacher came", "Zustand während der Party": "situation during the party", "At 4 pm yesterday → Zeitpunkt in der Vergangenheit": "At 4 pm yesterday → point in the past", "Lief (nicht), als etwas geschah": "was (not) in progress when something happened", "While → laufende Handlung unterbrochen": "While → action in progress was interrupted", "Bestimmter Zeitpunkt in der Vergangenheit": "specific point in the past", "Hintergrundbeschreibung in der Vergangenheit": "background description in the past", "Lief (nicht), als der Unfall geschah": "was (not) in progress when the accident happened", "Lief gerade, als es klingelte": "was in progress when the bell rang", "War im Gang, als du ankamst": "was in progress when you arrived", "While → zwei gleichzeitige Handlungen": "While → two actions at the same time", "At 7.30 this morning → im Gang": "At 7.30 this morning → in progress", "Was in dem Moment in der Vergangenheit geschah": "what was happening at that moment in the past", "Position während eines Ereignisses": "position during an event", "Lief gerade, als sie den Delfin sahen": "was in progress when they saw the dolphin", "Folge ist jetzt wichtig (Now I can't …)": "the result matters now (Now I can't …)", "ever → Erfahrung bis jetzt": "ever → experience up to now", "just → gerade eben, Folge jetzt": "just → a moment ago, result now", "yet → bis jetzt noch nicht": "yet → not up to now", "since → von damals bis jetzt": "since → from then until now", "already → bis jetzt, Zeitpunkt unwichtig": "already → up to now, time not important", "yet → bis jetzt": "yet → up to now", "never → Erfahrung bis jetzt": "never → experience up to now", "Ergebnis jetzt sichtbar": "result visible now", "for → Dauer bis jetzt": "for → duration up to now", "Folge jetzt wichtig (can't play today)": "the result matters now (can't play today)", "this week → Zeitraum ist noch nicht vorbei": "this week → the period is not over yet", "just → gerade eben": "just → a moment ago", "How long → Dauer bis jetzt": "How long → duration up to now", "already → Folge jetzt wichtig": "already → the result matters now", "Ergebnis jetzt da": "result is here now", "Erfahrung, Zeitpunkt unwichtig": "experience, time not important", "already → Ergebnis jetzt da": "already → result is here now", "Folge ist jetzt spürbar": "the result can be felt now", "so far → bis jetzt": "so far → up to now", "for three weeks → Dauer bis jetzt": "for three weeks → duration up to now", "Neuigkeit mit Bezug zur Gegenwart": "news connected to the present", "today → Zeitraum läuft noch": "today → the period is still going on", "for twenty years → Dauer bis jetzt": "for twenty years → duration up to now", "Ergebnis jetzt sichtbar (tin is empty)": "result visible now (tin is empty)", "I think → Vermutung → will. «is going to rain» ist auch richtig, wenn man schon Anzeichen sieht (z. B. Wolken).": "I think → assumption → will. «is going to rain» is also correct if you can already see signs (e.g. clouds).", "Spontane Entscheidung": "spontaneous decision", "I promise → Versprechen": "I promise → promise", "Maybe → Vermutung über die Zukunft": "Maybe → assumption about the future", "Spontanes Angebot": "spontaneous offer", "Do you think → Vermutung → will. «is going to win» ist auch möglich.": "Do you think → assumption → will. «is going to win» is also possible.", "I'm sure → Vermutung → will. «are going to pass» geht auch, weil es ein Anzeichen gibt (You studied a lot).": "I'm sure → assumption → will. «are going to pass» also works because there is a sign (You studied a lot).", "Bitte → will": "request → will", "Warnung / Vorhersage": "warning / prediction", "Vorhersage über die ferne Zukunft": "prediction about the distant future", "probably → Vermutung → will. «isn't going to come» geht auch, weil es ein Anzeichen gibt (She's ill).": "probably → assumption → will. «isn't going to come» also works because there is a sign (She's ill).", "I don't think → Vermutung → will. «is going to snow» ist auch richtig.": "I don't think → assumption → will. «is going to snow» is also correct.", "What do you think → Vermutung → will. «Is it going to be» ist auch richtig.": "What do you think → assumption → will. «Is it going to be» is also correct.", "Perhaps → Vermutung": "Perhaps → assumption", "Spontanes Angebot im Moment": "spontaneous offer in the moment", "I'm sure → Vermutung / Beruhigung": "I'm sure → assumption / reassurance", "Höfliche Bitte → will": "polite request → will", "One day → ferne Zukunft / Vorhersage": "One day → distant future / prediction", "Spontane Entscheidung beim Bestellen": "spontaneous decision when ordering", "Versprechen → won't": "promise → won't", "I bet → Vermutung → will. «is going to win» ist auch richtig.": "I bet → assumption → will. «is going to win» is also correct.", "Do you think → Vermutung": "Do you think → assumption", "Spontane Reaktion": "spontaneous reaction", "Probably → Vermutung": "Probably → assumption", "Vorhersage / Warnung": "prediction / warning", "Frage nach einer Reaktion in der Zukunft": "question about a reaction in the future", "I guess → Vermutung": "I guess → assumption", "Sichere Anzeichen (dark clouds)": "clear signs (dark clouds)", "It's all planned → Plan": "It's all planned → plan", "Plan, schon vorbereitet": "plan, already prepared", "Sichere Anzeichen – gleich passiert es": "clear signs – it is about to happen", "has decided → Absicht": "has decided → intention", "Frage nach einem Plan": "question about a plan", "Entscheidung / Absicht": "decision / intention", "Plan, schon festgelegt": "plan, already fixed", "Sichere Anzeichen": "clear signs", "Plan, Ticket schon gekauft": "plan, ticket already bought", "Plan, schon angemeldet": "plan, already signed up", "We've decided → Absicht": "We've decided → intention", "Absicht, Plan": "intention, plan", "Sichere Anzeichen / Plan": "clear signs / plan", "Sichere Anzeichen (7.58!) → going to. «will be» wird hier auch akzeptiert.": "clear signs (7.58!) → going to. «will be» is also accepted here.", "Plan, schon eingeladen": "plan, already invited", "Sichere Anzeichen (minus five)": "clear signs (minus five)", "Feste Absicht / Plan": "firm intention / plan", "Festgelegter Schulausflug / Plan": "fixed school trip / plan", "Steht schon fest": "already decided", "Sichere Anzeichen am Himmel": "clear signs in the sky", "Frage nach Reiseplänen": "question about travel plans", "Vorbereiteter Plan": "prepared plan", "I've made up my mind → feste Absicht": "I've made up my mind → firm intention"};
+const whyText=w=>LANG==='en'&&WHY_EN[w]?WHY_EN[w]:w;
+const ORDER=['SP','PP','SPA','PAP','PRP','WF','GT'];
+const T={
+ SP:{name:'Present Simple',c:'#2f5bea',use:'Gewohnheiten, Regelmässiges, Fakten',pos:'Grundform – bei he / she / it + <b>-s</b>',neg:"<b>don't / doesn't</b> + Grundform",q:'<b>Do / Does</b> + Subjekt + Grundform',sig:'every day, usually, often, always, never, on Mondays'},
+ PP:{name:'Present Continuous',c:'#0e9f9a',use:'passiert gerade jetzt',pos:'<b>am / is / are</b> + Verb-<b>ing</b>',neg:"<b>am not / isn't / aren't</b> + Verb-ing",q:'<b>Am / Is / Are</b> + Subjekt + Verb-ing',sig:'now, right now, at the moment, Look!, Listen!'},
+ SPA:{name:'Past Simple',c:'#d97706',use:'abgeschlossen in der Vergangenheit, Zeitpunkt bekannt',pos:'Verb + <b>-ed</b> oder unregelmässige Form (go → went)',neg:"<b>didn't</b> + Grundform",q:'<b>Did</b> + Subjekt + Grundform',sig:'yesterday, last week, two days ago, in 2020'},
+ PAP:{name:'Past Continuous',c:'#c2410c',use:'war in der Vergangenheit gerade im Gang',pos:'<b>was / were</b> + Verb-<b>ing</b>',neg:"<b>wasn't / weren't</b> + Verb-ing",q:'<b>Was / Were</b> + Subjekt + Verb-ing',sig:"when …, while …, at 8 o'clock last night"},
+ PRP:{name:'Present Perfect',c:'#7c3aed',use:'Vergangenes mit Bezug zur Gegenwart, Zeitpunkt unwichtig',pos:'<b>have / has</b> + 3. Form (gone, seen, played)',neg:"<b>haven't / hasn't</b> + 3. Form",q:'<b>Have / Has</b> + Subjekt + 3. Form',sig:'already, just, yet, ever, never, since, for'},
+ WF:{name:'will-Future',c:'#db2777',use:'Vorhersagen, Vermutungen, spontane Entscheidungen, Versprechen',pos:'<b>will</b> + Grundform',neg:"<b>won't</b> + Grundform",q:'<b>Will</b> + Subjekt + Grundform',sig:'tomorrow, soon, one day, I think …, probably'},
+ GT:{name:'going to-Future',c:'#15803d',use:'Pläne, Absichten, sichere Anzeichen',pos:'<b>am / is / are + going to</b> + Grundform',neg:"<b>am not / isn't / aren't + going to</b> + Grundform",q:'<b>Am / Is / Are</b> + Subjekt + <b>going to</b> + Grundform',sig:'tomorrow, next weekend, this evening, Look at …!'}
+};
+
+const T_EN={
+ SP:{use:'habits, routines, facts',pos:'base form – with he / she / it + <b>-s</b>',neg:"<b>don't / doesn't</b> + base form",q:'<b>Do / Does</b> + subject + base form'},
+ PP:{use:'happening right now',pos:'<b>am / is / are</b> + verb-<b>ing</b>',neg:"<b>am not / isn't / aren't</b> + verb-ing",q:'<b>Am / Is / Are</b> + subject + verb-ing'},
+ SPA:{use:'finished in the past, time is known',pos:'verb + <b>-ed</b> or irregular form (go → went)',neg:"<b>didn't</b> + base form",q:'<b>Did</b> + subject + base form'},
+ PAP:{use:'was in progress in the past',pos:'<b>was / were</b> + verb-<b>ing</b>',neg:"<b>wasn't / weren't</b> + verb-ing",q:'<b>Was / Were</b> + subject + verb-ing'},
+ PRP:{use:'past with a link to the present, time not important',pos:'<b>have / has</b> + 3rd form (gone, seen, played)',neg:"<b>haven't / hasn't</b> + 3rd form",q:'<b>Have / Has</b> + subject + 3rd form'},
+ WF:{use:'predictions, assumptions, spontaneous decisions, promises',pos:'<b>will</b> + base form',neg:"<b>won't</b> + base form",q:'<b>Will</b> + subject + base form'},
+ GT:{use:'plans, intentions, clear signs',pos:'<b>am / is / are + going to</b> + base form',neg:"<b>am not / isn't / aren't + going to</b> + base form",q:'<b>Am / Is / Are</b> + subject + <b>going to</b> + base form'}
+};
+const TD=(k,f)=>LANG==='en'?T_EN[k][f]:T[k][f];
+
+const SUBJ=[
+ {w:'I',k:'1s',poss:'my',pr:['I']},
+ {w:'you',k:'pl',poss:'your',pr:['I','we']},
+ {w:'he',k:'3s',poss:'his',pr:['he']},
+ {w:'she',k:'3s',poss:'her',pr:['she']},
+ {w:'we',k:'pl',poss:'our',pr:['we','you']},
+ {w:'they',k:'pl',poss:'their',pr:['they']},
+ {w:'my brother',k:'3s',poss:'his',pr:['he']},
+ {w:'my sister',k:'3s',poss:'her',pr:['she']},
+ {w:'my best friend',k:'3s',poss:'his',pr:['he']},
+ {w:'my mum',k:'3s',poss:'her',pr:['she'],adult:1},
+ {w:'my dad',k:'3s',poss:'his',pr:['he'],adult:1},
+ {w:'our teacher',k:'3s',poss:'her',pr:['she'],adult:1},
+ {w:'my cousin',k:'3s',poss:'his',pr:['he']},
+ {w:'the coach',k:'3s',poss:'his',pr:['he'],adult:1},
+ {w:'Tom',k:'3s',poss:'his',pr:['he']},
+ {w:'Lisa',k:'3s',poss:'her',pr:['she']},
+ {w:'Noah',k:'3s',poss:'his',pr:['he']},
+ {w:'Emma',k:'3s',poss:'her',pr:['she']},
+ {w:'my friends',k:'pl',poss:'their',pr:['they']},
+ {w:'my parents',k:'pl',poss:'their',pr:['they'],adult:1},
+ {w:'the students',k:'pl',poss:'their',pr:['they']},
+ {w:'Mia and Leon',k:'pl',poss:'their',pr:['they']},
+ {w:'Sara and Ben',k:'pl',poss:'their',pr:['they']},
+ {w:'our neighbours',k:'pl',poss:'their',pr:['they'],adult:1}
+];
+
+// Verb + Objekt, jeweils mit den Zeitformen, in denen die Kombination sinnvoll ist:
+// H = Gewohnheit (Present Simple) · N = gerade im Gang (Present/Past Continuous) · S = Past Simple
+// P = Present Perfect · F = Zukunft (will / going to)
+// Zusatz: X = Besitz im Singular (nicht mit they / my parents …) · T = «yet» passt (erledigbare Aufgabe) · E = «ever» passt (Erfahrung) · R = seltenes Ereignis
+//         D = tägliche Routine (every day / every morning) · K = nur für Kinder/Jugendliche · A = Missgeschick (nur Past Simple / «has just …»)
+const VERBS=[
+ {b:'play',o:['football|HNSF','tennis|HNSF','basketball|HNSF','volleyball|HNSF','chess|HNSF','board games|HNSF','video games|HNSF','the guitar|HNSF']},
+ {b:'watch',o:['a film|HNSPF','TV|HNSFD','a football match|HNSPF','a documentary|NSPF','the sunset|NSF']},
+ {b:'eat',p:'ate',pp:'eaten',o:['an apple|HNSPFD','lunch|HNSPFDT','breakfast|HNSPFDT','a sandwich|HNSPF','pasta|HNSF']},
+ {b:'drink',p:'drank',pp:'drunk',o:['a cup of tea|HNSPFD','a glass of water|HNSPFD','orange juice|HNSFD','hot chocolate|HNSF','milk|HNSFD']},
+ {b:'read',p:'read',pp:'read',o:['a book|HNSPF','a magazine|HNSF','the news|HNSPFD','a comic|HNSPF']},
+ {b:'write',p:'wrote',pp:'written',o:['an email|NSPFT','a letter|NSPFT','a story|HNSPF','a poem|NSPF','a message|HNSPF']},
+ {b:'do',p:'did',pp:'done',o:['{poss} homework|HNSPFDTK','the dishes|HNSPFDT','the shopping|HNSPFT','yoga|HNSF','a puzzle|HNSPF']},
+ {b:'make',p:'made',pp:'made',o:['a cake|HNSPFT','breakfast|HNSPFDT','a video|HNSPF','a sandwich|HNSPF','coffee|HNSPFD']},
+ {b:'cook',o:['dinner|HNSPFDT','spaghetti|HNSPF','soup|HNSPF','a meal|NSPF']},
+ {b:'go',p:'went',pp:'gone',o:['to school|HNSDK','to the cinema|HNSF','swimming|HNSF','shopping|HNSF','to the gym|HNSF','to London|SPFER','to Paris|SPFER']},
+ {b:'buy',p:'bought',pp:'bought',o:['new shoes|NSPF','a present|NSPFT','bread|HNSPFD','groceries|HNSPF','a ticket|NSPFT','a backpack|NSPF']},
+ {b:'clean',o:['the kitchen|HNSPFT','the car|HNSPFT','{poss} room|HNSPFTX','the bathroom|HNSPFT','the windows|HNSPFT']},
+ {b:'tidy',o:['{poss} room|HNSPFTX','the garage|NSPFT','the desk|HNSPFT','the living room|HNSPFT']},
+ {b:'visit',o:['London|SPFER','Rome|SPFER','{poss} grandma|HNSPFX','the museum|NSF','the zoo|NSF','{poss} aunt|HNSPFX']},
+ {b:'take',p:'took',pp:'taken',o:['the bus|HNSFD','a photo|NSPF','the train|HNSFD','a break|HNSF','a walk|HNSF']},
+ {b:'ride',p:'rode',pp:'ridden',o:['a bike|HNSF','a scooter|HNSF','a horse|HNSPFE','a motorbike|NSPFE']},
+ {b:'swim',p:'swam',pp:'swum',ing:'swimming',o:['in the lake|HNSF','in the sea|HNSPFE','in the pool|HNSF']},
+ {b:'run',p:'ran',pp:'run',ing:'running',o:['in the park|HNSF','a marathon|SPFER','around the lake|HNSF']},
+ {b:'sing',p:'sang',pp:'sung',o:['a song|NSPF','in the choir|HNSF','on stage|NSPFE']},
+ {b:'draw',p:'drew',pp:'drawn',o:['a picture|HNSPF','a map|NSPFT','a portrait|NSPF','a comic|HNSPF']},
+ {b:'learn',o:['new words|HNSPF','French|HN','Spanish|HN','the lyrics|NSPFT']},
+ {b:'meet',p:'met',pp:'met',o:['{poss} friends|HNSF','{poss} cousin|HNSFX','the team|HNSF']},
+ {b:'call',o:['{poss} grandma|HNSPFTX','a friend|HNSF','{poss} parents|HNSPFT','the doctor|NSPFT']},
+ {b:'send',p:'sent',pp:'sent',o:['a message|HNSPF','a postcard|NSPFT','an email|NSPFT','a photo|NSPF']},
+ {b:'wash',o:['the car|HNSPFT','the dishes|HNSPFDT','{poss} hands|HNSPFD','the clothes|HNSPFT']},
+ {b:'listen',o:['to music|HNSFD','to a podcast|HNSF','to the radio|HNSFD','to an audiobook|HNSF']},
+ {b:'walk',o:['the dog|HNSPFDT','to school|HNSDK','home|HNSF','in the forest|HNSF']},
+ {b:'fly',p:'flew',pp:'flown',o:['to Spain|SPFER','to New York|SPFER','to Greece|SPFER']},
+ {b:'win',p:'won',pp:'won',ing:'winning',o:['the game|NSPF','the match|NSPF','a prize|SPFER','a medal|SPFER']},
+ {b:'carry',o:['the bags|NSF','the boxes|NSPF']},
+ {b:'study',o:['for the test|NSFK','English|HN','maths|HN','for the exam|NSFK','history|HN']},
+ {b:'try',o:['sushi|SPFE','climbing|SPFE','surfing|SPFE','a new recipe|NSPF']},
+ {b:'plan',dbl:1,o:['a party|NSPFT','a trip|NSPFT','a project|NSPF']},
+ {b:'chat',dbl:1,o:['with friends|HNSF','online|HNSF']},
+ {b:'travel',dbl:1,o:['to Italy|SPFER','around Europe|NSPFER','by train|HNSF']},
+ {b:'bring',p:'brought',pp:'brought',o:['a cake|SPF','snacks|SPF','the books|SPFT','a gift|SPF']},
+ {b:'build',p:'built',pp:'built',o:['a treehouse|NSPF','a model plane|NSPF','a snowman|NSPF','a website|NSPF']},
+ {b:'feed',p:'fed',pp:'fed',o:['the cat|HNSPFDT','the dog|HNSPFDT','the birds|HNSPFD','the fish|HNSPFDT']},
+ {b:'fix',o:['{poss} bike|NSPFTX','the computer|NSPFT','the door|NSPFT','the lamp|NSPFT']},
+ {b:'finish',o:['{poss} homework|NSPFTK','the project|NSPFT','the book|NSPFT','the race|SP']},
+ {b:'miss',o:['the bus|A','the train|A','the goal|A']},
+ {b:'catch',p:'caught',pp:'caught',o:['the bus|HNSFD','the train|HNSFD','the ball|NS','a cold|A']},
+ {b:'throw',p:'threw',pp:'thrown',o:['the ball|S','the frisbee|NSF']},
+ {b:'leave',p:'left',pp:'left',o:['the house|HNSPFD','the party|NSPF','early|HSF']},
+ {b:'wear',p:'wore',pp:'worn',o:['a jacket|NSF','a cap|NSF','a helmet|NSF']},
+ {b:'tell',p:'told',pp:'told',o:['a joke|SP','a story|HNSF','the truth|NS','a secret|SP']},
+ {b:'cut',p:'cut',pp:'cut',ing:'cutting',o:['the bread|NSPFT','the vegetables|NSPFT','the grass|HNSPFT']},
+ {b:'help',o:['{poss} dad|HNSPFX','the teacher|NSPF','{poss} friend|HNSPFX','in the kitchen|HNSPF']},
+ {b:'open',o:['the window|NSP','the door|NSP','the box|NSPT','the present|NSPFT']},
+ {b:'close',o:['the door|SP','the window|SP','the shop|HS']},
+ {b:'paint',o:['a picture|HNSPF','the fence|NSPFT','{poss} bedroom|NSPFTX','a landscape|NSPF']},
+ {b:'dance',o:['at the party|NSF','in the living room|HNSF','to the music|NS']},
+ {b:'bake',o:['cookies|HNSPF','a birthday cake|NSPFT','muffins|HNSPF','bread|HNSPF']},
+ {b:'pack',o:['{poss} bag|NSPFTX','the suitcase|NSPFT','lunch|HNSPFD']},
+ {b:'check',o:['{poss} phone|HNSPFDX','the timetable|NSPF','the answers|NSPFT','the weather|HNSPFD']},
+ {b:'practice',o:['the piano|HNSPF','football|HNSF','for the concert|NSF']},
+ {b:'order',o:['a pizza|HNSPF','drinks|NSPF','tickets online|NSPFT','a book|NSPF']},
+ {b:'repair',o:['the skateboard|NSPFT','the chair|NSPFT','the phone screen|NSPFT']},
+ {b:'climb',o:['the mountain|NSPFE','a tree|HNSPF','the wall|NSF']},
+ {b:'cross',o:['the street|HNSD','the bridge|NS','the river|NSF']},
+ {b:'collect',o:['shells on the beach|NSF','stickers for the album|NS']},
+ {b:'water',o:['the plants|HNSPFDT','the flowers|HNSPFT','the garden|HNSPFT']},
+ {b:'share',o:['the snacks|SPF','a taxi|SF','the link|SPF']},
+ {b:'explain',o:['the rules|NSPF','the task|NSPF','the problem|NSPF']},
+ {b:'forget',p:'forgot',pp:'forgotten',o:['{poss} keys|A','the password|A','{poss} umbrella|AX','{poss} homework|AK']},
+ {b:'find',p:'found',pp:'found',o:['a wallet|A','the answer|SPF','{poss} phone|SPX','a shortcut|SPF']},
+ {b:'lose',p:'lost',pp:'lost',o:['{poss} keys|A','the match|SPF','{poss} wallet|AX','the ticket|A']},
+ {b:'break',p:'broke',pp:'broken',o:['a glass|A','{poss} phone|AX','a window|A']},
+ {b:'choose',p:'chose',pp:'chosen',o:['a film|SF','the team|SF','a book|SF','the colour|SF']},
+ {b:'speak',p:'spoke',pp:'spoken',o:['English|HNS','French|HN','to the teacher|NSPF']},
+ {b:'spend',p:'spent',pp:'spent',o:['too much money|SP','time with friends|HNSF']},
+ {b:'sleep',p:'slept',pp:'slept',o:['on the sofa|NSF','in a tent|NSPFE','for ten hours|S']},
+ {b:'wake',p:'woke',pp:'woken',o:['up early|HS','up late|HS']},
+ {b:'sit',p:'sat',pp:'sat',ing:'sitting',o:['on the bench|NS','in the garden|NS','near the window|NS','in the front row|NSF']},
+ {b:'stand',p:'stood',pp:'stood',o:['at the bus stop|NS','in line|NS','near the door|NS']},
+ {b:'wait',o:['for the bus|HNSD','for {poss} friends|NSF','outside|NS','in the queue|NS']},
+ {b:'start',o:['the game|SF','a new book|SPF','the engine|SP']},
+ {b:'answer',o:['the question|SP','the phone|HSP','the email|NSPFT','the door|SP']}
+];
+
+const MARK={
+ SP:{d:['every weekend','on Saturdays','twice a week','once a week','on Mondays','every Sunday'],day:['every day','every morning','every evening'],r:['every summer','once a year','every winter']},
+ PP:{d:['right now','at the moment','now']},
+ SPA:{d:['yesterday','last week','two days ago','last weekend','on Monday','yesterday evening','three weeks ago','this morning'],r:['last summer','last year','in 2022']},
+ PAP:{d:['when the phone rang',"at 8 o'clock last night",'at this time yesterday','when it started to rain','at 6 pm yesterday','when the lights went out']},
+ WF:{d:['tomorrow','next week','soon','tonight','this weekend','later'],r:['next year','one day','in the future']},
+ GT:{d:['tomorrow','next weekend','this evening','next Monday','on Saturday','this afternoon'],r:['next summer','next year','in July']}
+};
+// Objekte aufbereiten: 'text|TAGS' → {o, tags}
+const TENSE_TAG={SP:'H',PP:'N',PAP:'N',SPA:'S',PRP:'P',WF:'F',GT:'F'};
+VERBS.forEach(v=>{v.o=v.o.map(x=>{const [o,g]=x.split('|');const tags=g.includes('A')?g+'SP':g;return {o,tags,rare:tags.includes('R'),ever:tags.includes('E'),yet:tags.includes('T'),day:tags.includes('D'),kid:tags.includes('K'),acc:tags.includes('A'),sing:tags.includes('X')}})});
+
+// Handgeschriebene Sätze: {gap} = Lösung, h = Hinweis in Klammern (20 pro Zeitform = 140)
+const POOL=[
+ // Present Simple (20)
+ {t:'SP',s:'My dad {drives} to work every morning.',h:'drive'},
+ {t:'SP',f:'neg',s:'We {don\'t have} school on Saturdays.',h:'not / have'},
+ {t:'SP',f:'q',s:'{Does your sister like} horror films?',h:'your sister / like'},
+ {t:'SP',s:'The bus {leaves} at 7:15 every day.',h:'leave'},
+ {t:'SP',s:'I usually {get} up at half past six.',h:'get'},
+ {t:'SP',f:'neg',s:'Lisa {doesn\'t eat} meat.',h:'not / eat'},
+ {t:'SP',f:'q',s:'{Do you play} an instrument?',h:'you / play'},
+ {t:'SP',s:'Water {boils} at 100 degrees.',h:'boil'},
+ {t:'SP',s:'My brother never {tidies} his room.',h:'tidy'},
+ {t:'SP',s:'Tom {watches} YouTube videos every evening.',h:'watch'},
+ {t:'SP',s:'The library {opens} at nine o\'clock.',h:'open'},
+ {t:'SP',f:'neg',s:'My little sister {doesn\'t know} how to swim yet.',h:'not / know'},
+ {t:'SP',f:'q',s:'Where {do your grandparents live}?',h:'your grandparents / live'},
+ {t:'SP',s:'Our dog always {barks} at the postman.',h:'bark'},
+ {t:'SP',s:'The Earth {goes} around the sun.',h:'go'},
+ {t:'SP',f:'neg',s:'I {don\'t drink} coffee in the evening.',h:'not / drink'},
+ {t:'SP',f:'q',s:'{Does this train stop} in Bern?',h:'this train / stop'},
+ {t:'SP',s:'Emma {practices} the violin twice a week.',h:'practice'},
+ {t:'SP',s:'Penguins {live} in the Southern Hemisphere.',h:'live'},
+ {t:'SP',f:'q',s:'What time {does the film start}?',h:'the film / start'},
+
+ // Present Continuous (20)
+ {t:'PP',s:'Look! It {is snowing}.',h:'snow'},
+ {t:'PP',s:'Be quiet, please. The baby {is sleeping}.',h:'sleep'},
+ {t:'PP',f:'neg',s:'I {am not watching} TV right now. I\'m doing my homework.',h:'not / watch'},
+ {t:'PP',f:'q',s:'{Are you listening} to me?',h:'you / listen'},
+ {t:'PP',s:'Mia and Leon {are playing} table tennis at the moment.',h:'play'},
+ {t:'PP',f:'q',s:'Why {is he crying}?',h:'he / cry'},
+ {t:'PP',s:'Hurry up! The train {is leaving}!',h:'leave'},
+ {t:'PP',f:'neg',s:'We {aren\'t working} on the project today.',h:'not / work'},
+ {t:'PP',s:'Listen! Someone {is knocking} at the door.',h:'knock'},
+ {t:'PP',s:'My parents {are having} dinner right now.',h:'have'},
+ {t:'PP',s:'Look at those birds! They {are flying} south.',h:'fly'},
+ {t:'PP',f:'neg',s:'Tom {isn\'t wearing} his glasses today.',h:'not / wear'},
+ {t:'PP',f:'q',s:'Who {are you waiting} for?',h:'you / wait'},
+ {t:'PP',s:'I {am reading} a really exciting book this week.',h:'read'},
+ {t:'PP',s:'The water {is boiling}. Can you turn off the stove?',h:'boil'},
+ {t:'PP',f:'neg',s:'We {aren\'t playing} outside right now because it\'s raining.',h:'not / play'},
+ {t:'PP',f:'q',s:'{Is your brother studying} for his maths exam?',h:'your brother / study'},
+ {t:'PP',s:'Watch out! A car {is coming}!',h:'come'},
+ {t:'PP',s:'She {is talking} on the phone in the hallway.',h:'talk'},
+ {t:'PP',f:'q',s:'What {are the kids doing} in the garden?',h:'the kids / do'},
+
+ // Past Simple (20)
+ {t:'SPA',s:'Last summer we {went} to Italy.',h:'go'},
+ {t:'SPA',f:'neg',s:'I {didn\'t see} the match last night.',h:'not / see'},
+ {t:'SPA',f:'q',s:'{Did you finish} your homework yesterday?',h:'you / finish'},
+ {t:'SPA',s:'Shakespeare {wrote} Romeo and Juliet.',h:'write'},
+ {t:'SPA',s:'She {bought} new trainers two days ago.',h:'buy'},
+ {t:'SPA',s:'We {missed} the bus this morning, so we were late.',h:'miss'},
+ {t:'SPA',s:'Columbus {sailed} to America in 1492.',h:'sail'},
+ {t:'SPA',f:'neg',s:'My grandma {didn\'t have} a mobile phone when she was young.',h:'not / have'},
+ {t:'SPA',f:'q',s:'Where {did you go} on holiday last year?',h:'you / go'},
+ {t:'SPA',s:'Tim {fell} off his bike yesterday.',h:'fall'},
+ {t:'SPA',s:'We {ate} delicious pancakes for breakfast on Sunday.',h:'eat'},
+ {t:'SPA',f:'neg',s:'He {didn\'t answer} my message yesterday.',h:'not / answer'},
+ {t:'SPA',f:'q',s:'When {did the concert end}?',h:'the concert / end'},
+ {t:'SPA',s:'My uncle {built} this wooden table himself.',h:'build'},
+ {t:'SPA',s:'The bell {rang} and all the students ran outside.',h:'ring'},
+ {t:'SPA',f:'neg',s:'We {didn\'t understand} the last question in the test.',h:'not / understand'},
+ {t:'SPA',f:'q',s:'{Did Lisa win} the race on Saturday?',h:'Lisa / win'},
+ {t:'SPA',s:'I {found} an old photo album in the attic.',h:'find'},
+ {t:'SPA',s:'They {arrived} at the airport two hours early.',h:'arrive'},
+ {t:'SPA',f:'q',s:'What {did you buy} at the market?',h:'you / buy'},
+
+ // Past Continuous (20)
+ {t:'PAP',s:'I {was having} a shower when the phone rang.',h:'have'},
+ {t:'PAP',s:'At 8 o\'clock last night we {were watching} a film.',h:'watch'},
+ {t:'PAP',s:'It {was raining} when we left the house.',h:'rain'},
+ {t:'PAP',f:'q',s:'{Were you sleeping} when the fire alarm went off?',h:'you / sleep'},
+ {t:'PAP',f:'neg',s:'She {wasn\'t listening} when the teacher explained the task.',h:'not / listen'},
+ {t:'PAP',s:'While Tom {was cooking}, his sister was setting the table.',h:'cook'},
+ {t:'PAP',f:'q',s:'What {were you doing} at this time yesterday?',h:'you / do'},
+ {t:'PAP',s:'The kids {were playing} outside when the storm started.',h:'play'},
+ {t:'PAP',f:'neg',s:'We {weren\'t paying} attention, so we missed the exit.',h:'not / pay'},
+ {t:'PAP',s:'My dad {was driving} too fast when the police stopped him.',h:'drive'},
+ {t:'PAP',s:'The sun {was shining} brightly when we woke up.',h:'shine'},
+ {t:'PAP',f:'neg',s:'I {wasn\'t feeling} well yesterday afternoon.',h:'not / feel'},
+ {t:'PAP',f:'q',s:'Where {were they going} when you saw them?',h:'they / go'},
+ {t:'PAP',s:'Noah {was reading} a comic while waiting for the dentist.',h:'read'},
+ {t:'PAP',s:'At midnight everyone {was sleeping} except me.',h:'sleep'},
+ {t:'PAP',f:'neg',s:'He {wasn\'t wearing} a helmet when he crashed.',h:'not / wear'},
+ {t:'PAP',f:'q',s:'{Was it snowing} when you left school?',h:'it / snow'},
+ {t:'PAP',s:'Birds {were singing} in the trees early that morning.',h:'sing'},
+ {t:'PAP',s:'We {were crossing} the bridge when the fireworks began.',h:'cross'},
+ {t:'PAP',f:'q',sq:1,s:'Who {was talking} to Lisa in the corridor?',h:'talk'},
+
+ // Present Perfect (20)
+ {t:'PRP',s:'I {have already seen} this film.',h:'already / see'},
+ {t:'PRP',f:'q',s:'{Have you ever been} to London?',h:'you / ever / be'},
+ {t:'PRP',f:'neg',s:'She {hasn\'t finished} her project yet.',h:'not / finish'},
+ {t:'PRP',s:'We {have lived} in this town since 2015.',h:'live'},
+ {t:'PRP',s:'Oh no! I {have lost} my key.',h:'lose'},
+ {t:'PRP',s:'My brother {has just passed} his driving test.',h:'just / pass'},
+ {t:'PRP',f:'q',s:'{Has Nina called} you yet?',h:'Nina / call'},
+ {t:'PRP',s:'I {have never eaten} sushi.',h:'never / eat'},
+ {t:'PRP',s:'They {have known} each other since primary school.',h:'know'},
+ {t:'PRP',f:'neg',s:'He {hasn\'t done} his homework yet.',h:'not / do'},
+ {t:'PRP',s:'We {have visited} three different countries this year.',h:'visit'},
+ {t:'PRP',f:'q',s:'{Have you ever ridden} a horse?',h:'you / ever / ride'},
+ {t:'PRP',f:'neg',s:'I {haven\'t read} that book yet.',h:'not / read'},
+ {t:'PRP',s:'Someone {has left} a bag on the bench.',h:'leave'},
+ {t:'PRP',s:'Emma {has played} the piano since she was six.',h:'play'},
+ {t:'PRP',f:'q',s:'How many goals {has Tom scored} this season?',h:'Tom / score'},
+ {t:'PRP',f:'neg',s:'My parents {haven\'t met} my new teacher yet.',h:'not / meet'},
+ {t:'PRP',s:'The train {has just arrived} at platform 4.',h:'just / arrive'},
+ {t:'PRP',s:'I {have forgotten} his phone number.',h:'forget'},
+ {t:'PRP',f:'q',s:'{Has it stopped} raining yet?',h:'it / stop'},
+
+ // will-Future (20)
+ {t:'WF',s:'I think it {will rain} tomorrow.',h:'rain'},
+ {t:'WF',s:'Don\'t worry, I {will help} you.',h:'help'},
+ {t:'WF',s:'Robots {will do} a lot of our jobs in the future.',h:'do'},
+ {t:'WF',f:'neg',s:'I\'m sure you {won\'t fail} the test.',h:'not / fail'},
+ {t:'WF',f:'q',s:'{Will you be} at home this evening?',h:'you / be'},
+ {t:'WF',s:'It\'s cold in here. I {will close} the window.',h:'close'},
+ {t:'WF',s:'Maybe she {will become} a famous singer one day.',h:'become'},
+ {t:'WF',f:'neg',s:'The tickets {won\'t be} expensive.',h:'not / be'},
+ {t:'WF',s:'I promise I {will call} you tonight.',h:'call'},
+ {t:'WF',s:'Do you think Switzerland {will win} the next match?',h:'win'},
+ {t:'WF',s:'In 100 years, people {will travel} to other planets.',h:'travel'},
+ {t:'WF',f:'neg',s:'He probably {won\'t remember} to bring the book.',h:'not / remember'},
+ {t:'WF',f:'q',s:'When {will we get} our test results?',h:'we / get'},
+ {t:'WF',s:'I\'m tired. I think I {will go} to bed early tonight.',h:'go'},
+ {t:'WF',s:'One day scientists {will find} a cure for this illness.',h:'find'},
+ {t:'WF',f:'neg',s:'Don\'t worry, the dog {won\'t hurt} you.',h:'not / hurt'},
+ {t:'WF',f:'q',s:'{Will there be} flying cars in the future?',h:'there / be'},
+ {t:'WF',s:'I {will send} you the link right now.',h:'send'},
+ {t:'WF',s:'Perhaps they {will move} to a bigger city next year.',h:'move'},
+ {t:'WF',f:'q',s:'What {will the weather be} like tomorrow?',h:'the weather / be'},
+
+ // going to-Future (20)
+ {t:'GT',s:'We {are going to visit} our grandparents next weekend.',h:'visit'},
+ {t:'GT',s:'Look at the grey sky! It {is going to snow}.',h:'snow'},
+ {t:'GT',s:'I {am going to study} hard for the test.',h:'study'},
+ {t:'GT',f:'q',s:'{Are you going to visit} your cousins this weekend?',h:'you / visit'},
+ {t:'GT',f:'neg',s:'She {isn\'t going to buy} that expensive jacket.',h:'not / buy'},
+ {t:'GT',s:'My parents {are going to paint} the kitchen next month.',h:'paint'},
+ {t:'GT',f:'q',s:'What {are you going to do} after school?',h:'you / do'},
+ {t:'GT',s:'Be careful! You {are going to fall}!',h:'fall'},
+ {t:'GT',s:'Tom {is going to start} an apprenticeship next summer.',h:'start'},
+ {t:'GT',f:'neg',s:'We {aren\'t going to take} the bus. We\'ll walk.',h:'not / take'},
+ {t:'GT',s:'I {am going to clean} my room this afternoon.',h:'clean'},
+ {t:'GT',f:'q',sq:1,s:'Who {is going to bring} the drinks for the party?',h:'bring'},
+ {t:'GT',f:'neg',s:'They {aren\'t going to travel} abroad this summer.',h:'not / travel'},
+ {t:'GT',s:'Look at that glass on the edge! It {is going to fall}!',h:'fall'},
+ {t:'GT',s:'Mia {is going to bake} a chocolate cake for her mum.',h:'bake'},
+ {t:'GT',f:'q',s:'{Is Noah going to join} the football club?',h:'Noah / join'},
+ {t:'GT',f:'neg',s:'I {am not going to spend} all my pocket money today.',h:'not / spend'},
+ {t:'GT',s:'We {are going to camp} near Lake Lucerne next weekend.',h:'camp'},
+ {t:'GT',s:'Watch out! That ball {is going to hit} the window!',h:'hit'},
+ {t:'GT',f:'q',s:'How {are you going to get} to the station tomorrow?',h:'you / get'}
+];
+
+// Kontext-Aufgaben: {gap} = Lösung, h = Hinweis, w = Begründung, f = 'neg' / 'q' (35 pro Zeitform = 245)
+const CTX=[
+ // Present Simple (35)
+ {t:'SP',s:'My sister is a vegetarian. She never {eats} meat.',h:'eat',w:'never → Gewohnheit'},
+ {t:'SP',s:'Tom {walks} to school every morning. It takes him ten minutes.',h:'walk',w:'every morning → Gewohnheit'},
+ {t:'SP',s:'I\'m not a morning person. I usually {get} up at seven.',h:'get',w:'usually → Gewohnheit'},
+ {t:'SP',s:'Lena loves animals. She {wants} to become a vet.',h:'want',w:'want ist ein Zustandsverb → kein Continuous'},
+ {t:'SP',s:'The shops in our village {close} at 6.30 pm.',h:'close',w:'Feste Zeiten, Fahrpläne → Present Simple'},
+ {t:'SP',f:'q',s:'{Do you like} pizza? – Yes, I love it!',h:'you / like',w:'like ist ein Zustandsverb (Vorliebe)'},
+ {t:'SP',s:'My dad works in Zurich. He {takes} the train every day.',h:'take',w:'every day → Gewohnheit'},
+ {t:'SP',f:'neg',s:'We {don\'t go} to school on Wednesday afternoons.',h:'not / go',w:'on Wednesday afternoons → regelmässig'},
+ {t:'SP',s:'Ben is very sporty. He {plays} football three times a week.',h:'play',w:'three times a week → regelmässig'},
+ {t:'SP',s:'The sun {rises} in the east.',h:'rise',w:'Naturgesetz / Tatsache'},
+ {t:'SP',s:'My grandparents live in Ticino. We {visit} them every summer.',h:'visit',w:'every summer → regelmässig'},
+ {t:'SP',f:'neg',s:'I {don\'t understand} this word. What does it mean?',h:'not / understand',w:'understand ist ein Zustandsverb → kein Continuous'},
+ {t:'SP',f:'q',s:'How often {does your brother play} video games?',h:'your brother / play',w:'How often → Frage nach einer Gewohnheit'},
+ {t:'SP',s:'Mia is always late. She often {misses} the bus.',h:'miss',w:'often → Gewohnheit'},
+ {t:'SP',s:'Our English lesson {starts} at 8.20.',h:'start',w:'Stundenplan → Present Simple'},
+ {t:'SP',f:'neg',s:'Cats {don\'t like} water.',h:'not / like',w:'Allgemeine Tatsache'},
+ {t:'SP',s:'My mum is a nurse. She {works} at the hospital.',h:'work',w:'Beruf, dauerhafter Zustand'},
+ {t:'SP',f:'q',s:'What time {do you usually have} dinner?',h:'you / usually / have',w:'usually → Gewohnheit'},
+ {t:'SP',s:'Leon {knows} all the answers. He\'s really clever.',h:'know',w:'know ist ein Zustandsverb → kein Continuous'},
+ {t:'SP',s:'In Switzerland, people {speak} four different languages.',h:'speak',w:'Allgemeine Tatsache'},
+ {t:'SP',s:'Water {freezes} at zero degrees Celsius.',h:'freeze',w:'Naturgesetz / Tatsache'},
+ {t:'SP',f:'neg',s:'My phone is broken, so it {doesn\'t work} properly.',h:'not / work',w:'Dauerhafter Zustand'},
+ {t:'SP',s:'Every Sunday morning, my dad {bakes} fresh bread.',h:'bake',w:'Every Sunday morning → Gewohnheit'},
+ {t:'SP',f:'q',s:'{Does Sarah believe} in ghosts?',h:'Sarah / believe',w:'believe ist ein Zustandsverb → kein Continuous'},
+ {t:'SP',s:'This backpack {belongs} to my older brother.',h:'belong',w:'belong ist ein Zustandsverb → kein Continuous'},
+ {t:'SP',s:'The museum {opens} at 10 am from Tuesday to Sunday.',h:'open',w:'Öffnungszeiten / Fahrpläne → Present Simple'},
+ {t:'SP',f:'neg',s:'I {don\'t remember} his name. Sorry!',h:'not / remember',w:'remember ist ein Zustandsverb → kein Continuous'},
+ {t:'SP',s:'On Fridays, we always {order} pizza for dinner.',h:'order',w:'On Fridays / always → Gewohnheit'},
+ {t:'SP',f:'q',s:'How much {does this ticket cost}?',h:'this ticket / cost',w:'cost ist ein Zustandsverb → kein Continuous'},
+ {t:'SP',s:'My cousin lives in Canada, so we rarely {see} each other.',h:'see',w:'rarely → Regelmässigkeit'},
+ {t:'SP',s:'Bees {make} honey from flower nectar.',h:'make',w:'Allgemeine Tatsache'},
+ {t:'SP',f:'neg',s:'Noah {doesn\'t need} any help. He can do it alone.',h:'not / need',w:'need ist ein Zustandsverb → kein Continuous'},
+ {t:'SP',s:'Before bed, I always {brush} my teeth and read for ten minutes.',h:'brush',w:'always → tägliche Routine'},
+ {t:'SP',f:'q',sq:1,s:'Which bus {goes} to the train station?',h:'go',w:'Fahrplan / regelmässige Route'},
+ {t:'SP',s:'A good dictionary {helps} when you learn new languages.',h:'help',w:'Allgemeine Tatsache'},
+
+ // Present Continuous (35)
+ {t:'PP',s:'Look! The baby {is crying}. Can you help me?',h:'cry',w:'Look! → passiert gerade jetzt'},
+ {t:'PP',s:'Please be quiet. Dad {is sleeping}.',h:'sleep',w:'be quiet → passiert gerade jetzt'},
+ {t:'PP',s:'Where is Tim? – He\'s in the garden. He {is playing} with the dog.',h:'play',w:'Was er in diesem Moment tut'},
+ {t:'PP',s:'Listen! Someone {is singing} in the bathroom.',h:'sing',w:'Listen! → passiert gerade jetzt'},
+ {t:'PP',s:'I can\'t come to the phone right now. I {am having} a shower.',h:'have',w:'right now → passiert gerade jetzt'},
+ {t:'PP',f:'neg',s:'Turn off the TV! You {aren\'t watching} it anyway.',h:'not / watch',w:'Was in diesem Moment (nicht) passiert'},
+ {t:'PP',f:'q',s:'Why {are you laughing}? What\'s so funny?',h:'you / laugh',w:'Frage nach dem, was gerade passiert'},
+ {t:'PP',s:'It {is raining} at the moment, so take an umbrella.',h:'rain',w:'at the moment → passiert gerade jetzt'},
+ {t:'PP',s:'Hurry up! The bus {is coming}!',h:'come',w:'Hurry up! → passiert gerade jetzt'},
+ {t:'PP',s:'Shh! The teacher {is explaining} the homework.',h:'explain',w:'Shh! → passiert gerade jetzt'},
+ {t:'PP',s:'Look at Lisa! She {is wearing} a funny hat today.',h:'wear',w:'Look at … → jetzt zu sehen'},
+ {t:'PP',s:'My parents aren\'t at home. They {are shopping} in town.',h:'shop',w:'Was sie in diesem Moment tun'},
+ {t:'PP',f:'q',s:'{Is it snowing} outside? I want to go sledging!',h:'it / snow',w:'Frage nach dem, was gerade passiert'},
+ {t:'PP',s:'Normally I walk to school, but today I {am taking} the bus.',h:'take',w:'but today → Ausnahme, nicht die Gewohnheit'},
+ {t:'PP',f:'q',s:'What {are you doing}? – I\'m writing a message to Jana.',h:'you / do',w:'Frage nach dem, was gerade passiert'},
+ {t:'PP',s:'Can you turn the music down? I {am trying} to study.',h:'try',w:'Passiert gerade jetzt'},
+ {t:'PP',s:'Look! The cat {is climbing} up the tree.',h:'climb',w:'Look! → passiert gerade jetzt'},
+ {t:'PP',s:'We {are learning} about the Romans in history this week.',h:'learn',w:'this week → läuft gerade, vorübergehend'},
+ {t:'PP',f:'neg',s:'He isn\'t busy. He {isn\'t doing} anything right now.',h:'not / do',w:'right now → passiert gerade jetzt'},
+ {t:'PP',s:'Be careful, the floor is wet! Someone {is cleaning} the kitchen.',h:'clean',w:'Passiert gerade jetzt'},
+ {t:'PP',s:'Hold on a second, I {am looking} for my keys.',h:'look',w:'Hold on → passiert gerade jetzt'},
+ {t:'PP',f:'neg',s:'Emma usually drinks tea, but today she {isn\'t drinking} anything.',h:'not / drink',w:'today → vorübergehende Situation'},
+ {t:'PP',s:'Look out the window! The neighbours {are painting} their fence.',h:'paint',w:'Look out the window → jetzt zu sehen'},
+ {t:'PP',f:'q',s:'Why {is Tom running} so fast? Is he late?',h:'Tom / run',w:'Frage nach dem, was gerade passiert'},
+ {t:'PP',s:'Smells great! Mum {is baking} apple pie in the kitchen.',h:'bake',w:'Passiert gerade jetzt'},
+ {t:'PP',s:'Our school team {is winning} 2:0 at the moment!',h:'win',w:'at the moment → laufendes Spiel'},
+ {t:'PP',f:'neg',s:'Don\'t bother him, he {isn\'t playing} – he\'s doing his homework.',h:'not / play',w:'Passiert gerade jetzt'},
+ {t:'PP',s:'My sister {is staying} with our aunt in Geneva this month.',h:'stay',w:'this month → vorübergehend'},
+ {t:'PP',f:'q',s:'{Are you using} this computer, or can I check my emails?',h:'you / use',w:'Frage nach dem Moment'},
+ {t:'PP',s:'Listen to that noise! Someone {is practicing} the drums upstairs.',h:'practice',w:'Listen → passiert gerade jetzt'},
+ {t:'PP',s:'Quick, grab your coat! Dad {is waiting} in the car.',h:'wait',w:'Quick → passiert gerade jetzt'},
+ {t:'PP',f:'neg',s:'We {aren\'t taking} the train today because there is a strike.',h:'not / take',w:'today → vorübergehende Ausnahme'},
+ {t:'PP',s:'Look at the scoreboard – our team {is losing}!',h:'lose',w:'Look at → aktueller Stand'},
+ {t:'PP',f:'q',s:'Where {is Mia going} with that huge suitcase?',h:'Mia / go',w:'Frage nach dem, was gerade geschieht'},
+ {t:'PP',s:'I {am sitting} on the train right now and watching the mountains.',h:'sit',w:'right now → passiert gerade jetzt'},
+
+ // Past Simple (35)
+ {t:'SPA',s:'Last weekend we {went} to Europapark. It was great!',h:'go',w:'Last weekend → abgeschlossen, Zeitpunkt bekannt'},
+ {t:'SPA',f:'neg',s:'I {didn\'t do} my homework yesterday because I was ill.',h:'not / do',w:'yesterday → Past Simple'},
+ {t:'SPA',f:'q',s:'{Did you see} the football match last night?',h:'you / see',w:'last night → Past Simple'},
+ {t:'SPA',s:'When I was six, I {broke} my arm.',h:'break',w:'When I was six → abgeschlossen'},
+ {t:'SPA',s:'Mozart {wrote} his first song at the age of five.',h:'write',w:'Abgeschlossen, Mozart lebt nicht mehr'},
+ {t:'SPA',s:'Yesterday Anna {lost} her phone on the bus.',h:'lose',w:'Yesterday → Past Simple'},
+ {t:'SPA',s:'We {had} pizza for dinner last night.',h:'have',w:'last night → Past Simple'},
+ {t:'SPA',s:'Two years ago my family {moved} to a new flat.',h:'move',w:'two years ago → Past Simple'},
+ {t:'SPA',s:'The film started at eight and {finished} at ten.',h:'finish',w:'Abgeschlossene Abfolge in der Vergangenheit'},
+ {t:'SPA',s:'I {called} you three times yesterday! Where were you?',h:'call',w:'yesterday → Past Simple'},
+ {t:'SPA',f:'q',s:'Where {did you buy} those shoes? They look great.',h:'you / buy',w:'Kauf ist abgeschlossen, bestimmter Moment'},
+ {t:'SPA',s:'In 2008 Switzerland and Austria {hosted} the Euro.',h:'host',w:'in 2008 → Past Simple'},
+ {t:'SPA',f:'neg',s:'My grandpa {didn\'t have} a computer when he was young.',h:'not / have',w:'when he was young → abgeschlossen'},
+ {t:'SPA',s:'First I opened the door, then I {saw} the surprise.',h:'see',w:'Abfolge von Handlungen in der Vergangenheit'},
+ {t:'SPA',s:'The Titanic {sank} in 1912.',h:'sink',w:'in 1912 → Past Simple'},
+ {t:'SPA',s:'I {met} my best friend in kindergarten.',h:'meet',w:'in kindergarten → abgeschlossen'},
+ {t:'SPA',s:'Sorry, I {forgot} your birthday last week!',h:'forget',w:'last week → Past Simple'},
+ {t:'SPA',f:'q',s:'How {did you get} home after the party?',h:'you / get',w:'after the party → abgeschlossen'},
+ {t:'SPA',f:'neg',s:'We {didn\'t win} the game on Saturday. We lost 1:3.',h:'not / win',w:'on Saturday → abgeschlossen'},
+ {t:'SPA',s:'Leo {fell} asleep during the film last night.',h:'fall',w:'last night → Past Simple'},
+ {t:'SPA',s:'In 1969, Neil Armstrong {walked} on the moon.',h:'walk',w:'In 1969 → abgeschlossenes historisches Ereignis'},
+ {t:'SPA',f:'neg',s:'Sara {didn\'t come} to school on Monday because she had a fever.',h:'not / come',w:'on Monday → abgeschlossen'},
+ {t:'SPA',s:'I {woke} up at six this morning and went for a run.',h:'wake',w:'this morning (vorbei) → Past Simple'},
+ {t:'SPA',f:'q',s:'{Did your parents enjoy} their trip to Scotland?',h:'your parents / enjoy',w:'Abgeschlossene Reise in der Vergangenheit'},
+ {t:'SPA',s:'Tom {spent} all his money on a new skateboard last month.',h:'spend',w:'last month → Past Simple'},
+ {t:'SPA',s:'We {swam} in the lake every day during the summer holidays.',h:'swim',w:'during the summer holidays → abgeschlossen'},
+ {t:'SPA',f:'neg',s:'The bus was late, so I {didn\'t arrive} until nine.',h:'not / arrive',w:'Abgeschlossenes Ereignis in der Vergangenheit'},
+ {t:'SPA',s:'She {took} fifty photos at the zoo yesterday.',h:'take',w:'yesterday → Past Simple'},
+ {t:'SPA',f:'q',sq:1,s:'Who {told} you about the surprise party?',h:'tell',w:'Abgeschlossene Handlung in der Vergangenheit'},
+ {t:'SPA',s:'Yesterday evening we {cooked} spaghetti and watched a movie.',h:'cook',w:'Yesterday evening → Past Simple'},
+ {t:'SPA',s:'My brother {caught} a huge fish when we went camping.',h:'catch',w:'when we went camping → abgeschlossen'},
+ {t:'SPA',f:'neg',s:'I {didn\'t hear} my alarm clock this morning!',h:'not / hear',w:'this morning → abgeschlossen'},
+ {t:'SPA',s:'They {built} this bridge over a hundred years ago.',h:'build',w:'over a hundred years ago → Past Simple'},
+ {t:'SPA',f:'q',s:'Why {did you leave} the concert so early?',h:'you / leave',w:'Abgeschlossenes Ereignis'},
+ {t:'SPA',s:'Emma {gave} me a great book for my birthday last year.',h:'give',w:'last year → Past Simple'},
+
+ // Past Continuous (35)
+ {t:'PAP',s:'I {was having} breakfast when the phone rang.',h:'have',w:'Lief gerade, als etwas dazwischenkam (when …)'},
+ {t:'PAP',s:'At 9 o\'clock last night we {were watching} a film.',h:'watch',w:'Zu einem Zeitpunkt in der Vergangenheit im Gang'},
+ {t:'PAP',s:'It {was raining} when we left school.',h:'rain',w:'Lief gerade, als wir gingen'},
+ {t:'PAP',f:'q',s:'What {were you doing} when the lights went out?',h:'you / do',w:'Lief gerade, als etwas passierte'},
+ {t:'PAP',s:'While Mum {was cooking}, Dad was setting the table.',h:'cook',w:'While → zwei Handlungen gleichzeitig im Gang'},
+ {t:'PAP',s:'Sara fell off her bike while she {was riding} home.',h:'ride',w:'while → Handlung lief gerade'},
+ {t:'PAP',s:'Sorry, I didn\'t hear you. I {was listening} to music.',h:'listen',w:'Lief gerade in dem Moment'},
+ {t:'PAP',s:'The kids {were playing} in the garden when the storm started.',h:'play',w:'Lief gerade, als der Sturm begann'},
+ {t:'PAP',f:'neg',s:'He {wasn\'t paying} attention when the teacher explained the task.',h:'not / pay',w:'Lief (nicht), als etwas passierte'},
+ {t:'PAP',f:'q',s:'{Were you sleeping} when I called you?',h:'you / sleep',w:'Lief gerade, als ich anrief'},
+ {t:'PAP',s:'When I arrived at the party, everybody {was dancing}.',h:'dance',w:'War schon im Gang, als ich ankam'},
+ {t:'PAP',s:'We saw a deer while we {were driving} through the forest.',h:'drive',w:'while → Handlung lief gerade'},
+ {t:'PAP',s:'This time yesterday I {was sitting} on a plane to London.',h:'sit',w:'This time yesterday → im Gang'},
+ {t:'PAP',s:'Tom cut his finger while he {was making} a sandwich.',h:'make',w:'while → Handlung lief gerade'},
+ {t:'PAP',s:'It was a beautiful day. The sun {was shining} and the birds were singing.',h:'shine',w:'Hintergrund einer Geschichte'},
+ {t:'PAP',s:'My phone rang while I {was taking} a test. So embarrassing!',h:'take',w:'while → Handlung lief gerade'},
+ {t:'PAP',f:'neg',s:'They {weren\'t working} when the boss came in. They were chatting.',h:'not / work',w:'Was (nicht) lief, als der Chef kam'},
+ {t:'PAP',s:'When the teacher came in, the students {were talking} loudly.',h:'talk',w:'War im Gang, als die Lehrerin kam'},
+ {t:'PAP',f:'q',s:'What {was Lisa wearing} at the party last night?',h:'Lisa / wear',w:'Zustand während der Party'},
+ {t:'PAP',s:'I met my old teacher while I {was waiting} for the bus.',h:'wait',w:'while → Handlung lief gerade'},
+ {t:'PAP',s:'At 4 pm yesterday, Noah {was practicing} the guitar in his room.',h:'practice',w:'At 4 pm yesterday → Zeitpunkt in der Vergangenheit'},
+ {t:'PAP',f:'neg',s:'We {weren\'t looking} when the ball flew over the fence.',h:'not / look',w:'Lief (nicht), als etwas geschah'},
+ {t:'PAP',s:'While I {was walking} the dog, I found a twenty-franc note.',h:'walk',w:'While → laufende Handlung unterbrochen'},
+ {t:'PAP',f:'q',s:'Why {was the baby crying} at three in the morning?',h:'the baby / cry',w:'Bestimmter Zeitpunkt in der Vergangenheit'},
+ {t:'PAP',s:'Emma dropped her phone while she {was running} for the train.',h:'run',w:'while → Handlung lief gerade'},
+ {t:'PAP',s:'The wind {was blowing} hard and leaves were falling everywhere.',h:'blow',w:'Hintergrundbeschreibung in der Vergangenheit'},
+ {t:'PAP',f:'neg',s:'I {wasn\'t driving} fast when the accident happened.',h:'not / drive',w:'Lief (nicht), als der Unfall geschah'},
+ {t:'PAP',s:'We {were having} dinner when the doorbell suddenly rang.',h:'have',w:'Lief gerade, als es klingelte'},
+ {t:'PAP',f:'q',s:'{Were your friends waiting} for you at the station?',h:'your friends / wait',w:'War im Gang, als du ankamst'},
+ {t:'PAP',s:'While the boys {were playing} chess, the girls were painting.',h:'play',w:'While → zwei gleichzeitige Handlungen'},
+ {t:'PAP',s:'At 7.30 this morning I {was still sleeping}!',h:'still / sleep',w:'At 7.30 this morning → im Gang'},
+ {t:'PAP',f:'neg',s:'You {weren\'t listening} to me! You were looking at your phone.',h:'not / listen',w:'Was in dem Moment in der Vergangenheit geschah'},
+ {t:'PAP',s:'My dad hurt his back while he {was carrying} a heavy box.',h:'carry',w:'while → Handlung lief gerade'},
+ {t:'PAP',f:'q',s:'Where {were you sitting} when the fire alarm went off?',h:'you / sit',w:'Position während eines Ereignisses'},
+ {t:'PAP',s:'They {were swimming} in the sea when they spotted a dolphin.',h:'swim',w:'Lief gerade, als sie den Delfin sahen'},
+
+ // Present Perfect (35)
+ {t:'PRP',s:'Oh no! I {have lost} my key. Now I can\'t open the door.',h:'lose',w:'Folge ist jetzt wichtig (Now I can\'t …)'},
+ {t:'PRP',f:'q',s:'{Have you ever been} to London? – No, never.',h:'you / ever / be',w:'ever → Erfahrung bis jetzt'},
+ {t:'PRP',s:'No, thanks, I\'m not hungry. I {have just eaten}.',h:'just / eat',w:'just → gerade eben, Folge jetzt'},
+ {t:'PRP',f:'neg',s:'Tim {hasn\'t finished} his project yet. He needs more time.',h:'not / finish',w:'yet → bis jetzt noch nicht'},
+ {t:'PRP',s:'We {have lived} in this house since 2018.',h:'live',w:'since → von damals bis jetzt'},
+ {t:'PRP',s:'My sister {has already seen} this film three times.',h:'already / see',w:'already → bis jetzt, Zeitpunkt unwichtig'},
+ {t:'PRP',f:'q',s:'{Has the bus left} yet? – Yes, two minutes ago.',h:'the bus / leave',w:'yet → bis jetzt'},
+ {t:'PRP',s:'I {have never eaten} sushi. Is it good?',h:'never / eat',w:'never → Erfahrung bis jetzt'},
+ {t:'PRP',s:'Look! Someone {has painted} the wall. It looks great now.',h:'paint',w:'Ergebnis jetzt sichtbar'},
+ {t:'PRP',s:'They {have known} each other for ten years.',h:'know',w:'for → Dauer bis jetzt'},
+ {t:'PRP',s:'Ben can\'t play today. He {has broken} his leg.',h:'break',w:'Folge jetzt wichtig (can\'t play today)'},
+ {t:'PRP',f:'neg',s:'I {haven\'t seen} Sara this week. Is she ill?',h:'not / see',w:'this week → Zeitraum ist noch nicht vorbei'},
+ {t:'PRP',s:'We {have just won} the game! Let\'s celebrate!',h:'just / win',w:'just → gerade eben'},
+ {t:'PRP',f:'q',s:'How long {have you had} your dog?',h:'you / have',w:'How long → Dauer bis jetzt'},
+ {t:'PRP',s:'The film {has already started}. Let\'s go in quickly!',h:'already / start',w:'already → Folge jetzt wichtig'},
+ {t:'PRP',s:'Mum {has made} a cake. Do you want a piece?',h:'make',w:'Ergebnis jetzt da'},
+ {t:'PRP',s:'I {have been} to Italy three times.',h:'be',w:'Erfahrung, Zeitpunkt unwichtig'},
+ {t:'PRP',f:'q',s:'{Have you done} your homework yet?',h:'you / do',w:'yet → bis jetzt'},
+ {t:'PRP',s:'My dad {has worked} at this company since 2010.',h:'work',w:'since → von damals bis jetzt'},
+ {t:'PRP',s:'Lisa looks so different! She {has cut} her hair.',h:'cut',w:'Ergebnis jetzt sichtbar'},
+ {t:'PRP',s:'You don\'t need to clean the kitchen. I {have already done} it.',h:'already / do',w:'already → Ergebnis jetzt da'},
+ {t:'PRP',f:'neg',s:'We {haven\'t decided} where to go on holiday yet.',h:'not / decide',w:'yet → bis jetzt noch nicht'},
+ {t:'PRP',f:'q',s:'{Have you ever tried} climbing? It\'s awesome!',h:'you / ever / try',w:'ever → Erfahrung bis jetzt'},
+ {t:'PRP',s:'I can\'t charge my phone because I {have forgotten} my charger.',h:'forget',w:'Folge ist jetzt spürbar'},
+ {t:'PRP',s:'Noah {has collected} over 500 football stickers so far.',h:'collect',w:'so far → bis jetzt'},
+ {t:'PRP',f:'neg',s:'It {hasn\'t rained} for three weeks. The garden is really dry.',h:'not / rain',w:'for three weeks → Dauer bis jetzt'},
+ {t:'PRP',s:'Great news! Emma {has won} first prize in the art competition!',h:'win',w:'Neuigkeit mit Bezug zur Gegenwart'},
+ {t:'PRP',f:'q',s:'{Has the postman brought} any letters today?',h:'the postman / bring',w:'today → Zeitraum läuft noch'},
+ {t:'PRP',s:'I {have read} that book twice – it\'s my absolute favourite.',h:'read',w:'Erfahrung, Zeitpunkt unwichtig'},
+ {t:'PRP',f:'neg',s:'They {haven\'t arrived} yet. Maybe their train is delayed.',h:'not / arrive',w:'yet → bis jetzt noch nicht'},
+ {t:'PRP',s:'Look at the ground! It {has snowed} overnight.',h:'snow',w:'Ergebnis jetzt sichtbar'},
+ {t:'PRP',s:'My aunt {has been} a teacher for twenty years.',h:'be',w:'for twenty years → Dauer bis jetzt'},
+ {t:'PRP',f:'q',s:'{Have you found} your missing headphones yet?',h:'you / find',w:'yet → bis jetzt'},
+ {t:'PRP',s:'Someone {has eaten} all the biscuits! The tin is empty.',h:'eat',w:'Ergebnis jetzt sichtbar (tin is empty)'},
+ {t:'PRP',s:'I {have never flown} in a helicopter, but I\'d love to.',h:'never / fly',w:'never → Erfahrung bis jetzt'},
+
+ // will-Future (35)
+ {t:'WF',s:'I think it {will rain} tomorrow. Take an umbrella.',h:'rain',w:'I think → Vermutung → will. «is going to rain» ist auch richtig, wenn man schon Anzeichen sieht (z. B. Wolken).',alt:['is going to rain']},
+ {t:'WF',s:'The phone is ringing. – Don\'t worry, I {will get} it!',h:'get',w:'Spontane Entscheidung'},
+ {t:'WF',f:'neg',s:'I promise I {won\'t tell} anyone your secret.',h:'not / tell',w:'I promise → Versprechen'},
+ {t:'WF',s:'Maybe people {will live} on Mars one day.',h:'live',w:'Maybe → Vermutung über die Zukunft'},
+ {t:'WF',s:'That bag looks heavy. I {will help} you.',h:'help',w:'Spontanes Angebot'},
+ {t:'WF',s:'Do you think Switzerland {will win} the World Cup?',h:'win',w:'Do you think → Vermutung → will. «is going to win» ist auch möglich.',alt:['is going to win']},
+ {t:'WF',s:'I\'m sure you {will pass} the test. You studied a lot.',h:'pass',w:'I\'m sure → Vermutung → will. «are going to pass» geht auch, weil es ein Anzeichen gibt (You studied a lot).',alt:['are going to pass']},
+ {t:'WF',s:'It\'s cold in here. – OK, I {will close} the window.',h:'close',w:'Spontane Entscheidung'},
+ {t:'WF',f:'q',s:'{Will you help} me with my homework, please?',h:'you / help',w:'Bitte → will'},
+ {t:'WF',s:'Don\'t touch the dog. It {will bite} you!',h:'bite',w:'Warnung / Vorhersage'},
+ {t:'WF',s:'In 2050, cars {will drive} without drivers.',h:'drive',w:'Vorhersage über die ferne Zukunft'},
+ {t:'WF',s:'I\'m thirsty. – Wait, I {will get} you a glass of water.',h:'get',w:'Spontanes Angebot'},
+ {t:'WF',f:'neg',s:'She probably {won\'t come} to the party. She\'s ill.',h:'not / come',w:'probably → Vermutung → will. «isn\'t going to come» geht auch, weil es ein Anzeichen gibt (She\'s ill).',alt:['is not going to come']},
+ {t:'WF',s:'I {will call} you tonight, I promise!',h:'call',w:'I promise → Versprechen'},
+ {t:'WF',s:'Robots {will do} many of our jobs in the future.',h:'do',w:'Vorhersage über die ferne Zukunft'},
+ {t:'WF',s:'Don\'t worry about the money. I {will pay} for the tickets.',h:'pay',w:'Spontanes Angebot'},
+ {t:'WF',s:'I don\'t think it {will snow} this weekend.',h:'snow',w:'I don\'t think → Vermutung → will. «is going to snow» ist auch richtig.',alt:['is going to snow']},
+ {t:'WF',f:'q',s:'What do you think? {Will it be} sunny tomorrow?',h:'it / be',w:'What do you think → Vermutung → will. «Is it going to be» ist auch richtig.',alt:['Is it going to be']},
+ {t:'WF',s:'I\'m hungry. – I {will make} you a sandwich.',h:'make',w:'Spontanes Angebot'},
+ {t:'WF',s:'Perhaps we {will meet} again one day.',h:'meet',w:'Perhaps → Vermutung'},
+ {t:'WF',s:'Oh no, I forgot my pen! – Here, I {will lend} you mine.',h:'lend',w:'Spontanes Angebot im Moment'},
+ {t:'WF',f:'neg',s:'I\'m sure the exam {won\'t be} as hard as you think.',h:'not / be',w:'I\'m sure → Vermutung / Beruhigung'},
+ {t:'WF',s:'Wait for me! I {will come} with you!',h:'come',w:'Spontane Entscheidung'},
+ {t:'WF',f:'q',s:'{Will you pass} me the salt, please?',h:'you / pass',w:'Höfliche Bitte → will'},
+ {t:'WF',s:'One day, humans {will travel} to other solar systems.',h:'travel',w:'One day → ferne Zukunft / Vorhersage'},
+ {t:'WF',s:'I can\'t decide what to order. Hmm, I {will have} the pasta.',h:'have',w:'Spontane Entscheidung beim Bestellen'},
+ {t:'WF',f:'neg',s:'Don\'t worry, I {won\'t forget} to water your plants.',h:'not / forget',w:'Versprechen → won\'t'},
+ {t:'WF',s:'I bet our team {will win} on Saturday.',h:'win',w:'I bet → Vermutung → will. «is going to win» ist auch richtig.',alt:['is going to win']},
+ {t:'WF',s:'Do you think people {will still read} paper books in 2080?',h:'still / read',w:'Do you think → Vermutung'},
+ {t:'WF',s:'Look, the door is locked. – No problem, I {will open} it.',h:'open',w:'Spontane Reaktion'},
+ {t:'WF',s:'Electric planes {will probably carry} passengers in 30 years.',h:'probably / carry',w:'Probably → Vermutung'},
+ {t:'WF',f:'neg',s:'If you don\'t hurry, you {won\'t catch} the last bus.',h:'not / catch',w:'Vorhersage / Warnung'},
+ {t:'WF',s:'I {will send} you the photos as soon as I get home, I promise.',h:'send',w:'I promise → Versprechen'},
+ {t:'WF',f:'q',s:'{Will you be} angry if I\'m five minutes late?',h:'you / be',w:'Frage nach einer Reaktion in der Zukunft'},
+ {t:'WF',s:'I guess Tom {will arrive} around seven o\'clock.',h:'arrive',w:'I guess → Vermutung'},
+
+ // going to-Future (35)
+ {t:'GT',s:'Look at those dark clouds! It {is going to rain}.',h:'rain',w:'Sichere Anzeichen (dark clouds)'},
+ {t:'GT',s:'We {are going to visit} our grandparents next weekend. It\'s all planned.',h:'visit',w:'It\'s all planned → Plan'},
+ {t:'GT',s:'I\'ve bought the paint. I {am going to paint} my room on Saturday.',h:'paint',w:'Plan, schon vorbereitet'},
+ {t:'GT',s:'Watch out! You {are going to fall}!',h:'fall',w:'Sichere Anzeichen – gleich passiert es'},
+ {t:'GT',s:'Tom has decided. He {is going to start} an apprenticeship as a carpenter.',h:'start',w:'has decided → Absicht'},
+ {t:'GT',f:'q',s:'{Are you going to watch} the match tonight?',h:'you / watch',w:'Frage nach einem Plan'},
+ {t:'GT',f:'neg',s:'She {isn\'t going to buy} the jacket. It\'s too expensive.',h:'not / buy',w:'Entscheidung / Absicht'},
+ {t:'GT',f:'q',s:'What {are you going to do} after school today?',h:'you / do',w:'Frage nach einem Plan'},
+ {t:'GT',s:'We {are going to move} to a bigger flat next month. We\'ve signed the contract.',h:'move',w:'Plan, schon festgelegt'},
+ {t:'GT',s:'The car is much too fast. It {is going to crash}!',h:'crash',w:'Sichere Anzeichen'},
+ {t:'GT',s:'I\'ve got my ticket! I {am going to see} my favourite band in concert!',h:'see',w:'Plan, Ticket schon gekauft'},
+ {t:'GT',s:'My brother {is going to learn} Spanish next year. He has already signed up.',h:'learn',w:'Plan, schon angemeldet'},
+ {t:'GT',s:'Lisa is so tired. She {is going to fall} asleep any second.',h:'fall',w:'Sichere Anzeichen'},
+ {t:'GT',f:'neg',s:'We {aren\'t going to take} the bus. We\'ve decided to walk.',h:'not / take',w:'We\'ve decided → Absicht'},
+ {t:'GT',s:'Look at that boy on the wall! He {is going to jump}!',h:'jump',w:'Sichere Anzeichen'},
+ {t:'GT',s:'I\'m saving money because I {am going to buy} a new bike.',h:'buy',w:'Absicht, Plan'},
+ {t:'GT',s:'Mum has got flour, eggs and sugar. She {is going to bake} a cake.',h:'bake',w:'Sichere Anzeichen / Plan'},
+ {t:'GT',f:'q',s:'Where {are you going to spend} your holidays this summer?',h:'you / spend',w:'Frage nach einem Plan'},
+ {t:'GT',s:'It\'s 7.58! We {are going to be} late for school!',h:'be',w:'Sichere Anzeichen (7.58!) → going to. «will be» wird hier auch akzeptiert.',alt:['will be']},
+ {t:'GT',s:'Leo {is going to have} a party on Friday. He has invited 20 people.',h:'have',w:'Plan, schon eingeladen'},
+ {t:'GT',s:'Look at the thermometer – it\'s minus five! The lake {is going to freeze}.',h:'freeze',w:'Sichere Anzeichen (minus five)'},
+ {t:'GT',f:'neg',s:'I {am not going to watch} TV tonight because I want to finish my book.',h:'not / watch',w:'Feste Absicht / Plan'},
+ {t:'GT',s:'Sarah has packed her bags. She {is going to fly} to Greece tomorrow morning.',h:'fly',w:'Plan, schon vorbereitet'},
+ {t:'GT',f:'q',s:'{Is your team going to participate} in the tournament next month?',h:'your team / participate',w:'Frage nach einem Plan'},
+ {t:'GT',s:'Careful with that cup! You {are going to spill} your tea!',h:'spill',w:'Sichere Anzeichen – gleich passiert es'},
+ {t:'GT',s:'Next week, our class {is going to visit} the science museum.',h:'visit',w:'Festgelegter Schulausflug / Plan'},
+ {t:'GT',f:'neg',s:'Noah {isn\'t going to play} on Saturday because he injured his ankle.',h:'not / play',w:'Steht schon fest'},
+ {t:'GT',s:'Look at the sky! The sun is coming out – it {is going to be} a lovely day.',h:'be',w:'Sichere Anzeichen am Himmel'},
+ {t:'GT',f:'q',s:'How long {are they going to stay} in Vienna?',h:'they / stay',w:'Frage nach Reiseplänen'},
+ {t:'GT',s:'My dad bought wood and nails. He {is going to build} a birdhouse.',h:'build',w:'Vorbereiteter Plan'},
+ {t:'GT',s:'Look at that dog running towards the puddle – it {is going to splash} us!',h:'splash',w:'Sichere Anzeichen'},
+ {t:'GT',f:'neg',s:'We {aren\'t going to eat} out tonight; Mum has already cooked.',h:'not / eat',w:'Steht schon fest'},
+ {t:'GT',s:'I\'ve made up my mind. I {am going to clean} my whole room this weekend.',h:'clean',w:'I\'ve made up my mind → feste Absicht'},
+ {t:'GT',f:'q',s:'What {is Emma going to wear} to the school dance?',h:'Emma / wear',w:'Frage nach einem Plan'},
+ {t:'GT',s:'The referee is looking at his watch. He {is going to blow} the final whistle!',h:'blow',w:'Sichere Anzeichen'}
+];
+
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+
+function vforms(v){
+ const b=v.b,last=b.slice(-1),cy=/[^aeiou]y$/.test(b);
+ const s3=v.s3||(/(s|x|z|ch|sh|o)$/.test(b)?b+'es':cy?b.slice(0,-1)+'ies':b+'s');
+ const ing=v.ing||(/ie$/.test(b)?b.slice(0,-2)+'ying':/[^e]e$/.test(b)?b.slice(0,-1)+'ing':v.dbl?b+last+'ing':b+'ing');
+ const p=v.p||(/e$/.test(b)?b+'d':cy?b.slice(0,-1)+'ied':v.dbl?b+last+'ed':b+'ed');
+ return {b,s3,ing,p,pp:v.pp||p};
+}
+// Passt das Objekt zu Zeitform, Satzart und Subjekt?
+function objOK(obj,t,form,s){
+ if(!obj.tags.includes(TENSE_TAG[t]))return false;
+ if(obj.kid&&s&&s.adult)return false;
+ if(obj.sing&&s&&s.k==='pl'&&s.w!=='you')return false;
+ if(obj.acc&&form==='neg')return false; // «didn't lose his wallet» klingt seltsam
+ if(t==='PRP'&&form!=='pos'){if(obj.acc)return false;if(!(obj.yet||(form==='q'&&obj.ever)))return false}
+ return true;
+}
+function markerFor(t,form,obj){
+ if(t==='PRP'){
+  if(form==='pos')return {w:obj.acc?'just':rnd(['already','just']),mid:true};
+  if(form==='q'&&obj.ever&&(!obj.yet||Math.random()<.6))return {w:'ever',mid:true};
+  return {w:'yet',mid:false};
+ }
+ const m=MARK[t];let list=obj.rare&&m.r?m.r:m.d;
+ if(t==='SP'&&!obj.rare&&obj.day)list=m.day; // tägliche Routine → every day / every morning
+ if(t==='WF'&&form==='neg')list=list.filter(w=>!['soon','one day','in the future'].includes(w)); // «won't … soon» klingt unnatürlich
+ return {w:rnd(list),mid:false};
+}
+function build(t,form,s,vf,objStr,mk){
+ const s3=s.k==='3s',i1=s.k==='1s';
+ const be=i1?'am':s3?'is':'are',beN=i1?'am not':s3?"isn't":"aren't";
+ const was=(i1||s3)?'was':'were',wasN=(i1||s3)?"wasn't":"weren't";
+ const has=s3?'has':'have',hasN=s3?"hasn't":"haven't";
+ const dO=s3?'does':'do',dN=s3?"doesn't":"don't";
+ const mid=mk.mid?mk.w+' ':'';
+ let pos,neg,qa,qr;
+ switch(t){
+  case 'SP':pos=s3?vf.s3:vf.b;neg=dN+' '+vf.b;qa=dO;qr=vf.b;break;
+  case 'PP':pos=be+' '+vf.ing;neg=beN+' '+vf.ing;qa=be;qr=vf.ing;break;
+  case 'SPA':pos=vf.p;neg="didn't "+vf.b;qa='did';qr=vf.b;break;
+  case 'PAP':pos=was+' '+vf.ing;neg=wasN+' '+vf.ing;qa=was;qr=vf.ing;break;
+  case 'PRP':pos=has+' '+mid+vf.pp;neg=hasN+' '+mid+vf.pp;qa=has;qr=mid+vf.pp;break;
+  case 'WF':pos='will '+vf.b;neg="won't "+vf.b;qa='will';qr=vf.b;break;
+  case 'GT':pos=be+' going to '+vf.b;neg=beN+' going to '+vf.b;qa=be;qr='going to '+vf.b;break;
+ }
+ const tail=' '+objStr+(mk.mid?'':' '+mk.w);
+ if(form==='q')return {before:'',gap:cap(qa)+' '+s.w+' '+qr,after:tail+'?'};
+ return {before:cap(s.w)+' ',gap:form==='neg'?neg:pos,after:tail+'.'};
+}
+function pickSubj(noI){let s;do{s=rnd(SUBJ)}while(noI&&s.k==='1s');return s}
+// Zufälliges Verb + Objekt, das zu allen angegebenen Zeitformen passt
+function pickVO(tenses,form,s){
+ for(let i=0;i<500;i++){
+  const v=rnd(VERBS),obj=rnd(v.o);
+  if(tenses.every(t=>objOK(obj,t,form,s)))return {v,obj};
+ }
+ return null;
+}
+function genItem(t,form,o={}){
+ const s=o.s||pickSubj(form==='q');
+ let v=o.v,obj=o.obj;
+ if(!v){const p=pickVO([t],form,s);v=p.v;obj=p.obj}
+ const vf=vforms(v);
+ const objStr=obj.o.replace('{poss}',s.poss);
+ const mk=o.mk||markerFor(t,form,obj);
+ const p=build(t,form,s,vf,objStr,mk);
+ const hint=form==='q'?s.w+' / '+(mk.mid?mk.w+' / ':'')+vf.b:form==='neg'?'not / '+vf.b:(mk.mid?mk.w+' / ':'')+vf.b;
+ return {src:'gen',t,form,s,v,vf,obj,mk,...p,hint,sentence:p.before+p.gap+p.after};
+}
+function poolItem(p){
+ const m=p.s.match(/^(.*)\{(.+?)\}(.*)$/);
+ return {src:'pool',t:p.t,form:p.f||'pos',sq:!!p.sq,before:m[1],gap:m[2],after:m[3],hint:p.h,sentence:m[1]+m[2]+m[3],mk:null,alt:p.alt||[]};
+}
+function ctxItem(p){const it=poolItem(p);it.type='ctx';it.why=p.w;return it}
+function genTrans(t,forms,tenses){
+ const srcT=(tenses||ORDER).filter(x=>x!==t);
+ let other=forms.filter(f=>f!=='pos');
+ let kind=(forms.includes('pos')&&other.length&&Math.random()<.5)?'form':'tense';
+ if(!srcT.length){kind='form';if(!other.length)other=['neg','q']}
+ let src,tgt,instr;
+ if(kind==='form'){
+  const tf=rnd(other),s=pickSubj(tf==='q');
+  const p=pickVO([t],'pos',s);let vo=p;
+  for(let i=0;i<300&&!(objOK(vo.obj,t,tf,s));i++)vo=pickVO([t],'pos',s);
+  src=genItem(t,'pos',{s,v:vo.v,obj:vo.obj});
+  tgt=genItem(t,tf,{s,v:vo.v,obj:vo.obj,mk:(t==='PRP'||(t==='WF'&&tf==='neg'&&src.mk.w==='soon'))?null:src.mk});
+  instr=tf==='neg'?'neg':'q';
+ }else{
+  const f=rnd(forms),s=pickSubj(f==='q');
+  let S=rnd(srcT),vo=pickVO([S,t],f,s);
+  for(let i=0;i<30&&!vo;i++){S=rnd(srcT);vo=pickVO([S,t],f,s)}
+  if(!vo)return genTrans(t,forms.includes('pos')?forms:['pos',...forms],[t]);
+  src=genItem(S,f,{s,v:vo.v,obj:vo.obj});tgt=genItem(t,f,{s,v:vo.v,obj:vo.obj});
+  instr='tense';
+ }
+ return {type:'trans',kind,t,form:tgt.form,src,tgt,instr,mk:tgt.mk,showMk:kind==='tense'||tgt.mk.w!==src.mk.w,sentence:tgt.sentence};
+}
+
+function shortAns(t,pr,yes){
+ const k=pr==='I'?'1s':(pr==='he'||pr==='she')?'3s':'pl',s3=k==='3s',i1=k==='1s';
+ const A={
+  SP:[s3?'does':'do',s3?"doesn't":"don't"],
+  PP:[i1?'am':s3?'is':'are',i1?"'m not":s3?"isn't":"aren't"],
+  SPA:['did',"didn't"],
+  PAP:[(i1||s3)?'was':'were',(i1||s3)?"wasn't":"weren't"],
+  PRP:[s3?'has':'have',s3?"hasn't":"haven't"],
+  WF:['will',"won't"]};
+ A.GT=A.PP;
+ const a=A[t][yes?0:1];
+ return (yes?'Yes, ':'No, ')+pr+(a.startsWith("'")?'':' ')+a+'.';
+}
+function genShort(t){
+ const q=genItem(t,'q'),yes=Math.random()<.5;
+ const answers=q.s.pr.map(p=>shortAns(t,p,yes));
+ return {type:'short',t,form:'q',mk:null,q,yes,answers,vf:q.vf,sentence:q.sentence+' – '+answers[0]};
+}
+
+// ---------- Prüfen ----------
+// Amerikanische und britische Schreibweise gelten beide (werden vor dem Vergleich vereinheitlicht)
+const AE={traveled:'travelled',traveling:'travelling',practise:'practice',practises:'practices',practised:'practiced',practising:'practicing',colour:'color',favourite:'favorite',neighbours:'neighbors',neighbour:'neighbor',centre:'center',theatre:'theater',realise:'realize',realised:'realized',organise:'organize',organised:'organized',grey:'gray',cancelled:'canceled',cancelling:'canceling'};
+function norm(str){
+ let s=' '+String(str).toLowerCase().replace(/[’‘`´]/g,"'")+' ';
+ s=s.replace(/\bwon't\b/g,'will not').replace(/\bcan't\b/g,'can not').replace(/n't\b/g,' not')
+  .replace(/'m\b/g,' am').replace(/'re\b/g,' are').replace(/'ve\b/g,' have').replace(/'ll\b/g,' will')
+  .replace(/[.,!?;:"()]/g,' ').replace(/\s+/g,' ').trim();
+ s=s.replace(/\b(do|does|did|is|are|was|were|has|have|had)nt\b/g,'$1 not').replace(/\bwont\b/g,'will not').replace(/\bim\b/g,'i am');
+ s=s.split(' ').map(w=>AE[w]||w).join(' ');
+ if(/'s\b/.test(s))return [s.replace(/'s\b/g,' is'),s.replace(/'s\b/g,' has')];
+ return [s];
+}
+function eq(a,b){const A=norm(a),B=norm(b);return A.some(x=>B.includes(x))}
+function lev(a,b){const m=a.length,n=b.length;if(!m)return n;if(!n)return m;let p=Array.from({length:n+1},(_,i)=>i);for(let i=1;i<=m;i++){const c=[i];for(let j=1;j<=n;j++)c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));p=c}return p[n]}
+function near(user,exps){
+ let best=99,L=0;const U=norm(user);
+ for(const e of exps)for(const x of norm(e)){L=Math.max(L,x.length);for(const u of U)best=Math.min(best,lev(u,x))}
+ return best<=(L>14?2:1);
+}
+function checkTrans(it,user){
+ const mw=norm(it.mk.w)[0],U=norm(user),E=norm(it.sentence);
+ const strip=x=>(' '+x+' ').replace(' '+mw+' ',' ').replace(/\s+/g,' ').trim();
+ const hasM=u=>(' '+u+' ').includes(' '+mw+' ');
+ if(U.some(u=>hasM(u)&&E.some(e=>strip(u)===strip(e))))return 'ok';
+ if(U.some(u=>!hasM(u)&&E.some(e=>u===strip(e))))return 'nomark';
+ return 'bad';
+}
+function errHint(it,user){
+ const g=it.type==='trans'?it.tgt:it;
+ if(!g.vf)return '';
+ const u=' '+norm(user)[0]+' ',has=w=>u.includes(' '+w+' ');
+ const v=g.vf,t=g.t,f=g.form,s3=g.s.k==='3s';
+ if(t==='SPA'&&f!=='pos'&&v.p!==v.b&&has(v.p))return L(`Nach <b>did / didn't</b> steht die Grundform: <b>${v.b}</b> (nicht ${v.p}).`,`After <b>did / didn't</b> use the base form: <b>${v.b}</b> (not ${v.p}).`);
+ if(t==='SP'&&f!=='pos'&&s3&&has(v.s3))return L(`Nach <b>does / doesn't</b> steht die Grundform ohne -s: <b>${v.b}</b>.`,`After <b>does / doesn't</b> use the base form without -s: <b>${v.b}</b>.`);
+ if(t==='SP'&&f==='pos'&&s3&&has(v.b)&&!has(v.s3))return L(`he / she / it – das <b>-s</b> muss mit: <b>${v.s3}</b>.`,`he / she / it – don't forget the <b>-s</b>: <b>${v.s3}</b>.`);
+ if(t==='PRP'&&v.p!==v.pp&&has(v.p)&&!has(v.pp))return L(`Present Perfect braucht die 3. Form: <b>${v.pp}</b> (nicht ${v.p}).`,`The Present Perfect needs the 3rd form: <b>${v.pp}</b> (not ${v.p}).`);
+ if((t==='PP'||t==='PAP')&&!has(v.ing))return L(`Continuous-Form: Verb + <b>-ing</b> → <b>${v.ing}</b>.`,`Continuous form: verb + <b>-ing</b> → <b>${v.ing}</b>.`);
+ if(t==='PP'&&!['am','is','are'].some(has))return L(`Vergiss <b>am / is / are</b> nicht.`,`Don't forget <b>am / is / are</b>.`);
+ if(t==='PAP'&&!['was','were'].some(has))return L(`Vergiss <b>was / were</b> nicht.`,`Don't forget <b>was / were</b>.`);
+ if(t==='GT'&&!has('going'))return L(`going to-Future: <b>am / is / are + going to</b> + Grundform.`,`going to-future: <b>am / is / are + going to</b> + base form.`);
+ if(t==='WF'&&!has('will'))return L(`will-Future: <b>will</b> (verneint: <b>won't</b>) + Grundform.`,`will-future: <b>will</b> (negative: <b>won't</b>) + base form.`);
+ return '';
+}
+/*END ENGINE*/
+
+// ---------- App ----------
+const app=document.getElementById('app');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const MODES_=()=>[
+ {k:'rec',icon:'🔍',label:L('Erkennen','Recognise'),desc:L('Welche Zeitform ist das?','Which tense is it?')},
+ {k:'fill',icon:'✏️',label:L('Einsetzen','Fill in'),desc:L('Verb in die richtige Form setzen','Put the verb in the correct form')},
+ {k:'trans',icon:'🔄',label:L('Umformen','Transform'),desc:L('Andere Zeit, verneinen, Frage','Other tense, negative, question')},
+ {k:'ctx',icon:'🧩',label:L('Zeit wählen','Choose the tense'),desc:L('Aus dem Zusammenhang die richtige Zeit finden','Find the right tense from the context')},
+ {k:'short',icon:'💬',label:L('Kurzantworten','Short answers'),desc:'Yes, she does. / No, I haven\'t.'}
+];
+const ALL_MODES=['rec','fill','trans','ctx','short'];
+const FORMS_=()=>[{k:'pos',l:L('✓ positiv','✓ positive')},{k:'neg',l:L('✗ verneint','✗ negative')},{k:'q',l:L('? Frage','? question')}];
+const TYPE_LABEL_=()=>({rec:L('🔍 Erkennen','🔍 Recognise'),fill:L('✏️ Einsetzen','✏️ Fill in'),trans:L('🔄 Umformen','🔄 Transform'),short:L('💬 Kurzantwort','💬 Short answer'),ctx:L('🧩 Zeit wählen','🧩 Choose the tense')});
+const instrText=it=>it.instr==='neg'?L('Verneine den Satz.','Make the sentence negative.'):it.instr==='q'?L('Mach eine Frage aus dem Satz.','Turn the sentence into a question.'):L('Schreib den Satz im '+T[it.t].name+'.','Write the sentence in the '+T[it.t].name+'.');
+let screen='setup';
+
+// Startzustand: immer Present Simple + Einsetzen
+let S={tenses:['SP'],modes:['fill'],forms:['pos','neg','q'],count:10,hint:false};
+const save=()=>{};
+
+// Rundenübergreifendes Gedächtnis, damit Sätze erst nach Durchlauf wiederholt werden
+const globalSeen=new Set();
+function pickFresh(arr){
+ const fresh=arr.filter(x=>!globalSeen.has(x.s));
+ if(fresh.length)return rnd(fresh);
+ arr.forEach(x=>globalSeen.delete(x.s));
+ return rnd(arr);
+}
+
+let items=[],idx=0,score=0,results=[],answered=false,tries=0,infinite=false,seen=new Set(),studentName='';
+
+function renderSetup(){
+ screen='setup';items=[];
+ const MODES=MODES_(),FORMS=FORMS_();
+ app.innerHTML=`
+ <div class="card"><h2>${L('1 · Welche Zeitformen?','1 · Which tenses?')}</h2>
+  <div class="chips">${ORDER.map(k=>`<button class="chip ${S.tenses.includes(k)?'on':''}" data-t="${k}" style="--c:${T[k].c}">${T[k].name}</button>`).join('')}</div>
+  <div class="links"><button class="btn-link sm" data-all="1">${L('alle wählen','select all')}</button><button class="btn-link sm" data-all="0">${L('keine','none')}</button></div></div>
+ <div class="card"><h2>${L('2 · Übungsart','2 · Exercise type')}</h2>
+  <p class="muted" style="margin:-4px 0 10px;font-size:.9em">${L('Eine oder mehrere wählen – sie wechseln sich dann ab.','Choose one or more – they will take turns.')}</p>
+  <div class="modes">${MODES.map(m=>`<button class="mode ${S.modes.includes(m.k)?'on':''}" data-m="${m.k}"><b>${m.icon} ${m.label}</b><small>${m.desc}</small></button>`).join('')}</div>
+  <div class="links"><button class="btn-link sm" data-mall="1">${L('alle wählen','select all')}</button><button class="btn-link sm" data-mall="0">${L('keine','none')}</button></div></div>
+ <div class="card"><h2>${L('3 · Satzarten','3 · Sentence types')}</h2>
+  <div class="chips">${FORMS.map(f=>`<button class="chip ${S.forms.includes(f.k)?'on':''}" data-f="${f.k}">${f.l}</button>`).join('')}</div></div>
+ <div class="card"><h2>${L('4 · Optionen','4 · Options')}</h2>
+  <div class="opt-row"><span>${L('Anzahl Aufgaben','Number of tasks')}</span><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><div class="seg">${[10,15,20,0].map(n=>`<button class="${S.count===n?'on':''}" data-n="${n}" ${n?'':`title="${L('Unendlich – üben, bis du auf Fertig klickst','Endless – practise until you click Done')}"`}>${n||'∞'}</button>`).join('')}</div><input id="countIn" type="number" min="1" max="100" inputmode="numeric" placeholder="${L('eigene','custom')}" value="${[10,15,20,0].includes(S.count)?'':S.count}" class="count-in ${[10,15,20,0].includes(S.count)?'':'on'}" aria-label="${L('Eigene Anzahl Aufgaben','Custom number of tasks')}"></div></div>
+  <div class="opt-row"><span>${L('Beim Einsetzen die Zeitform anzeigen','Show the tense when filling in')}<br><small style="color:var(--muted)">${L('Aus = selber an den Signalwörtern erkennen','Off = find it yourself from the signal words')}</small></span><button class="switch ${S.hint?'on':''}" id="hintSw" aria-label="${L('Zeitform anzeigen','Show tense')}"></button></div></div>
+ <button class="primary" id="start">${L("Los geht's →","Let's go →")}</button>
+ <p class="err" id="err"></p>`;
+ app.onclick=e=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.t){const k=b.dataset.t;S.tenses=S.tenses.includes(k)?S.tenses.filter(x=>x!==k):[...S.tenses,k]}
+  else if(b.dataset.all){S.tenses=b.dataset.all==='1'?ORDER.slice():[]}
+  else if(b.dataset.m){const k=b.dataset.m;S.modes=S.modes.includes(k)?S.modes.filter(x=>x!==k):ALL_MODES.filter(x=>x===k||S.modes.includes(x))}
+  else if(b.dataset.mall){S.modes=b.dataset.mall==='1'?ALL_MODES.slice():[]}
+  else if(b.dataset.f){const k=b.dataset.f;S.forms=S.forms.includes(k)?S.forms.filter(x=>x!==k):[...S.forms,k]}
+  else if(b.dataset.n!==undefined){S.count=+b.dataset.n}
+  else if(b.id==='hintSw'){S.hint=!S.hint}
+  else if(b.id==='start'){return start()}
+  else return;
+  save();renderSetup();
+ };
+ const ci=document.getElementById('countIn');
+ ci.oninput=()=>{const v=parseInt(ci.value,10);if(v>=1&&v<=100){S.count=v;ci.classList.add('on');app.querySelectorAll('[data-n]').forEach(x=>x.classList.remove('on'))}};
+ ci.onchange=()=>{const v=parseInt(ci.value,10);if(!(v>=1&&v<=100)){ci.value='';if(![10,15,20,0].includes(S.count))S.count=10;renderSetup()}};
+}
+
+function makeItem(type){
+ const t=rnd(S.tenses),form=rnd(S.forms);
+ if(type==='trans')return genTrans(t,S.forms,S.tenses);
+ if(type==='short')return genShort(t);
+ if(type==='ctx'){const c=CTX.filter(p=>p.t===t);const p=pickFresh(c);globalSeen.add(p.s);return ctxItem(p)}
+ const pool=POOL.filter(p=>p.t===t&&(p.f||'pos')===form);
+ if(pool.length&&Math.random()<.35){const p=pickFresh(pool);globalSeen.add(p.s);const it=poolItem(p);it.type=type;return it}
+ const it=genItem(t,form);
+ it.type=type;return it;
+}
+// Übungsarten ausgewogen verteilen: jede etwa gleich oft, zufällige Reihenfolge, nie mehr als 2× dieselbe hintereinander
+function typeSequence(n){
+ const m=S.modes.length?S.modes:['fill'];
+ let bag=[];
+ const seq=[];
+ for(let i=0;i<n;i++){
+  if(!bag.length)bag=m.slice().sort(()=>Math.random()-.5);
+  let j=0;
+  if(m.length>1&&seq.length>=2&&seq[seq.length-1]===seq[seq.length-2]){j=bag.findIndex(x=>x!==seq[seq.length-1]);if(j<0){bag=m.filter(x=>x!==seq[seq.length-1]).sort(()=>Math.random()-.5);j=0}}
+  seq.push(bag.splice(j,1)[0]);
+ }
+ return seq;
+}
+function buildRound(n){
+ const out=[];
+ const types=typeSequence(n);
+ for(let i=0;i<n;i++){
+  const type=types[i];
+  let it;
+  let k=0;
+  do{it=makeItem(type);k++}while((seen.has(it.sentence)||globalSeen.has(it.sentence))&&k<40);
+  seen.add(it.sentence);globalSeen.add(it.sentence);out.push(it);
+ }
+ return out;
+}
+function start(list){
+ const err=document.getElementById('err');
+ if(!list){
+  if(!S.tenses.length){err.textContent=L('Wähle mindestens eine Zeitform.','Choose at least one tense.');return}
+  if(!S.modes.length){err.textContent=L('Wähle mindestens eine Übungsart.','Choose at least one exercise type.');return}
+  if(!S.forms.length&&S.modes.some(m=>m!=='short'&&m!=='ctx')){err.textContent=L('Wähle mindestens eine Satzart.','Choose at least one sentence type.');return}
+ }
+ seen=new Set();infinite=!list&&S.count===0;
+ items=list||buildRound(infinite?10:S.count);idx=0;score=0;results=[];
+ renderTask();
+}
+
+function tenseTag(it){
+ if(S.hint)return `<span class="tt" style="--c:${T[it.t].c}">${T[it.t].name}</span>`;
+ if(it.t==='WF')return `<span class="tt" style="--c:${T.WF.c}">will</span>`;
+ if(it.t==='GT')return `<span class="tt" style="--c:${T.GT.c}">going to</span>`;
+ return '';
+}
+function renderTask(){
+ screen='task';
+ const it=items[idx];answered=false;tries=0;
+ const TYPE_LABEL=TYPE_LABEL_();
+ let body='';
+ if(it.type==='rec'){
+  const sel=S.tenses.filter(x=>x!==it.t);
+  const others=sel.length?shuffle(sel):shuffle(ORDER.filter(x=>x!==it.t));
+  const opts=shuffle([it.t,...others.slice(0,3)]);
+  body=`<p class="instr">${L('Welche Zeitform ist das?','Which tense is it?')}</p>
+   <div class="sentence" id="sent">${esc(it.sentence)}</div>
+   <div class="opts">${opts.map(k=>`<button data-o="${k}">${T[k].name}</button>`).join('')}</div>`;
+ }else if(it.type==='fill'){
+  const w=Math.max(8,it.gap.length+3);
+  body=`<p class="instr">${it.form==='q'?L('Ergänze die Frage.','Complete the question.'):L('Setze das Verb in der richtigen Form ein.','Put the verb in the correct form.')} ${tenseTag(it)}</p>
+   <div class="sentence">${esc(it.before)}<input id="inp" style="width:${w}ch" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">${esc(it.after)} <span class="hint">(${esc(it.hint)})</span></div>`;
+ }else if(it.type==='ctx'){
+  const w=Math.max(8,it.gap.length+3);
+  body=`<p class="instr">${L('Welche Zeit passt? Setze das Verb richtig ein.','Which tense fits? Put the verb in the correct form.')}</p>
+   <div class="sentence">${esc(it.before)}<input id="inp" style="width:${w}ch" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">${esc(it.after)} <span class="hint">(${esc(it.hint)})</span></div>`;
+ }else if(it.type==='short'){
+  body=`<p class="instr">${L('Antworte mit einer Kurzantwort:','Give a short answer:')} ${it.yes?L('👍 <b>Ja</b>','👍 <b>Yes</b>'):L('👎 <b>Nein</b>','👎 <b>No</b>')}</p>
+   <div class="src">${esc(it.q.sentence)}</div>
+   <textarea class="full" id="inp" rows="1" placeholder="${it.yes?'Yes, …':'No, …'}" autocomplete="off" autocapitalize="sentences" autocorrect="off" spellcheck="false"></textarea>`;
+ }else{
+  body=`<p class="instr">${instrText(it)}</p>
+   <div class="src">${esc(it.src.sentence)}</div>
+   ${it.showMk?`<p class="sig">${L('Signalwort','Signal word')}: <b>${esc(it.mk.w)}</b></p>`:''}
+   <textarea class="full" id="inp" rows="2" placeholder="${L('Schreib den ganzen Satz …','Write the whole sentence …')}" autocomplete="off" autocapitalize="sentences" autocorrect="off" spellcheck="false"></textarea>`;
+ }
+ app.innerHTML=`
+ <div class="qtop"><button class="btn-link" id="quit">${infinite?L('✓ Fertig','✓ Done'):L('✕ Beenden','✕ Quit')}</button><span>${infinite?L('Aufgabe ','Task ')+(idx+1)+' · ∞':(idx+1)+' / '+items.length}</span><span>⭐ ${score}</span></div>
+ ${infinite?'':`<div class="bar"><div style="width:${idx/items.length*100}%"></div></div>`}
+ <div class="card"><div class="tag">${TYPE_LABEL[it.type]}</div>${body}
+  <div id="fb"></div>
+  <div class="actions">${it.type==='rec'?'':`<button class="primary" id="go">${L('Prüfen','Check')}</button>`}</div></div>`;
+ app.onclick=e=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.id==='quit'){
+  if(infinite&&results.length)return renderResults();
+  if(results.length&&!confirm(L('Runde wirklich beenden?\nDeine bisherigen Antworten gehen verloren.','Really quit this round?\nYour answers so far will be lost.')))return;
+  return renderSetup();
+ }
+  if(b.dataset.o&&!answered)return answerRec(b.dataset.o);
+  if(b.id==='go')return answered?next():check();
+ };
+ const inp=document.getElementById('inp');if(inp)inp.focus();
+}
+function shortHint(it,val){
+ const u=' '+norm(val)[0]+' ',v=it.vf;
+ if(!/^ ?(yes|no) /.test(u))return L('Beginne mit <b>Yes,</b> oder <b>No,</b>','Start with <b>Yes,</b> or <b>No,</b>');
+ if([v.b,v.s3,v.p,v.pp,v.ing].some(w=>u.includes(' '+w+' ')))return L('Bei Kurzantworten wiederholst du nur das <b>Hilfsverb</b> – nicht das ganze Verb.','In short answers you only repeat the <b>auxiliary verb</b> – not the whole verb.');
+ return L('Nimm das <b>Hilfsverb aus der Frage</b> und pass es an das Pronomen an.','Take the <b>auxiliary verb from the question</b> and match it to the pronoun.');
+}
+function explain(it){
+ const d=T[it.t];
+ if(it.type==='short')return `<div class="rule">${L('<b>Kurzantwort:</b> Yes / No + Pronomen + <b>Hilfsverb aus der Frage</b> (do, does, did, am, is, are, was, were, have, has, will).<br>Aus „you“ wird „I“ oder „we“, aus „Tom“ wird „he“.','<b>Short answer:</b> Yes / No + pronoun + <b>auxiliary verb from the question</b> (do, does, did, am, is, are, was, were, have, has, will).<br>“you” becomes “I” or “we”, “Tom” becomes “he”.')}</div><div class="rule"><span class="tt" style="--c:${d.c}">${d.name}</span></div>`;
+ let h=it.why?`<div class="rule"><b>${L('Warum?','Why?')}</b> ${esc(cap(whyText(it.why)))}</div>`:'';
+ h+=`<div class="rule"><span class="tt" style="--c:${d.c}">${d.name}</span> ${TD(it.t,'use')}.<br><b>${L('Bildung','Form')}:</b> ${it.sq?L('Frage nach dem Subjekt (<b>Who / What / Which …?</b>): <b>kein</b> do / does / did, keine Umstellung – das Verb steht wie im Aussagesatz.','Question about the subject (<b>Who / What / Which …?</b>): <b>no</b> do / does / did, no inversion – the verb stays as in a statement.'):TD(it.t,it.form)}</div>`;
+ if(it.mk)h+=`<div class="rule"><b>${L('Signalwort','Signal word')}:</b> <i>${esc(it.mk.w)}</i> → ${d.name}</div>`;
+ return h;
+}
+function markSent(it){return esc(it.before)+'<mark>'+esc(it.gap)+'</mark>'+esc(it.after)}
+function finish(ok,user,html,kind){
+ answered=true;if(ok)score++;
+ results.push({item:items[idx],ok,user,retry:ok&&tries>0});
+ document.getElementById('fb').innerHTML=`<div class="fb ${kind}">${html}</div>`;
+ const act=document.querySelector('.actions');
+ act.innerHTML=`<button class="primary" id="go">${(infinite||idx+1<items.length)?L('Weiter →','Next →'):L('Auswertung →','Results →')}</button>`;
+ document.querySelector('.qtop span:last-child').textContent='⭐ '+score;
+ const inp=document.getElementById('inp');if(inp)inp.disabled=true;
+ document.getElementById('go').focus();
+}
+function answerRec(k){
+ const it=items[idx],ok=k===it.t;
+ document.querySelectorAll('.opts button').forEach(b=>{b.disabled=true;if(b.dataset.o===it.t)b.classList.add('right');else if(b.dataset.o===k)b.classList.add('wrong')});
+ document.getElementById('sent').innerHTML=markSent(it);
+ finish(ok,T[k].name,`<div class="fbt">${ok?L('Richtig! 🎉','Correct! 🎉'):L('Leider falsch.','Sorry, wrong.')}</div>${ok?'':L(`Das ist <b>${T[it.t].name}</b>.<br>`,`This is <b>${T[it.t].name}</b>.<br>`)}${L('Erkennbar an','You can tell by')}: <mark>${esc(it.gap)}</mark>${explain(it)}`,ok?'ok':'bad');
+}
+function check(){
+ const it=items[idx],inp=document.getElementById('inp'),val=inp.value.trim();
+ if(!val){inp.focus();return}
+ const fb=document.getElementById('fb');
+ let ok,nomark=false;
+ if(it.type==='fill'||it.type==='ctx'){ok=[it.gap,...(it.alt||[])].some(a=>eq(val,a))||eq(val,it.sentence)}
+ else if(it.type==='short'){ok=it.answers.some(a=>eq(val,a))}
+ else{const r=checkTrans(it,val);ok=r==='ok';nomark=r==='nomark'}
+ if(!ok&&tries===0){
+  if(nomark){tries=1;fb.innerHTML=`<div class="fb warn"><div class="fbt">${L('Fast!','Almost!')}</div>${L(`Das Signalwort <b>${esc(it.mk.w)}</b> fehlt noch. Noch ein Versuch.`,`The signal word <b>${esc(it.mk.w)}</b> is missing. Try again.`)}</div>`;inp.focus();return}
+  if(near(val,(it.type==='fill'||it.type==='ctx')?[it.gap,...(it.alt||[])]:it.type==='short'?it.answers:[it.sentence])){tries=1;fb.innerHTML=`<div class="fb warn"><div class="fbt">${L('Fast!','Almost!')}</div>${L('Prüfe die Schreibweise. Noch ein Versuch.','Check the spelling. Try again.')}</div>`;inp.focus();return}
+ }
+ const sol=(it.type==='fill'||it.type==='ctx')?markSent(it)+((it.alt&&it.alt.length)?`<br><small>${L('Auch richtig','Also correct')}: <b>${esc(it.alt.join(' / '))}</b></small>`:''):'<mark>'+esc(it.type==='short'?it.answers.join(L('  oder  ','  or  ')):it.sentence)+'</mark>';
+ const tip=ok?'':it.type==='short'?shortHint(it,val):errHint(it,val);
+ finish(ok,val,`<div class="fbt">${ok?L('Richtig! 🎉','Correct! 🎉'):L('Leider falsch.','Sorry, wrong.')}</div>
+  ${ok?'':`<div>${L('Deine Antwort','Your answer')}: <s>${esc(val)}</s></div>`}
+  <div class="sol">${ok?(tries?`<small>${L('(im 2. Versuch)','(2nd try)')}</small><br>`:''):L('Richtig ist: ','Correct answer: ')}${sol}</div>
+  ${tip?`<div class="tip">💡 ${tip}</div>`:''}${explain(it)}`,ok?'ok':'bad');
+}
+function next(){
+ idx++;
+ if(infinite&&idx>=items.length-2)items=items.concat(buildRound(10));
+ idx<items.length?renderTask():renderResults();
+}
+
+function taskText(r){
+ const it=r.item;
+ const YA=L('Deine Antwort','Your answer'),SOL=L('Lösung','Solution');
+ if(it.type==='rec')return `${markSent(it)}<br><small>${L('Deine Wahl','Your choice')}: <span class="${r.ok?'okc':'you'}">${esc(r.user)}</span>${r.ok?'':` · ${L('Richtig','Correct')}: <b>${T[it.t].name}</b>`}</small>`;
+ if(it.type==='trans')return `<span class="muted">${esc(it.src.sentence)}</span> → ${esc(instrText(it))}<br>${SOL}: <mark>${esc(it.sentence)}</mark><br><small>${YA}: <span class="${r.ok?'okc':'you'}">${esc(r.user)}</span></small>`;
+ if(it.type==='short')return `${esc(it.q.sentence)} (${it.yes?L('Ja','Yes'):L('Nein','No')})<br>${SOL}: <mark>${esc(it.answers.join(' / '))}</mark><br><small>${YA}: <span class="${r.ok?'okc':'you'}">${esc(r.user)}</span></small>`;
+ return `${markSent(it)}${it.alt&&it.alt.length?` <small>(${L('auch','also')}: ${esc(it.alt.join(' / '))})</small>`:''}<br><small>${YA}: <span class="${r.ok?'okc':'you'}">${esc(r.user)}</span></small>`;
+}
+function renderResults(){
+ screen='results';
+ const TYPE_LABEL=TYPE_LABEL_(),MODES=MODES_();
+ const n=results.length;
+ const pct=n?Math.round(score/n*100):0;
+ const msg=pct>=90?L('Hervorragend! 🏆','Excellent! 🏆'):pct>=70?L('Gut gemacht! 👍','Well done! 👍'):pct>=50?L('Nicht schlecht – weiter üben! 💪','Not bad – keep practising! 💪'):L('Bleib dran – nochmal üben hilft! 🔁','Keep going – practice helps! 🔁');
+ const by={};results.forEach(r=>{const k=r.item.t;by[k]=by[k]||{n:0,ok:0};by[k].n++;if(r.ok)by[k].ok++});
+ const wrong=results.filter(r=>!r.ok),retry=results.filter(r=>r.retry).length;
+ const modeL=S.modes.map(k=>MODES.find(m=>m.k===k)).filter(Boolean);
+ const d=new Date(),loc=L('de-CH','en-GB'),date=d.toLocaleDateString(loc)+', '+d.toLocaleTimeString(loc,{hour:'2-digit',minute:'2-digit'});
+ app.innerHTML=`
+ <div class="card">
+  <input class="name" id="name" placeholder="${L('Dein Name','Your name')}" value="${esc(studentName)}" autocomplete="off">
+  <div class="big">${score} / ${n}<small>${msg}</small></div>
+  ${retry?`<p class="center muted">${L(`davon ${retry} im 2. Versuch`,`${retry} of them on the 2nd try`)}</p>`:''}
+  <p class="center muted">${date} · ${modeL.map(m=>m.icon+' '+m.label).join(', ')} · ${S.tenses.map(k=>T[k].name).join(', ')}</p>
+  <p class="shot">${L('📸 Mach einen Screenshot, falls deine Lehrperson dein Resultat sehen will.','📸 Take a screenshot if your teacher wants to see your result.')}</p>
+ </div>
+ <div class="card"><h2>${L('Nach Zeitform','By tense')}</h2>${ORDER.filter(k=>by[k]).map(k=>{const p=Math.round(by[k].ok/by[k].n*100);return `<div class="stat"><span>${T[k].name}</span><div class="track"><div style="width:${p}%;background:${T[k].c}"></div></div><b>${by[k].ok}/${by[k].n}</b></div>`}).join('')}</div>
+ <details class="card all">
+  <summary>${L('📋 Alle Antworten und Lösungen anzeigen','📋 Show all answers and solutions')} <span class="muted">(${n-wrong.length} ✓ · ${wrong.length} ✗)</span></summary>
+  ${results.map((r,i)=>`<div class="mist ${r.ok?'r-ok':'r-bad'}"><b>${i+1}. ${r.ok?'✓':'✗'}</b> <span class="tt" style="--c:${T[r.item.t].c}">${T[r.item.t].name}</span> <small class="muted">${TYPE_LABEL[r.item.type]}${r.retry?L(' · 2. Versuch',' · 2nd try'):''}</small><br>${taskText(r)}</div>`).join('')}
+ </details>
+ <div class="btns">
+  ${wrong.length?`<button class="primary" id="redo">${L('Fehler nochmal üben','Practise mistakes again')}</button>`:''}
+  <button class="${wrong.length?'secondary':'primary'}" id="again">${L('Neue Runde','New round')}</button>
+  <button class="secondary" id="setup">${L('Einstellungen ändern','Change settings')}</button>
+ </div>`;
+ document.getElementById('name').oninput=e=>{studentName=e.target.value};
+ app.onclick=e=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.id==='redo')start(shuffle(wrong.map(r=>r.item)));
+  if(b.id==='again')start();
+  if(b.id==='setup')renderSetup();
+ };
+}
+
+document.addEventListener('keydown',e=>{
+ if(e.key!=='Enter'||!items.length||!document.getElementById('fb'))return;
+ const it=items[idx];if(!it)return;
+ if(answered){e.preventDefault();next()}
+ else if(it.type!=='rec'&&document.activeElement&&document.activeElement.id==='inp'){e.preventDefault();check()}
+});
+
+const modal=document.getElementById('modal');
+let modalKind='';
+function openRules(){
+ modalKind='rules';
+ document.getElementById('modalBody').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">${L('Die Zeitformen','The tenses')}</h2><button class="btn-link" id="mclose">${L('✕ Schliessen','✕ Close')}</button></div>
+ ${ORDER.map(k=>{const d=T[k];return `<div class="rt"><span class="tt" style="--c:${d.c}">${d.name}</span> ${TD(k,'use')}
+  <p>✓ ${TD(k,'pos')}</p><p>✗ ${TD(k,'neg')}</p><p>? ${TD(k,'q')}</p><p style="color:var(--muted)">${L('Signalwörter','Signal words')}: <i>${d.sig}</i></p></div>`}).join('')}
+ ${LANG==='en'?`<details class="info"><summary><b>👩‍🏫 Info for teachers</b></summary>
+  <p><b>Tenses:</b> Present Simple, Present Continuous, Past Simple, Past Continuous, Present Perfect, will-future, going to-future.</p>
+  <p><b>Exercise types:</b> Recognise (multiple choice), Fill in (signal words), Transform (other tense, negative, question), Choose the tense (245 context tasks with explanations), Short answers. Choose one or more exercise types – they take turns, each about equally often.</p>
+  <p><b>Tasks:</b> A generator keeps creating new sentences from 24 subjects and 78 verbs – each verb-object combination is only used in the tenses and with the signal words that make sense. On top of that there are 385 hand-written sentences. With ∞ students practise until they click “Done”.</p>
+  <p><b>Checking:</b> Short and long forms are both accepted (doesn't / does not), capitalisation doesn't count, British and American spelling are both correct. With typos there is a 2nd try – this is marked in the results.</p>
+  <p><b>Verb list:</b> 📋 Verbs shows all three forms (irregular first, then regular) with German translation and a search.</p>
+  <p><b>Results:</b> At the end students enter their name and take a screenshot if needed. “Show all answers” lists every task with its solution.</p>
+  <p><b>Privacy:</b> No login, no data is sent or stored. Only the language and font size are remembered in the browser.</p>
+ </details>`:`<details class="info"><summary><b>👩‍🏫 Info für Lehrpersonen</b></summary>
+  <p><b>Zeitformen:</b> Present Simple, Present Continuous, Past Simple, Past Continuous, Present Perfect, will-Future, going to-Future.</p>
+  <p><b>Übungsarten:</b> Erkennen (Multiple Choice), Einsetzen (Signalwörter), Umformen (andere Zeit, Verneinung, Frage), Zeit wählen (245 Kontext-Aufgaben mit Begründung), Kurzantworten. Man kann eine oder mehrere Übungsarten wählen – sie wechseln sich dann ab, jede etwa gleich oft.</p>
+  <p><b>Aufgaben:</b> Ein Generator erzeugt laufend neue Sätze aus 24 Subjekten und 78 Verben – jede Verb-Objekt-Kombination ist nur in den Zeitformen und mit den Signalwörtern erlaubt, die inhaltlich passen. Dazu kommen 385 handgeschriebene Sätze. Mit ∞ üben die Lernenden, bis sie auf „Fertig“ klicken.</p>
+  <p><b>Prüfung:</b> Kurz- und Langformen gelten beide (doesn't / does not), Gross-/Kleinschreibung zählt nicht. Bei Tippfehlern gibt es einen 2. Versuch – das wird in der Auswertung markiert.</p>
+  <p><b>Resultate:</b> Am Schluss tragen die Lernenden ihren Namen ein und machen bei Bedarf einen Screenshot. Unter „Alle Antworten“ sehen sie jede Aufgabe mit Lösung.</p>
+  <p><b>Verbliste:</b> 📋 Verben zeigt alle drei Formen (zuerst unregelmässige, dann regelmässige) mit deutscher Übersetzung und Suche.</p>
+  <p><b>Datenschutz:</b> Kein Login, keine Daten werden gesendet oder gespeichert. Nur Sprache und Schriftgrösse werden im Browser gemerkt.</p>
+ </details>`}`;
+ modal.classList.remove('hidden');
+ document.getElementById('mclose').onclick=closeModal;
+}
+function closeModal(){modal.classList.add('hidden');modalKind=''}
+document.getElementById('rulesBtn').onclick=openRules;
+modal.onclick=e=>{if(e.target===modal)closeModal()};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.classList.contains('hidden'))closeModal()});
+
+// ---------- Verbliste (alle drei Formen; zuerst unregelmässig, dann regelmässig) ----------
+const IRR=`arise|arose|arisen|entstehen
+awake|awoke|awoken|aufwachen
+be|was / were|been|sein
+bear|bore|born / borne|ertragen; gebären
+beat|beat|beaten|schlagen; besiegen
+become|became|become|werden
+begin|began|begun|beginnen
+bend|bent|bent|biegen
+bet|bet|bet|wetten
+bite|bit|bitten|beissen
+bleed|bled|bled|bluten
+blow|blew|blown|blasen; wehen
+break|broke|broken|brechen; kaputt machen
+bring|brought|brought|bringen
+broadcast|broadcast|broadcast|senden, übertragen
+build|built|built|bauen
+burn|burnt / burned|burnt / burned|brennen; verbrennen
+buy|bought|bought|kaufen
+catch|caught|caught|fangen; erwischen
+choose|chose|chosen|wählen, aussuchen
+come|came|come|kommen
+cost|cost|cost|kosten
+creep|crept|crept|kriechen; schleichen
+cut|cut|cut|schneiden
+deal|dealt|dealt|handeln; austeilen
+dig|dug|dug|graben
+do|did|done|tun, machen
+draw|drew|drawn|zeichnen; ziehen
+dream|dreamt / dreamed|dreamt / dreamed|träumen
+drink|drank|drunk|trinken
+drive|drove|driven|fahren (Auto)
+eat|ate|eaten|essen
+fall|fell|fallen|fallen
+feed|fed|fed|füttern
+feel|felt|felt|fühlen
+fight|fought|fought|kämpfen; streiten
+find|found|found|finden
+fly|flew|flown|fliegen
+forbid|forbade|forbidden|verbieten
+forget|forgot|forgotten|vergessen
+forgive|forgave|forgiven|verzeihen
+freeze|froze|frozen|frieren; einfrieren
+get|got|got / gotten|bekommen; werden
+give|gave|given|geben
+go|went|gone|gehen
+grow|grew|grown|wachsen; anbauen
+hang|hung|hung|hängen
+have|had|had|haben
+hear|heard|heard|hören
+hide|hid|hidden|verstecken
+hit|hit|hit|schlagen; treffen
+hold|held|held|halten
+hurt|hurt|hurt|verletzen; wehtun
+keep|kept|kept|behalten
+kneel|knelt / kneeled|knelt / kneeled|knien
+know|knew|known|wissen; kennen
+lay|laid|laid|legen
+lead|led|led|führen
+lean|leant / leaned|leant / leaned|lehnen
+learn|learnt / learned|learnt / learned|lernen
+leave|left|left|verlassen; abfahren
+lend|lent|lent|ausleihen (jemandem)
+let|let|let|lassen
+lie|lay|lain|liegen
+light|lit|lit|anzünden
+lose|lost|lost|verlieren
+make|made|made|machen; herstellen
+mean|meant|meant|bedeuten; meinen
+meet|met|met|treffen
+pay|paid|paid|bezahlen
+put|put|put|setzen, stellen, legen
+quit|quit|quit|aufhören; kündigen
+read|read|read|lesen
+ride|rode|ridden|reiten; fahren (Velo)
+ring|rang|rung|klingeln; anrufen
+rise|rose|risen|steigen; aufgehen
+run|ran|run|rennen
+say|said|said|sagen
+see|saw|seen|sehen
+seek|sought|sought|suchen
+sell|sold|sold|verkaufen
+send|sent|sent|schicken
+set|set|set|setzen; einstellen
+shake|shook|shaken|schütteln
+shine|shone|shone|scheinen
+shoot|shot|shot|schiessen
+show|showed|shown|zeigen
+shrink|shrank|shrunk|schrumpfen
+shut|shut|shut|schliessen
+sing|sang|sung|singen
+sink|sank|sunk|sinken
+sit|sat|sat|sitzen
+sleep|slept|slept|schlafen
+slide|slid|slid|rutschen, gleiten
+smell|smelt / smelled|smelt / smelled|riechen
+speak|spoke|spoken|sprechen
+spell|spelt / spelled|spelt / spelled|buchstabieren
+spend|spent|spent|ausgeben; verbringen
+spill|spilt / spilled|spilt / spilled|verschütten
+spin|spun|spun|drehen
+spit|spat|spat|spucken
+split|split|split|teilen
+spread|spread|spread|verbreiten
+stand|stood|stood|stehen
+steal|stole|stolen|stehlen
+stick|stuck|stuck|kleben; stecken
+sting|stung|stung|stechen
+strike|struck|struck|schlagen; streiken
+swear|swore|sworn|schwören; fluchen
+sweep|swept|swept|fegen
+swim|swam|swum|schwimmen
+swing|swung|swung|schwingen; schaukeln
+take|took|taken|nehmen
+teach|taught|taught|unterrichten
+tear|tore|torn|zerreissen
+tell|told|told|erzählen; sagen
+think|thought|thought|denken
+throw|threw|thrown|werfen
+understand|understood|understood|verstehen
+wake|woke|woken|aufwachen; wecken
+wear|wore|worn|tragen (Kleidung)
+win|won|won|gewinnen
+write|wrote|written|schreiben`.trim().split('\n').map(l=>{const [b,p,pp,de]=l.split('|');return {b,p,pp,de,irr:1}});
+const REG=`answer|answered|antworten
+arrive|arrived|ankommen
+ask|asked|fragen
+bake|baked|backen
+call|called|anrufen; rufen
+carry|carried|tragen
+change|changed|ändern; wechseln
+chat|chatted|plaudern, chatten
+check|checked|prüfen, kontrollieren
+clean|cleaned|putzen
+climb|climbed|klettern
+close|closed|schliessen
+collect|collected|sammeln
+cook|cooked|kochen
+cross|crossed|überqueren
+cry|cried|weinen
+dance|danced|tanzen
+decide|decided|entscheiden
+enjoy|enjoyed|geniessen
+explain|explained|erklären
+finish|finished|beenden
+fix|fixed|reparieren
+happen|happened|passieren
+hate|hated|hassen
+help|helped|helfen
+hope|hoped|hoffen
+hurry|hurried|sich beeilen
+invite|invited|einladen
+jump|jumped|springen
+laugh|laughed|lachen
+like|liked|mögen
+listen|listened|zuhören
+live|lived|leben; wohnen
+look|looked|schauen
+love|loved|lieben
+miss|missed|verpassen; vermissen
+move|moved|bewegen; umziehen
+need|needed|brauchen
+open|opened|öffnen
+order|ordered|bestellen
+pack|packed|packen
+paint|painted|malen; streichen
+plan|planned|planen
+play|played|spielen
+practise / practice|practised / practiced|üben
+prefer|preferred|vorziehen, lieber mögen
+rain|rained|regnen
+remember|remembered|sich erinnern
+repair|repaired|reparieren
+share|shared|teilen
+shop|shopped|einkaufen
+smile|smiled|lächeln
+start|started|beginnen, starten
+stay|stayed|bleiben
+stop|stopped|aufhören; anhalten
+study|studied|lernen; studieren
+talk|talked|reden
+tidy|tidied|aufräumen
+travel|travelled / traveled|reisen
+try|tried|versuchen; probieren
+turn|turned|drehen; abbiegen
+use|used|benutzen
+visit|visited|besuchen
+wait|waited|warten
+walk|walked|gehen, spazieren
+want|wanted|wollen
+wash|washed|waschen
+watch|watched|anschauen
+water|watered|giessen
+work|worked|arbeiten
+worry|worried|sich Sorgen machen`.trim().split('\n').map(l=>{const [b,p,de]=l.split('|');return {b,p,pp:p,de,irr:0,note:regNote(b,p)}});
+function regNote(b,p){
+ const b1=b.split(' / ')[0],p1=p.split(' / ')[0];
+ if(/[^aeiou]y$/.test(b1)&&p1.endsWith('ied'))return 'y';
+ const last=b1.slice(-1);
+ if(p1===b1+last+'ed')return 'dbl';
+ if(/e$/.test(b1)&&p1===b1+'d')return 'e';
+ return '';
+}
+let vq='',vf='all';
+const vnorm=x=>String(x).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ß/g,'ss');
+function vmatch(v,q){
+ if(!q)return true;
+ const forms=[v.b,v.p,v.pp].join(' / ').split(' / ').map(vnorm);
+ return forms.some(f=>f.startsWith(q))||vnorm(v.de).split(/[;,()]\s*|\s+/).some(w=>w.startsWith(q))||vnorm(v.de).includes(q)&&q.length>=3;
+}
+function hl(text,q){
+ if(!q)return esc(text);
+ return text.split(' / ').map(t=>vnorm(t).startsWith(q)?`<mark>${esc(t)}</mark>`:esc(t)).join(' / ');
+}
+function noteTag(n){
+ if(n==='dbl')return `<span class="vtag dbl">${L('Doppelkonsonant','double consonant')}</span>`;
+ if(n==='y')return `<span class="vtag y">y → ied</span>`;
+ if(n==='e')return `<span class="vtag e">${L('nur -d','only -d')}</span>`;
+ return '';
+}
+function verbRows(list,q){
+ return list.map(v=>`<tr><td class="b">${hl(v.b,q)}</td><td class="f">${hl(v.p,q)}${v.irr?'':noteTag(v.note)}</td><td class="f">${hl(v.pp,q)}</td><td class="de">${esc(v.de)}</td></tr>`).join('');
+}
+function verbTable(list,q){
+ return `<table class="vt"><thead><tr><th>Infinitive</th><th>Past Simple</th><th>Past Participle</th><th>${L('Deutsch','German')}</th></tr></thead><tbody>${verbRows(list,q)}</tbody></table>`;
+}
+function renderVerbList(){
+ const q=vnorm(vq.trim());
+ const irr=vf!=='reg'?IRR.filter(v=>vmatch(v,q)):[];
+ const reg=vf!=='irr'?REG.filter(v=>vmatch(v,q)):[];
+ const box=document.getElementById('vlist');if(!box)return;
+ box.innerHTML=(irr.length?`<div class="vsec">${L('Unregelmässige Verben','Irregular verbs')} (${irr.length})</div>${verbTable(irr,q)}`:'')+
+  (reg.length?`<div class="vsec">${L('Regelmässige Verben','Regular verbs')} (${reg.length}) – ${L('Past Simple = Past Participle = Verb + -ed','Past Simple = Past Participle = verb + -ed')}</div>
+   <p class="vlegend">${L('Achtung Schreibweise','Watch the spelling')}: stop → sto<b>pp</b>ed ${noteTag('dbl')} · study → stud<b>ied</b> ${noteTag('y')} · live → live<b>d</b> ${noteTag('e')}</p>${verbTable(reg,q)}`:'')+
+  (!irr.length&&!reg.length?`<p class="center muted" style="padding:20px 0">${L('Kein Verb gefunden.','No verb found.')}</p>`:'');
+ document.getElementById('vcount').textContent=`${irr.length+reg.length} ${L('Verben','verbs')}`;
+}
+function openVerbs(){
+ modalKind='verbs';
+ document.getElementById('modalBody').innerHTML=`<div class="vtools">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">${L('Verbliste','Verb list')}</h2><button class="btn-link" id="mclose">${L('✕ Schliessen','✕ Close')}</button></div>
+  <input class="vsearch" id="vsearch" type="search" placeholder="${L('Suchen: go, went, gone oder gehen …','Search: go, went, gone or gehen …')}" value="${esc(vq)}" autocomplete="off" autocapitalize="off" spellcheck="false">
+  <div class="vrow2"><div class="seg vseg" id="vseg">${[['all',L('Alle','All')],['irr',L('Unregelmässig','Irregular')],['reg',L('Regelmässig','Regular')]].map(([k,l])=>`<button data-vf="${k}" class="${vf===k?'on':''}">${l}</button>`).join('')}</div><span class="vcount" id="vcount"></span></div>
+ </div><div id="vlist"></div>`;
+ modal.classList.remove('hidden');
+ document.getElementById('mclose').onclick=closeModal;
+ const inp=document.getElementById('vsearch');
+ inp.oninput=()=>{vq=inp.value;renderVerbList()};
+ document.getElementById('vseg').onclick=e=>{const b=e.target.closest('button');if(!b)return;vf=b.dataset.vf;document.querySelectorAll('#vseg button').forEach(x=>x.classList.toggle('on',x===b));renderVerbList()};
+ renderVerbList();
+ if(matchMedia('(pointer:fine)').matches)inp.focus();
+}
+document.getElementById('verbsBtn').onclick=openVerbs;
+// Feedback: öffnet das Tally-Formular in einem neuen Tab (Version und Gerät werden mitgegeben, keine Personendaten)
+const APP_VERSION='2.2';
+document.getElementById('feedbackBtn').onclick=()=>{
+ const q=new URLSearchParams({app:'tensetrainer',version:APP_VERSION,geraet:(navigator.userAgent||'').slice(0,120)});
+ window.open('https://tally.so/r/GeR9re?'+q.toString(),'_blank','noopener');
+};
+
+// ---------- Sprache umschalten ----------
+function applyLang(){
+ document.documentElement.lang=LANG;
+ document.querySelectorAll('#langSeg button').forEach(b=>b.classList.toggle('on',b.dataset.l===LANG));
+ document.getElementById('rulesBtn').textContent=L('📘 Regeln','📘 Rules');
+ document.getElementById('verbsBtn').textContent=L('📋 Verben','📋 Verbs');
+ document.getElementById('feedbackBtn').textContent=L('💬 Feedback','💬 Feedback');
+ document.getElementById('fsMinus').setAttribute('aria-label',L('Schrift kleiner','Smaller text'));
+ document.getElementById('fsPlus').setAttribute('aria-label',L('Schrift grösser','Larger text'));
+ document.getElementById('foot').textContent=L('Tense Trainer · Englisch Oberstufe','Tense Trainer · English for lower secondary');
+}
+document.getElementById('langSeg').onclick=e=>{
+ const b=e.target.closest('button');if(!b||b.dataset.l===LANG)return;
+ LANG=b.dataset.l;try{localStorage.setItem('tt-lang',LANG)}catch(err){}
+ applyLang();
+ if(screen==='setup')renderSetup();
+ else if(screen==='results')renderResults();
+ else if(screen==='task'&&!answered){const v=(document.getElementById('inp')||{}).value;renderTask();const inp=document.getElementById('inp');if(inp&&v)inp.value=v}
+ if(modalKind==='rules')openRules();else if(modalKind==='verbs')openVerbs();
+};
+applyLang();
+
+// Schriftgrösse
+const FS=[0.85,1,1.15,1.3,1.5,1.7];let fsi=1;
+try{const v=+localStorage.getItem('tt-fs');if(v>=0&&v<FS.length)fsi=v}catch(e){}
+function applyFs(){document.body.style.zoom=FS[fsi];document.getElementById('fsMinus').disabled=fsi===0;document.getElementById('fsPlus').disabled=fsi===FS.length-1;try{localStorage.setItem('tt-fs',fsi)}catch(e){}}
+document.getElementById('fsMinus').onclick=()=>{if(fsi>0){fsi--;applyFs()}};
+document.getElementById('fsPlus').onclick=()=>{if(fsi<FS.length-1){fsi++;applyFs()}};
+applyFs();
+
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}
+renderSetup();
+</script>
+</body>
+</html>

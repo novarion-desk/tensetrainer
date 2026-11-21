@@ -92,7 +92,7 @@ mark{background:#fff0a8;padding:0 3px;border-radius:4px}
 .modal .card{max-width:720px;width:100%}
 .rt{border-top:1px solid var(--line);padding:12px 0;font-size:15px}
 .rt p{margin:4px 0}
-.hdr-r{display:flex;align-items:center;gap:6px}
+.hdr-r{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 .fs{border:2px solid var(--line);background:#fff;border-radius:10px;padding:4px 10px;font-weight:800;color:var(--ink);min-width:44px}
 .fs:hover{border-color:var(--accent)}
 .fs:disabled{opacity:.35;cursor:default}
@@ -144,6 +144,7 @@ header{flex-wrap:wrap;gap:8px}
       <button class="fs" id="fsPlus" aria-label="A+">A+</button>
       <button class="btn-link" id="rulesBtn">📘 Rules</button>
       <button class="btn-link" id="verbsBtn">📋 Verbs</button>
+      <button class="btn-link" id="feedbackBtn">💬 Feedback</button>
     </div>
   </header>
   <main id="app"></main>
@@ -1451,6 +1452,12 @@ function openVerbs(){
  if(matchMedia('(pointer:fine)').matches)inp.focus();
 }
 document.getElementById('verbsBtn').onclick=openVerbs;
+// Feedback: öffnet das Tally-Formular in einem neuen Tab (Version und Gerät werden mitgegeben, keine Personendaten)
+const APP_VERSION='2.2';
+document.getElementById('feedbackBtn').onclick=()=>{
+ const q=new URLSearchParams({app:'tensetrainer',version:APP_VERSION,geraet:(navigator.userAgent||'').slice(0,120)});
+ window.open('https://tally.so/r/GeR9re?'+q.toString(),'_blank','noopener');
+};
 
 // ---------- Sprache umschalten ----------
 function applyLang(){
@@ -1458,6 +1465,7 @@ function applyLang(){
  document.querySelectorAll('#langSeg button').forEach(b=>b.classList.toggle('on',b.dataset.l===LANG));
  document.getElementById('rulesBtn').textContent=L('📘 Regeln','📘 Rules');
  document.getElementById('verbsBtn').textContent=L('📋 Verben','📋 Verbs');
+ document.getElementById('feedbackBtn').textContent=L('💬 Feedback','💬 Feedback');
  document.getElementById('fsMinus').setAttribute('aria-label',L('Schrift kleiner','Smaller text'));
  document.getElementById('fsPlus').setAttribute('aria-label',L('Schrift grösser','Larger text'));
  document.getElementById('foot').textContent=L('Tense Trainer · Englisch Oberstufe','Tense Trainer · English for lower secondary');

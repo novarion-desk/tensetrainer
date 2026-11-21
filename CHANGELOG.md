@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 2.2 – 21.11.2026
+- Neuer Knopf «💬 Feedback» oben rechts: öffnet ein anonymes Formular (Tally) in einem neuen Tab für Fehler, Inhaltsfehler und Wünsche – für Schüler/innen und Lehrpersonen. Version und Gerät werden automatisch mitgegeben, es werden keine Namen abgefragt.
+
 ## Version 2.1 – 19.11.2026
 - Übungsarten kombinierbar: eine oder mehrere wählen (dazu «alle wählen» / «keine»). Sie wechseln sich ausgewogen ab – jede etwa gleich oft, zufällige Reihenfolge, nie mehr als zweimal dieselbe hintereinander. Ersetzt «Gemischt».
 - Anzahl Aufgaben: neben 10 / 15 / 20 / ∞ ein Feld für eine eigene Zahl (1–100).
