@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 2.4 – 21.11.2026
+- Neu: Zurück-Geste / Zurück-Taste (Handy, iPad) geht einen Schritt zurück (Aufgabe → Einstellungen, Fenster schliessen) statt die App zu schliessen. Bei laufender Runde kommt vorher eine Nachfrage.
+
 ## Version 2.3 – 21.11.2026
 - Neu: **🖨 Arbeitsblatt** (Einstellungsbildschirm, unter «Los geht's»). Erstellt mit den gewählten Zeitformen, Übungsarten, Satzarten und der gewählten Anzahl (bei ∞: 20) ein A4-Blatt mit Name/Datum, nummerierten Aufgaben und Schreibplatz. Zuerst eine Vorschau, dann «🖨 Drucken / PDF» (im Druckdialog «Als PDF speichern» wählen). «🔀 Neu mischen» erzeugt ein anderes Blatt.
 - Das Lösungsblatt ist immer dabei (eigene Seite am Ende).

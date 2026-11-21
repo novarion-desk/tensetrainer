@@ -1548,7 +1548,7 @@ function openVerbs(){
 }
 document.getElementById('verbsBtn').onclick=openVerbs;
 // Feedback: öffnet das Tally-Formular in einem neuen Tab (Version und Gerät werden mitgegeben, keine Personendaten)
-const APP_VERSION='2.3';
+const APP_VERSION='2.4';
 document.getElementById('feedbackBtn').onclick=()=>{
  const q=new URLSearchParams({app:'tensetrainer',version:APP_VERSION,geraet:(navigator.userAgent||'').slice(0,120)});
  window.open('https://tally.so/r/GeR9re?'+q.toString(),'_blank','noopener');
@@ -1586,6 +1586,33 @@ applyFs();
 
 if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}
 renderSetup();
+
+/* ===== Zurück-Geste (Handy): ein Schritt zurück statt App schliessen ===== */
+(function(){
+ let pushed=false,mPushed=false,ign=0;
+ const rS=renderSetup,rT=renderTask,rR=renderResults,rH=renderSheet;
+ const push=()=>{if(!pushed){history.pushState({sub:1},'');pushed=true}};
+ const pop=()=>{if(pushed){pushed=false;ign++;history.back()}};
+ renderSetup=function(){pop();return rS.apply(this,arguments)};
+ renderTask=function(){push();return rT.apply(this,arguments)};
+ renderResults=function(){push();return rR.apply(this,arguments)};
+ renderSheet=function(){push();return rH.apply(this,arguments)};
+ const mod=document.getElementById('modal');
+ if(mod)new MutationObserver(()=>{
+  const open=!mod.classList.contains('hidden');
+  if(open&&!mPushed){history.pushState({m:1},'');mPushed=true}
+  else if(!open&&mPushed){mPushed=false;ign++;history.back()}
+ }).observe(mod,{attributes:true,attributeFilter:['class']});
+ window.addEventListener('popstate',()=>{
+  if(ign>0){ign--;return}
+  if(mPushed){mPushed=false;closeModal();return}
+  if(pushed){
+   pushed=false;
+   if(screen==='task'&&results.length&&!infinite&&!confirm(L('Runde wirklich beenden?\nDeine bisherigen Antworten gehen verloren.','Really quit?\nYour answers so far will be lost.'))){history.pushState({sub:1},'');pushed=true;return}
+   rS();
+  }
+ });
+})();
 </script>
 </body>
 </html>
