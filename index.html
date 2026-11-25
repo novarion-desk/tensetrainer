@@ -1548,7 +1548,7 @@ function openVerbs(){
 }
 document.getElementById('verbsBtn').onclick=openVerbs;
 // Feedback: öffnet das Tally-Formular in einem neuen Tab (Version und Gerät werden mitgegeben, keine Personendaten)
-const APP_VERSION='2.4';
+const APP_VERSION='2.5';
 document.getElementById('feedbackBtn').onclick=()=>{
  const q=new URLSearchParams({app:'tensetrainer',version:APP_VERSION,geraet:(navigator.userAgent||'').slice(0,120)});
  window.open('https://tally.so/r/GeR9re?'+q.toString(),'_blank','noopener');

@@ -5,7 +5,7 @@ Live-App: https://novarion-desk.github.io/tensetrainer/
 | Pfad | Inhalt |
 |---|---|
 | `index.html` | Aktuelle Version der App |
-| `manifest.webmanifest`, `sw.js`, `icons/` | Installierbar als App (Chrome: Menü → «App installieren») |
+| `manifest.webmanifest`, `sw.js`, `icons/` | Installierbar als App und offline nutzbar (Chrome: Menü → «App installieren») |
 | `versions/vX/` | Archiv älterer Versionen – jede ist direkt aufrufbar |
 | `CHANGELOG.md` | Was sich in welcher Version geändert hat |
 
@@ -21,4 +21,4 @@ Live-App: https://novarion-desk.github.io/tensetrainer/
 
 ## Daten
 
-Kein Login, die App selbst sendet nichts. Der Knopf «💬 Feedback» öffnet ein externes, anonymes Formular bei Tally (nur dann werden Angaben gesendet, zusammen mit App-Version und Gerätetyp). Nur Sprache und Schriftgrösse werden im Browser gemerkt.
+Kein Login, die App selbst sendet nichts. Läuft nach dem ersten Öffnen auch offline (`sw.js`, Zwischenspeicher). Der Knopf «💬 Feedback» öffnet ein externes, anonymes Formular bei Tally (nur dann werden Angaben gesendet, zusammen mit App-Version und Gerätetyp). Nur Sprache und Schriftgrösse werden im Browser gemerkt.

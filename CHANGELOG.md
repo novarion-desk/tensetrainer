@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 2.5 – 25.11.2026
+- Neu: **Offline nutzbar.** Die App wird beim ersten Öffnen auf dem Gerät zwischengespeichert und läuft danach auch ohne Netz (z. B. bei WLAN-Ausfall). Ist Netz da, kommt immer die neueste Version; bei langsamem Netz (4 s) oder ohne Netz wird die gespeicherte Version geöffnet. Nur der Knopf «💬 Feedback» braucht Netz.
+
 ## Version 2.4 – 21.11.2026
 - Neu: Zurück-Geste / Zurück-Taste (Handy, iPad) geht einen Schritt zurück (Aufgabe → Einstellungen, Fenster schliessen) statt die App zu schliessen. Bei laufender Runde kommt vorher eine Nachfrage.
 
